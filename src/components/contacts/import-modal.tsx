@@ -406,23 +406,23 @@ export function ImportModal({
             </DialogTitle>
             <DialogDescription className="leading-relaxed text-muted-foreground">
               Upload a CSV with a required{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
+              <code className="rounded-sm bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
                 phone
               </code>{' '}
               column. Optional:{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
+              <code className="rounded-sm bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
                 name
               </code>
               ,{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
+              <code className="rounded-sm bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
                 email
               </code>
               ,{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
+              <code className="rounded-sm bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
                 company
               </code>
               ,{' '}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
+              <code className="rounded-sm bg-muted px-1 py-0.5 text-[11px] text-muted-foreground">
                 tags
               </code>{' '}
               (comma-separated; quote multi-tag cells).

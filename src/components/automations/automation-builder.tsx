@@ -676,11 +676,11 @@ export function AutomationBuilder({ initial }: { initial: BuilderInitial }) {
       {/* Top bar. At sub-sm widths the "Active" label is hidden and the
           switch moves to the right of the save button, so the name input
           gets maximum width. */}
-      <header className="flex flex-shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 py-3 sm:gap-3 sm:px-4">
+      <header className="flex shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 py-3 sm:gap-3 sm:px-4">
         <button
           type="button"
           onClick={() => router.push("/automations")}
-          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Back to automations"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -1003,7 +1003,7 @@ function StepRenderer({
             onClick={() => props.setExpandedId(expanded ? null : step.cid)}
             className="flex w-full items-center gap-3 px-4 py-3 text-left"
           >
-            <GripVertical className="h-4 w-4 flex-shrink-0 text-muted-foreground" aria-hidden />
+            <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted text-muted-foreground">
               <Icon className="h-4 w-4" />
             </div>

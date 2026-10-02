@@ -189,7 +189,7 @@ function StepRow({ result }: { result: AutomationLogStepResult }) {
     <li className="flex items-start gap-2 text-xs">
       <span
         className={cn(
-          "mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full",
+          "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
           ok ? "bg-primary/20 text-primary" : "bg-red-500/20 text-red-400",
         )}
         aria-hidden

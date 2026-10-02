@@ -217,7 +217,7 @@ export default function NotificationsPage() {
                 >
                   <div
                     className={cn(
-                      "flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg",
+                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg",
                       isUnread ? "bg-primary/15" : "bg-muted",
                     )}
                     aria-hidden
@@ -242,7 +242,7 @@ export default function NotificationsPage() {
                       {isUnread && (
                         <span
                           aria-label="Unread"
-                          className="h-2 w-2 flex-shrink-0 rounded-full bg-primary"
+                          className="h-2 w-2 shrink-0 rounded-full bg-primary"
                         />
                       )}
                     </div>

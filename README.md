@@ -103,7 +103,7 @@ una instancia con los nombres `wacrm` viejos — repasa
 
 ## Stack
 
-- **App** — Next.js 16 (App Router), React 19, TypeScript, Tailwind v4.
+- **App** — Next.js 16.3 (App Router), React 19.2, TypeScript 6, Tailwind v4 — mismo estándar frontend que el resto del ecosistema H&M.
 - **Datos** — PostgreSQL con Row Level Security (las políticas
   originales del template, ahora portables), capa de datos propia
   compatible con PostgREST, realtime vía SSE + LISTEN/NOTIFY.

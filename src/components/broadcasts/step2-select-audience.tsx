@@ -353,7 +353,7 @@ export function Step2SelectAudience({
               <select
                 value={audience.customField?.fieldId ?? ''}
                 onChange={(e) => updateCustomField({ fieldId: e.target.value })}
-                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="">Select field…</option>
                 {customFields.map((f) => (
@@ -369,7 +369,7 @@ export function Step2SelectAudience({
                     operator: e.target.value as CustomFieldOperator,
                   })
                 }
-                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 {OPERATOR_OPTIONS.map((op) => (
                   <option key={op.value} value={op.value}>
@@ -382,7 +382,7 @@ export function Step2SelectAudience({
                 value={audience.customField?.value ?? ''}
                 onChange={(e) => updateCustomField({ value: e.target.value })}
                 placeholder="Value"
-                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-9 rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
               />
             </div>
           )}

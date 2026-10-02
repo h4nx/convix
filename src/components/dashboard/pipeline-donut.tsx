@@ -41,7 +41,7 @@ export function PipelineDonut({ data, loading, currency }: PipelineDonutProps) {
               {data.stages.map((s) => (
                 <li key={s.id} className="flex items-center gap-3 text-xs">
                   <span
-                    className="h-2.5 w-2.5 flex-shrink-0 rounded-full"
+                    className="h-2.5 w-2.5 shrink-0 rounded-full"
                     style={{ background: s.color }}
                     aria-hidden
                   />

@@ -272,7 +272,7 @@ export function DealForm({
               <select
                 value={contactId}
                 onChange={(e) => setContactId(e.target.value)}
-                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary focus:ring-1 focus:ring-primary"
               >
                 <option value="">Select a contact</option>
                 {contacts.map((c) => (
@@ -312,7 +312,7 @@ export function DealForm({
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary"
+                  className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary"
                 >
                   {CURRENCIES.map((c) => (
                     <option key={c.code} value={c.code}>
@@ -338,7 +338,7 @@ export function DealForm({
               <select
                 value={stageId}
                 onChange={(e) => setStageId(e.target.value)}
-                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary"
+                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary"
               >
                 {stages.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -353,7 +353,7 @@ export function DealForm({
               <select
                 value={assignedTo}
                 onChange={(e) => setAssignedTo(e.target.value)}
-                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-none focus:border-primary"
+                className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary"
               >
                 <option value="">Unassigned</option>
                 {profiles.map((p) => (
@@ -453,7 +453,7 @@ export function DealForm({
                       type="button"
                       onClick={() => setConfirmDelete(false)}
                       disabled={deleting}
-                      className="rounded px-2 py-1 text-muted-foreground hover:bg-muted"
+                      className="rounded-sm px-2 py-1 text-muted-foreground hover:bg-muted"
                     >
                       Cancel
                     </button>
@@ -461,7 +461,7 @@ export function DealForm({
                       type="button"
                       onClick={handleDelete}
                       disabled={deleting}
-                      className="rounded bg-red-600 px-2 py-1 font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                      className="rounded-sm bg-red-600 px-2 py-1 font-medium text-white hover:bg-red-700 disabled:opacity-50"
                     >
                       {deleting ? "Deleting..." : "Confirm"}
                     </button>

@@ -126,7 +126,7 @@ const LegendItem = ({
   return (
     <li
       className={cx(
-        "group inline-flex flex-nowrap items-center gap-1.5 rounded-sm px-2 py-1 whitespace-nowrap transition",
+        "group inline-flex flex-nowrap items-center gap-1.5 rounded-xs px-2 py-1 whitespace-nowrap transition",
         hasOnValueChange
           ? "cursor-pointer hover:bg-muted"
           : "cursor-default",
@@ -192,7 +192,7 @@ const ScrollButton = ({ icon, onClick, disabled }: ScrollButtonProps) => {
     <button
       type="button"
       className={cx(
-        "group inline-flex size-5 items-center truncate rounded-sm transition",
+        "group inline-flex size-5 items-center truncate rounded-xs transition",
         disabled
           ? "cursor-not-allowed text-muted-foreground"
           : "cursor-pointer text-muted-foreground hover:bg-muted hover:text-foreground",

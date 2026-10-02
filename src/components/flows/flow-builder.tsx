@@ -427,7 +427,7 @@ function NodeCard({
             >
               {meta.label}
             </span>
-            <code className="bg-muted text-muted-foreground rounded px-1.5 py-0.5 text-[10px]">
+            <code className="bg-muted text-muted-foreground rounded-sm px-1.5 py-0.5 text-[10px]">
               {node.node_key}
             </code>
             {isEntry && (

@@ -70,7 +70,7 @@ interface FunnelStep {
 }
 
 /**
- * Pure-CSS funnel chart: decreasing-width rounded bars.
+ * Pure-CSS funnel chart: decreasing-width rounded-sm bars.
  * Width is relative to the largest step (typically Sent) so we
  * always render a full bar at the top and proportional tails.
  */

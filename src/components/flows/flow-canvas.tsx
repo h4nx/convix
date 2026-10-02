@@ -194,7 +194,7 @@ function FlowNodeCard({ data, selected }: NodeProps) {
           {meta.label}
         </span>
         {isEntry && (
-          <span className="border-border text-muted-foreground ml-auto rounded border px-1.5 py-0.5 text-[8.5px] font-bold tracking-[0.1em] uppercase">
+          <span className="border-border text-muted-foreground ml-auto rounded-sm border px-1.5 py-0.5 text-[8.5px] font-bold tracking-[0.1em] uppercase">
             Entry
           </span>
         )}
@@ -213,7 +213,7 @@ function FlowNodeCard({ data, selected }: NodeProps) {
           {slots.map((slot) => (
             <div
               key={slot.id}
-              className="text-muted-foreground relative flex items-center justify-between gap-2 rounded px-1 py-0.5 text-[11px]"
+              className="text-muted-foreground relative flex items-center justify-between gap-2 rounded-sm px-1 py-0.5 text-[11px]"
             >
               <span className="truncate" title={slot.label}>
                 {slot.label}
@@ -630,7 +630,7 @@ function NodeEditSheet({
             <SheetTitle className="flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase">
               <span style={{ color: c.text }}>{meta.label}</span>
               {isEntry && (
-                <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-emerald-300 uppercase">
+                <span className="rounded-sm bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-emerald-300 uppercase">
                   Entry
                 </span>
               )}
@@ -639,7 +639,7 @@ function NodeEditSheet({
               {meta.blurb}
             </SheetDescription>
           </div>
-          <code className="bg-muted text-muted-foreground shrink-0 rounded px-1.5 py-0.5 font-mono text-[10px]">
+          <code className="bg-muted text-muted-foreground shrink-0 rounded-sm px-1.5 py-0.5 font-mono text-[10px]">
             {node.node_key}
           </code>
         </SheetHeader>

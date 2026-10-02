@@ -829,12 +829,12 @@ export function MessageThread({
               type="button"
               onClick={onBack}
               aria-label="Back to conversations"
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:hidden"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:hidden"
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
           )}
-          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-muted text-sm font-medium text-foreground">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-medium text-foreground">
             {displayName.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">

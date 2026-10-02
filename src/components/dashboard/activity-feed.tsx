@@ -95,7 +95,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
                 <div className="flex items-center gap-3 px-5 py-2.5">
                   <span
                     className={cn(
-                      'flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full',
+                      'flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
                       theme.badge,
                     )}
                   >
@@ -104,7 +104,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
                   <span className="min-w-0 flex-1 truncate text-sm text-foreground">
                     {it.text}
                   </span>
-                  <span className="flex-shrink-0 text-xs text-muted-foreground tabular-nums">
+                  <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                     {relativeTime(it.at, t)}
                   </span>
                 </div>

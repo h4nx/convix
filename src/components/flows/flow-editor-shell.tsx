@@ -9,7 +9,7 @@
  *   - A segmented Canvas / List control on the left of the mode row.
  *   - A node-type legend on the right so the canvas's per-type colors
  *     are decodable at a glance.
- *   - The active view is mounted inside a rounded "stage" that owns its
+ *   - The active view is mounted inside a rounded-sm "stage" that owns its
  *     own scroll/overflow, so the canvas can fill available height and
  *     the list scrolls internally.
  *
@@ -197,7 +197,7 @@ function SegButton({
       className={cn(
         "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-[12.5px] font-medium transition-colors",
         active
-          ? "bg-card text-foreground shadow-sm"
+          ? "bg-card text-foreground shadow-xs"
           : "text-muted-foreground hover:text-foreground",
       )}
     >
