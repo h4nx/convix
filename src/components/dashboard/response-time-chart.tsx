@@ -1,6 +1,4 @@
-"use client"
-
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'use-intl'
 import { Clock } from 'lucide-react'
 import type { ResponseTimeSummary } from '@/lib/dashboard/types'
 import { BarChart } from '@/components/tremor/bar-chart'

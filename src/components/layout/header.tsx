@@ -1,7 +1,4 @@
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { LogOut, Menu, Settings as SettingsIcon, User } from "lucide-react";
 import {
@@ -43,7 +40,7 @@ interface HeaderProps {
 }
 
 export function Header({ onOpenSidebar }: HeaderProps) {
-  const pathname = usePathname();
+  const { pathname } = useLocation();
   const { profile, signOut } = useAuth();
   const title = getPageTitle(pathname);
 
@@ -107,7 +104,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           <DropdownMenuItem
             render={
               <Link
-                href="/settings?tab=profile"
+                to="/settings?tab=profile"
                 className="text-popover-foreground focus:bg-accent focus:text-accent-foreground"
               />
             }
@@ -118,7 +115,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
           <DropdownMenuItem
             render={
               <Link
-                href="/settings?tab=whatsapp"
+                to="/settings?tab=whatsapp"
                 className="text-popover-foreground focus:bg-accent focus:text-accent-foreground"
               />
             }

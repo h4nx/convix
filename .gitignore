@@ -10,11 +10,14 @@
 !.yarn/releases
 !.yarn/versions
 
+graphify-out
+
 # testing
 /coverage
 
-# next.js
-/.next/
+# build
+/dist/
+/dist-server/
 /out/
 
 # production
@@ -41,7 +44,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 # convix — storage local de archivos (driver "local")
 /data/

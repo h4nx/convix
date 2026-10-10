@@ -1,5 +1,3 @@
-"use client";
-
 import {
   useState,
   useRef,
@@ -661,7 +659,6 @@ function MediaDraftPreview({
       <div className="flex items-start gap-3">
         <div className="min-w-0 flex-1">
           {draft.kind === "image" && (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={draft.mediaUrl}
               alt={draft.filename}

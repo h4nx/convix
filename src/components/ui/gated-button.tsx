@@ -1,5 +1,3 @@
-"use client";
-
 // ============================================================
 // GatedButton — Button + role-gated "Read-only" tooltip helper.
 //

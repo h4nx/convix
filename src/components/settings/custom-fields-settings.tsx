@@ -1,5 +1,3 @@
-'use client';
-
 import { Shield, SlidersHorizontal } from 'lucide-react';
 
 import {

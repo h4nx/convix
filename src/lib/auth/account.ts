@@ -25,7 +25,7 @@
 //   }
 // ============================================================
 
-import { NextResponse } from "next/server";
+import { NextResponse } from "@server/shim/next-server";
 import type { SupabaseClient } from "@/lib/db/compat";
 
 import { createClient } from "@/lib/supabase/server";

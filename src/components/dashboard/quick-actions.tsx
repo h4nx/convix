@@ -1,7 +1,5 @@
-"use client"
-
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
+import { Link } from "react-router-dom";
+import { useTranslations } from 'use-intl'
 import { UserPlus, Briefcase, Radio, Zap } from 'lucide-react'
 import type { ComponentType } from 'react'
 
@@ -32,7 +30,7 @@ export function QuickActions() {
         return (
           <Link
             key={a.href}
-            href={a.href}
+            to={a.href}
             className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition-colors hover:border-border hover:bg-muted/60"
           >
             <div className={`flex h-9 w-9 items-center justify-center rounded-lg bg-muted ${a.tint}`}>

@@ -5,16 +5,16 @@
 #   docker compose up -d db minio      # + storage S3-compatible
 #   docker compose --profile full up   # stack completo con la app
 #
-# La app también corre fuera de Docker (npm run dev / next start):
+# La app también corre fuera de Docker (npm run dev / npm start):
 # solo necesita DATABASE_URL.
 #
-# Mismo nombre de proyecto "convix-dev" que docker-compose.local.yml (que ya
-# lo fija vía -p convix-dev en CLAUDE.md) — los servicios base (db/minio/app)
+# Mismo nombre de proyecto "hme-convix-dev" que docker-compose.local.yml (que ya
+# lo fija vía -p hme-convix-dev en CLAUDE.md) — los servicios base (db/minio/app)
 # se llaman igual en ambos archivos a propósito, así que comparten el mismo
 # stack en vez de crear un Postgres/MinIO duplicado por separado.
 # ============================================================
 
-name: convix-dev
+name: hme-convix-dev
 
 services:
   db:
@@ -55,7 +55,11 @@ services:
 
   app:
     profiles: ['full']
-    build: .
+    build:
+      context: .
+      args:
+        # Idioma de la UI: se compila en el bundle (Vite), no se lee en runtime.
+        VITE_APP_LOCALE: ${VITE_APP_LOCALE:-en}
     depends_on:
       db:
         condition: service_healthy
@@ -63,7 +67,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db:5432/convix
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:?generar con node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"}
       META_APP_SECRET: ${META_APP_SECRET:?Meta App Secret requerido}
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
       STORAGE_DRIVER: ${STORAGE_DRIVER:-local}
       S3_ENDPOINT: ${S3_ENDPOINT:-http://minio:9000}
       S3_BUCKET: ${S3_BUCKET:-convix}

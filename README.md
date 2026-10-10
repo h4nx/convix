@@ -8,7 +8,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-violet.svg)](./LICENSE)
 [![CI](https://github.com/h4nx/convix/actions/workflows/ci.yml/badge.svg)](https://github.com/h4nx/convix/actions/workflows/ci.yml)
-[![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)](https://nextjs.org)
+[![Vite 6](https://img.shields.io/badge/Vite-6-646CFF?logo=vite&logoColor=white)](https://vite.dev)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org)
 
 **Convix** es un fork del template
@@ -103,7 +103,7 @@ una instancia con los nombres `wacrm` viejos — repasa
 
 ## Stack
 
-- **App** — Next.js 16.3 (App Router), React 19.2, TypeScript 6, Tailwind v4 — mismo estándar frontend que el resto del ecosistema H&M.
+- **App** — SPA Vite 6 + React Router 7, React 19.2, TypeScript 6, Tailwind v4, más un servidor Node (Hono) para la API; un solo proceso sirve ambos en producción. Mismo estándar frontend (Vite) que el resto del ecosistema H&M.
 - **Datos** — PostgreSQL con Row Level Security (las políticas
   originales del template, ahora portables), capa de datos propia
   compatible con PostgREST, realtime vía SSE + LISTEN/NOTIFY.

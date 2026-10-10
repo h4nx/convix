@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * View-switcher + chrome for the flow editor.
  *

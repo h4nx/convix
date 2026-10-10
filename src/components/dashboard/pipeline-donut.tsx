@@ -1,6 +1,4 @@
-"use client"
-
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'use-intl'
 import { GitBranch } from 'lucide-react'
 import type { PipelineDonutData } from '@/lib/dashboard/types'
 import { formatCurrencyShort } from '@/lib/currency'

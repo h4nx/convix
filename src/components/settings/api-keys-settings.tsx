@@ -1,5 +1,3 @@
-'use client';
-
 // ============================================================
 // ApiKeysSettings — Settings → API keys
 //

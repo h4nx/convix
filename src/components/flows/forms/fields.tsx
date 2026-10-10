@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Reusable field components shared across every per-node form.
  *

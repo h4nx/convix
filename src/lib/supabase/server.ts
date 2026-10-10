@@ -10,7 +10,7 @@
  *   webhook, motor de automatizaciones/flows y el auth path de la
  *   API pública.
  */
-import { cookies } from 'next/headers';
+import { cookies } from '@server/shim/next-headers';
 import { DbClient } from '@/lib/db/builder';
 import { executeDescriptor } from '@/lib/db/execute';
 import type { Descriptor, DbResult } from '@/lib/db/types';

@@ -1,12 +1,12 @@
 # ============================================================
-# Convix — despliegue LOCAL completo (proyecto: convix-dev)
+# Convix — despliegue LOCAL completo (proyecto: hme-convix-dev)
 #
-#   docker compose -p convix-dev -f docker-compose.local.yml \
+#   docker compose -p hme-convix-dev -f docker-compose.local.yml \
 #     --env-file .env.convix-dev up -d --build
 #
 # Puertos en el host (el resto de servicios son solo internos):
 #   11000 → app        http://localhost:11000
-#   11001 → Mailpit UI http://localhost:11001  (emails de reseteo)
+#   18000 → Mailpit UI http://localhost:18000  (compartido; emails de reseteo)
 #   11002 → MinIO UI   http://localhost:11002  (minioadmin/minioadmin)
 #
 # Secretos en .env.convix-dev (gitignored). Este archivo es para el
@@ -75,17 +75,16 @@ services:
   # Mailpit compartido por todo el ecosistema H&M Business — vive en
   # ~/Developer/hmbusiness/Mailpit (docker compose up -d ahí, una sola vez).
   # UI en http://localhost:18000. Conectarlo a esta red una sola vez:
-  #   docker network connect convix-dev_default mailpit --alias mailpit
+  #   docker network connect hme-convix-dev_default mailpit --alias mailpit
   # SMTP_HOST=mailpit abajo ya no necesita cambios.
 
   app:
     build:
       context: .
       args:
-        # /login se prerenderiza como HTML estático en build time — ver el
-        # comentario en el Dockerfile. Sin esto, el build-arg default "en"
-        # deja el login en inglés sin importar la env var de runtime abajo.
-        NEXT_PUBLIC_APP_LOCALE: es
+        # El idioma de la UI se compila en el bundle (Vite) — ver el comentario en
+        # el Dockerfile. Es un build-arg, no una env var de runtime.
+        VITE_APP_LOCALE: es
     depends_on:
       db:
         condition: service_healthy
@@ -94,18 +93,13 @@ services:
     environment:
       # Permite que getOidcConfig() acepte un issuer OIDC http:// — el
       # Keycloak de este ecosistema en dev no tiene TLS. NODE_ENV no sirve
-      # para esto: next build lo reemplaza por la constante "production" en
-      # tiempo de compilación, así que un override en runtime nunca lo vería.
+      # para esto: el servidor corre siempre con NODE_ENV=production.
       # En un deploy real el issuer sería https:// y esta var no haría falta.
       OIDC_ALLOW_INSECURE_HTTP: 'true'
       DATABASE_URL: postgres://postgres:postgres@db:5432/convix
       ENCRYPTION_KEY: ${ENCRYPTION_KEY:?definir en .env.convix-dev}
       META_APP_SECRET: ${META_APP_SECRET:?definir en .env.convix-dev}
-      NEXT_PUBLIC_SITE_URL: http://localhost:11000
-      # src/i18n/request.ts también la lee en runtime para rutas que no
-      # quedan prerenderizadas como HTML estático — el build-arg de arriba
-      # cubre /login y compañía, esto cubre todo lo demás.
-      NEXT_PUBLIC_APP_LOCALE: es
+      SITE_URL: http://localhost:11000
       STORAGE_DRIVER: s3
       S3_ENDPOINT: http://minio:9000
       S3_REGION: us-east-1

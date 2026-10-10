@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo, useState } from "react";
 import {
   DndContext,
@@ -143,7 +141,7 @@ export function PipelineBoard({
         ) : null}
       </DragOverlay>
 
-      <style jsx>{`
+      <style>{`
         .pipeline-scroll {
           scroll-behavior: smooth;
         }

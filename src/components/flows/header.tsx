@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Editor toolbar — flow name / description, status chip, dirty
  * indicator, and the action buttons (Save, Activate/Pause, Delete,
@@ -22,7 +20,7 @@
  * /flows/[id]/runs) — those don't belong in the hook.
  */
 
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   CircleDot,
@@ -43,7 +41,7 @@ import {
 } from "./flow-editor-state";
 
 export function EditorHeader() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const {
     flow,
     state,
@@ -63,7 +61,7 @@ export function EditorHeader() {
         {/* ---- left: back · icon · name · status · edited ---- */}
         <button
           type="button"
-          onClick={() => router.push("/flows")}
+          onClick={() => navigate("/flows")}
           title="Back to Flows"
           aria-label="Back to Flows"
           className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -98,7 +96,7 @@ export function EditorHeader() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push(`/flows/${flow.id}/runs`)}
+            onClick={() => navigate(`/flows/${flow.id}/runs`)}
           >
             <History className="h-3.5 w-3.5" />
             Runs

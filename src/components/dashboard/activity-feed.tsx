@@ -1,8 +1,6 @@
-"use client"
-
-import Link from 'next/link'
+import { Link } from "react-router-dom";
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'use-intl'
 import {
   MessageSquare,
   UserPlus,
@@ -60,7 +58,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
       <header className="flex items-center justify-between border-b border-border px-5 py-4">
         <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
         <Link
-          href="/inbox"
+          to="/inbox"
           className="text-xs font-medium text-primary hover:text-primary/80"
         >
           {t('viewAll')} →
@@ -112,7 +110,7 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
               return (
                 <li key={it.id} className={cn(stripe, 'transition-colors hover:bg-muted/40')}>
                   {it.href ? (
-                    <Link href={it.href} className="block">
+                    <Link to={it.href} className="block">
                       {row}
                     </Link>
                   ) : (
@@ -165,5 +163,5 @@ function relativeTime(iso: string, t: ReturnType<typeof useTranslations>): strin
   if (diffSec < 3600) return t('minutesAgo', { count: Math.floor(diffSec / 60) })
   if (diffSec < 86400) return t('hoursAgo', { count: Math.floor(diffSec / 3600) })
   if (diffSec < 2_592_000) return t('daysAgo', { count: Math.floor(diffSec / 86400) })
-  return new Date(iso).toLocaleDateString(process.env.NEXT_PUBLIC_APP_LOCALE || 'en')
+  return new Date(iso).toLocaleDateString(import.meta.env.VITE_APP_LOCALE || 'en')
 }

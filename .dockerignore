@@ -1,6 +1,7 @@
 .git
 .github
-.next
+dist
+dist-server
 node_modules
 data
 db/.DS_Store

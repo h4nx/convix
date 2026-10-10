@@ -1,5 +1,3 @@
-'use client';
-
 import { useCan } from '@/hooks/use-can';
 
 import { CustomFieldsSettings } from './custom-fields-settings';

@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useMemo, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Contact, CustomField, MessageTemplate } from '@/types';
@@ -274,7 +272,6 @@ export function Step3Personalize({
           {mediaHeaderType === 'image' &&
             headerMediaError === null &&
             headerMediaUrl.trim() && (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={headerMediaUrl.trim()}
                 alt="Header preview"

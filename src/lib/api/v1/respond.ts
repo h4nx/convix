@@ -14,7 +14,7 @@
 // is versioned and shouldn't inherit internal wording changes.
 // ============================================================
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from '@server/shim/next-server';
 import type { RateLimitResult } from '@/lib/rate-limit';
 
 export type ApiErrorCode =

@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Per-node configuration form, dispatched by node_type.
  *

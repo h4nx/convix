@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Validation panel — surfaces every error and warning from
  * `validateFlowForActivation`. Lives once at the bottom of the

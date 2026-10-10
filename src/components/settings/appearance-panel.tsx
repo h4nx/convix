@@ -1,5 +1,3 @@
-"use client";
-
 import { Check, Palette } from "lucide-react";
 
 import { useTheme } from "@/hooks/use-theme";

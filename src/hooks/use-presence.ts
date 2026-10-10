@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback, useEffect, useState } from "react";
 import type { RealtimeChannel } from "@/lib/db/compat";
 

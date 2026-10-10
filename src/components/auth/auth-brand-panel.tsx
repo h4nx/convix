@@ -1,14 +1,17 @@
 import { GitBranch, MessageSquare, Users, Zap } from "lucide-react";
 import { ConvixLogo } from "@/components/ui/convix-logo";
+import { AuthBrandArt } from "./auth-brand-art";
+
+const ECOSYSTEM = ["Orbix", "Xentry", "Partex", "Sealix", "Vaultex"];
 
 // Same four pillars as the sidebar nav (inbox / contacts / pipelines /
 // automations) — the auth panel's pitch should never drift from what
 // the product actually does once you're inside it.
 const FEATURES = [
-  { icon: MessageSquare, text: "Shared team inbox for every WhatsApp number" },
-  { icon: Users, text: "Contacts and CRM built around conversations" },
-  { icon: GitBranch, text: "Sales pipelines with drag-and-drop stages" },
-  { icon: Zap, text: "No-code automations and broadcast campaigns" },
+  { icon: MessageSquare, text: "Bandeja compartida para cada número de WhatsApp" },
+  { icon: Users, text: "Contactos y CRM construidos alrededor de la conversación" },
+  { icon: GitBranch, text: "Pipelines de venta con etapas arrastrables" },
+  { icon: Zap, text: "Automatizaciones sin código y campañas de difusión" },
 ];
 
 // Persistent dark brand panel for the whole auth flow (login, signup,
@@ -57,6 +60,11 @@ export function AuthBrandPanel() {
       <div className="pointer-events-none absolute -top-32 -left-24 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-16 -bottom-24 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
 
+      {/* Ilustración: contactos + conversaciones + broadcast + pipeline */}
+      <AuthBrandArt />
+      {/* Velo a la izquierda para que el copy siga siendo legible sobre el arte */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[58%] bg-gradient-to-r from-auth-panel via-auth-panel/85 to-transparent" />
+
       {/* Logo */}
       <div className="relative flex items-center gap-4">
         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl border border-primary/30 bg-auth-panel-foreground/[0.04]">
@@ -75,15 +83,15 @@ export function AuthBrandPanel() {
       {/* Headline */}
       <div className="relative py-10">
         <div className="mb-4 font-mono text-xs tracking-[0.16em] text-primary uppercase">
-          Inbox &middot; Pipelines &middot; Automations
+          Contactos &middot; Conversaciones &middot; Marketing
         </div>
         <h1 className="max-w-md text-4xl leading-tight font-bold tracking-tight text-auth-panel-foreground">
-          All your WhatsApp,{" "}
-          <span className="text-primary">one shared inbox.</span>
+          Todo tu WhatsApp,{" "}
+          <span className="text-primary">en una sola bandeja.</span>
         </h1>
         <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-auth-panel-muted">
-          Contacts, sales pipelines, broadcasts and no-code automations —
-          built for teams who sell and support over WhatsApp.
+          Contactos, conversaciones, campañas y automatizaciones en un solo lugar,
+          para equipos que venden, atienden y hacen marketing por WhatsApp.
         </p>
       </div>
 
@@ -102,12 +110,23 @@ export function AuthBrandPanel() {
       </div>
 
       {/* Ecosystem affiliation */}
-      <p className="relative mt-10 font-mono text-[11px] tracking-wide text-auth-panel-muted">
-        Parte del ecosistema{" "}
-        <span className="font-medium text-auth-panel-foreground/80">
-          H&amp;M Business
+      <div className="relative mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-[11px] tracking-wide text-auth-panel-muted">
+        <span className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md border border-primary/40 bg-primary/15 text-[9px] font-bold text-primary">
+            H&amp;M
+          </span>
+          Parte del ecosistema{" "}
+          <span className="font-medium text-auth-panel-foreground/80">
+            H&amp;M Business
+          </span>
         </span>
-      </p>
+        <span className="h-3 w-px bg-auth-panel-border" />
+        {ECOSYSTEM.map((name) => (
+          <span key={name} className="text-auth-panel-muted/80">
+            {name}
+          </span>
+        ))}
+      </div>
     </aside>
   );
 }

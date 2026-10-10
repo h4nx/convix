@@ -11,6 +11,12 @@ Versions follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Pre-1.0, `MINOR` bumps cover new modules; `PATCH` bumps cover bug fixes
 and polish.
 
+## [Unreleased]
+
+### Changed
+- **Migración de Next.js a Vite**: el frontend es ahora una SPA Vite 6 + React Router 7 (`src/pages`), y los route handlers pasaron a `server/routes` sobre un servidor Node/Hono con un shim de `NextRequest`/`NextResponse`/`cookies()`. Un solo proceso sirve la API y `dist/`. `next-intl` → `use-intl`; `proxy.ts` → `server/guards.ts` + guards en el cliente.
+- Variables: `NEXT_PUBLIC_SITE_URL` → `SITE_URL` (la antigua sigue aceptándose); `NEXT_PUBLIC_APP_LOCALE` → `VITE_APP_LOCALE` (se fija al compilar).
+
 ## [0.9.0] — 2026-07-12 · Convix
 
 The product now has a name: **Convix** (following the H&M Business

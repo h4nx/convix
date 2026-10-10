@@ -1,5 +1,3 @@
-"use client"
-
 import {
   createContext,
   useContext,
@@ -7,7 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react"
-import { useRouter } from "next/navigation"
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner"
 import {
   ArrowLeft,
@@ -587,7 +585,7 @@ function SendTemplateFields({
 // ------------------------------------------------------------
 
 export function AutomationBuilder({ initial }: { initial: BuilderInitial }) {
-  const router = useRouter()
+  const navigate = useNavigate()
   const isEditing = !!initial.id
   const [state, setState] = useState<BuilderInitial>(initial)
   const [saving, setSaving] = useState(false)
@@ -664,7 +662,7 @@ export function AutomationBuilder({ initial }: { initial: BuilderInitial }) {
       }
       toast.success(isEditing ? "Automation saved" : "Automation created")
       if (!isEditing && body?.automation?.id) {
-        router.replace(`/automations/${body.automation.id}/edit`)
+        navigate(`/automations/${body.automation.id}/edit`, { replace: true })
       }
     } finally {
       setSaving(false)
@@ -679,7 +677,7 @@ export function AutomationBuilder({ initial }: { initial: BuilderInitial }) {
       <header className="flex shrink-0 items-center gap-2 border-b border-border bg-card/80 px-3 py-3 sm:gap-3 sm:px-4">
         <button
           type="button"
-          onClick={() => router.push("/automations")}
+          onClick={() => navigate("/automations")}
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Back to automations"
         >

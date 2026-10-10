@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * Canvas / mind-map view of a flow. Editable, in parity with the
  * list view for everything except the trigger / header / fallback

@@ -1,5 +1,4 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Stack
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Convix is a Vite 6 SPA (React 19, React Router 7, Tailwind 4) plus a Node/Hono API server in
+`server/`. There is no Next.js. See `CLAUDE.md` for the architecture and commands.

@@ -1,5 +1,3 @@
-'use client';
-
 /**
  * Linear-list flow editor.
  *

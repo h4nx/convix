@@ -1,7 +1,5 @@
-"use client"
-
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations } from 'use-intl'
 import { MessageSquare } from 'lucide-react'
 import type { ConversationsSeriesPoint } from '@/lib/dashboard/types'
 import { EmptyState } from './empty-state'
@@ -316,7 +314,7 @@ function LegendDot({ color, label }: { color: string; label: string }) {
 // Formats dates in the app's configured locale (not the visitor's
 // browser locale) so month/weekday names stay consistent regardless
 // of who's viewing — see src/i18n/request.ts for the same source.
-const APP_LOCALE = process.env.NEXT_PUBLIC_APP_LOCALE || 'en'
+const APP_LOCALE = import.meta.env.VITE_APP_LOCALE || 'en'
 
 function shortDayLabel(key: string): string {
   // key is YYYY-MM-DD; return "Apr 17"-style. Using Date with an

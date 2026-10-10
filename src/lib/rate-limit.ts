@@ -20,7 +20,7 @@
  * runtimes that don't keep timers alive across requests.
  */
 
-import { NextResponse } from 'next/server';
+import { NextResponse } from '@server/shim/next-server';
 
 export interface RateLimitOptions {
   /** Max requests allowed in `windowMs`. */

@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Single source of truth for the flow editor's state.
  *
@@ -42,7 +40,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import {
@@ -236,7 +234,7 @@ export function FlowEditorProvider({
   initialNodes,
   children,
 }: ProviderProps) {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [state, setStateRaw] = useState<BuilderState>(() => ({
     name: initialFlow.name,
@@ -409,12 +407,12 @@ export function FlowEditorProvider({
         method: "DELETE",
       });
       if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
-      router.push("/flows");
+      navigate("/flows");
     } catch (err) {
       const msg = err instanceof Error ? err.message : "Delete failed";
       toast.error(msg);
     }
-  }, [initialFlow.id, router, state.name]);
+  }, [initialFlow.id, navigate, state.name]);
 
   // ---- Node mutations ----
   const updateNode = useCallback(
