@@ -69,12 +69,12 @@ export async function engineSendText(
     .eq('account_id', args.accountId)
     .maybeSingle()
   if (contactErr || !contact?.phone) {
-    throw new Error('contact not found for this account')
+    throw new Error('contacto no encontrado para esta cuenta')
   }
 
   const sanitized = sanitizePhoneForMeta(contact.phone)
   if (!isValidE164(sanitized)) {
-    throw new Error(`contact phone invalid: ${contact.phone}`)
+    throw new Error(`teléfono del contacto no válido: ${contact.phone}`)
   }
 
   const { data: config, error: configErr } = await db
@@ -83,7 +83,7 @@ export async function engineSendText(
     .eq('account_id', args.accountId)
     .single()
   if (configErr || !config) {
-    throw new Error('WhatsApp not configured for this account')
+    throw new Error('WhatsApp no está configurado para esta cuenta')
   }
 
   const accessToken = decrypt(config.access_token)
@@ -129,7 +129,7 @@ export async function engineSendText(
     status: 'sent',
   })
   if (msgErr) {
-    throw new Error(`sent to Meta but DB insert failed: ${msgErr.message}`)
+    throw new Error(`enviado a Meta pero falló la inserción en la base de datos: ${msgErr.message}`)
   }
 
   await db
@@ -178,12 +178,12 @@ export async function engineSendMedia(
     .eq('account_id', args.accountId)
     .maybeSingle()
   if (contactErr || !contact?.phone) {
-    throw new Error('contact not found for this account')
+    throw new Error('contacto no encontrado para esta cuenta')
   }
 
   const sanitized = sanitizePhoneForMeta(contact.phone)
   if (!isValidE164(sanitized)) {
-    throw new Error(`contact phone invalid: ${contact.phone}`)
+    throw new Error(`teléfono del contacto no válido: ${contact.phone}`)
   }
 
   const { data: config, error: configErr } = await db
@@ -192,7 +192,7 @@ export async function engineSendMedia(
     .eq('account_id', args.accountId)
     .single()
   if (configErr || !config) {
-    throw new Error('WhatsApp not configured for this account')
+    throw new Error('WhatsApp no está configurado para esta cuenta')
   }
 
   const accessToken = decrypt(config.access_token)
@@ -246,7 +246,7 @@ export async function engineSendMedia(
     status: 'sent',
   })
   if (msgErr) {
-    throw new Error(`sent to Meta but DB insert failed: ${msgErr.message}`)
+    throw new Error(`enviado a Meta pero falló la inserción en la base de datos: ${msgErr.message}`)
   }
 
   await db
@@ -330,12 +330,12 @@ async function sendInteractiveViaMeta(
     .eq('account_id', input.accountId)
     .maybeSingle()
   if (contactErr || !contact?.phone) {
-    throw new Error('contact not found for this account')
+    throw new Error('contacto no encontrado para esta cuenta')
   }
 
   const sanitized = sanitizePhoneForMeta(contact.phone)
   if (!isValidE164(sanitized)) {
-    throw new Error(`contact phone invalid: ${contact.phone}`)
+    throw new Error(`teléfono del contacto no válido: ${contact.phone}`)
   }
 
   const { data: config, error: configErr } = await db
@@ -344,7 +344,7 @@ async function sendInteractiveViaMeta(
     .eq('account_id', input.accountId)
     .single()
   if (configErr || !config) {
-    throw new Error('WhatsApp not configured for this account')
+    throw new Error('WhatsApp no está configurado para esta cuenta')
   }
 
   const accessToken = decrypt(config.access_token)
@@ -418,7 +418,7 @@ async function sendInteractiveViaMeta(
     status: 'sent',
   })
   if (msgErr) {
-    throw new Error(`sent to Meta but DB insert failed: ${msgErr.message}`)
+    throw new Error(`enviado a Meta pero falló la inserción en la base de datos: ${msgErr.message}`)
   }
 
   await db

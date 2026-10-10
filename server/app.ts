@@ -60,7 +60,7 @@ export function createApp(options: { staticDir?: string } = {}) {
     }
   }
 
-  app.all('/api/*', (c) => c.json({ error: 'Not found' }, 404));
+  app.all('/api/*', (c) => c.json({ error: 'No encontrado' }, 404));
 
   // Frontend (Vite build): estáticos con caché larga para /assets, y fallback SPA a index.html.
   const staticDir = options.staticDir;

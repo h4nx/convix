@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
     // Per-user broadcast budget. Note: this limits how often a user
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
     const accountId = profile?.account_id as string | undefined
     if (!accountId) {
       return NextResponse.json(
-        { error: 'Your profile is not linked to an account.' },
+        { error: 'Tu perfil no está vinculado a una cuenta.' },
         { status: 403 },
       )
     }
@@ -121,7 +121,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            'Provide either `recipients` (preferred) or `phone_numbers` — must be a non-empty array',
+            'Indica `recipients` (preferido) o `phone_numbers` — debe ser una lista no vacía',
         },
         { status: 400 }
       )
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
 
     if (!template_name) {
       return NextResponse.json(
-        { error: 'template_name is required' },
+        { error: 'template_name es obligatorio' },
         { status: 400 }
       )
     }
@@ -144,7 +144,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            'WhatsApp not configured. Please set up your WhatsApp integration first.',
+            'WhatsApp no está configurado. Primero configura tu integración de WhatsApp.',
         },
         { status: 400 }
       )
@@ -168,7 +168,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            'Template row is malformed locally — run "Sync from Meta" in Settings to repair it before broadcasting.',
+            'La fila de la plantilla está mal formada localmente — ejecuta «Sincronizar desde Meta» en Ajustes para repararla antes de enviar la difusión.',
         },
         { status: 500 },
       )
@@ -186,7 +186,7 @@ export async function POST(request: Request) {
         results.push({
           phone: recipient.phone,
           status: 'failed',
-          error: 'Invalid phone number format',
+          error: 'Formato de número de teléfono no válido',
         })
         failedCount++
         continue
@@ -215,7 +215,7 @@ export async function POST(request: Request) {
           break
         } catch (error) {
           const errorMessage =
-            error instanceof Error ? error.message : 'Unknown error'
+            error instanceof Error ? error.message : 'Error desconocido'
           if (!isRecipientNotAllowedError(errorMessage)) {
             lastError = errorMessage
             break
@@ -234,13 +234,13 @@ export async function POST(request: Request) {
         sentCount++
       } else {
         console.error(
-          `Failed to send broadcast to ${recipient.phone}:`,
+          `No se pudo enviar la difusión a ${recipient.phone}:`,
           lastError
         )
         results.push({
           phone: recipient.phone,
           status: 'failed',
-          error: lastError || 'Unknown error',
+          error: lastError || 'Error desconocido',
         })
         failedCount++
       }
@@ -256,7 +256,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Error in WhatsApp broadcast POST:', error)
     return NextResponse.json(
-      { error: 'Failed to process broadcast' },
+      { error: 'No se pudo procesar la difusión' },
       { status: 500 }
     )
   }

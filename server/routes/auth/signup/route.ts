@@ -23,13 +23,13 @@ export async function POST(request: NextRequest) {
 
   if (!email || !EMAIL_RE.test(email)) {
     return NextResponse.json(
-      { error: 'A valid email is required' },
+      { error: 'Se requiere un correo válido' },
       { status: 400 }
     );
   }
   if (!password || password.length < 8) {
     return NextResponse.json(
-      { error: 'Password must be at least 8 characters' },
+      { error: 'La contraseña debe tener al menos 8 caracteres' },
       { status: 400 }
     );
   }
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 
   if (await findUserByEmail(email)) {
     return NextResponse.json(
-      { error: 'User already registered' },
+      { error: 'El usuario ya está registrado' },
       { status: 422 }
     );
   }

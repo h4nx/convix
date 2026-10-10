@@ -57,9 +57,6 @@ services:
     profiles: ['full']
     build:
       context: .
-      args:
-        # Idioma de la UI: se compila en el bundle (Vite), no se lee en runtime.
-        VITE_APP_LOCALE: ${VITE_APP_LOCALE:-en}
     depends_on:
       db:
         condition: service_healthy

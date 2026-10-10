@@ -36,11 +36,11 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
   const { bucket, path } = await params;
   const target = resolveObject(bucket, path);
   if (!target) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json({ error: 'No encontrado' }, { status: 404 });
   }
   const body = await getStorage().get(target.bucket, target.objectPath);
   if (!body) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json({ error: 'No encontrado' }, { status: 404 });
   }
   return new NextResponse(new Uint8Array(body), {
     headers: {
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   const target = resolveObject(bucket, path);
   if (!target) {
     return NextResponse.json(
-      { error: 'Invalid bucket or path' },
+      { error: 'Bucket o ruta no válidos' },
       { status: 400 }
     );
   }
@@ -64,13 +64,13 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   const cookieStore = await cookies();
   const user = await getSessionUser(cookieStore.get(SESSION_COOKIE)?.value);
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
 
   const firstSegment = target.objectPath.split('/')[0];
   if (target.bucket === 'avatars') {
     if (firstSegment !== user.id) {
-      return NextResponse.json({ error: 'Forbidden path' }, { status: 403 });
+      return NextResponse.json({ error: 'Ruta prohibida' }, { status: 403 });
     }
   } else {
     const { rows } = await getPool().query(
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       !canSendMessages(role) ||
       firstSegment !== `account-${profile.account_id}`
     ) {
-      return NextResponse.json({ error: 'Forbidden path' }, { status: 403 });
+      return NextResponse.json({ error: 'Ruta prohibida' }, { status: 403 });
     }
   }
 
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   const limit = BUCKETS[target.bucket].maxBytes;
   if (raw.byteLength === 0 || raw.byteLength > limit) {
     return NextResponse.json(
-      { error: `File must be between 1 byte and ${limit} bytes` },
+      { error: `El archivo debe pesar entre 1 byte y ${limit} bytes` },
       { status: 413 }
     );
   }

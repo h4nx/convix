@@ -51,7 +51,7 @@ export class ApiError extends Error {
 }
 
 /** 401 — no usable credential. */
-export function unauthorized(message = 'Missing or invalid API key'): ApiError {
+export function unauthorized(message = 'Clave de API ausente o no válida'): ApiError {
   return new ApiError('unauthorized', message, 401);
 }
 
@@ -70,7 +70,7 @@ export function rateLimited(result: RateLimitResult): ApiError {
   const retryAfter = Math.max(1, Math.ceil((result.reset - Date.now()) / 1000));
   return new ApiError(
     'rate_limited',
-    'Rate limit exceeded for this API key',
+    'Se excedió el límite de solicitudes de esta clave de API',
     429,
     {
       'Retry-After': String(retryAfter),
@@ -127,7 +127,7 @@ export function toApiErrorResponse(err: unknown): NextResponse {
   }
   console.error('[api/v1] uncategorized error:', err);
   return NextResponse.json(
-    { error: { code: 'internal', message: 'Internal server error' } },
+    { error: { code: 'internal', message: 'Error interno del servidor' } },
     { status: 500 }
   );
 }

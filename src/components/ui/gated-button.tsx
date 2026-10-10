@@ -31,7 +31,7 @@
 //
 //   <GatedButton
 //     canAct={canCreate}
-//     gateReason="create broadcasts"
+//     gateReason="crear difusiones"
 //     onClick={() => router.push("/broadcasts/new")}
 //   >
 //     <Plus className="h-4 w-4" /> New Broadcast
@@ -56,7 +56,7 @@ interface GatedButtonProps extends Omit<ComponentProps<typeof Button>, "title"> 
   /** Verb phrase that completes the sentence
    *  `"Read-only — your role can't <gateReason>"`. Provided
    *  per-call so each CTA can name what it does ("create flows",
-   *  "send messages", "add contacts"). */
+   *  "enviar mensajes", "add contacts"). */
   gateReason?: string;
   /** Optional fallback title for the non-gated case. */
   title?: string;
@@ -74,7 +74,7 @@ export function GatedButton({
 }: GatedButtonProps) {
   const effectivelyDisabled = disabled || !canAct;
   const tooltip = !canAct && gateReason
-    ? `Read-only — your role can't ${gateReason}`
+    ? `Solo lectura — tu rol no permite ${gateReason}`
     : title;
 
   return (

@@ -131,9 +131,9 @@ function groupMessagesByDate(messages: Message[]) {
 }
 
 const STATUS_OPTIONS: { label: string; value: ConversationStatus; color: string }[] = [
-  { label: "Open", value: "open", color: "text-primary" },
-  { label: "Pending", value: "pending", color: "text-amber-400" },
-  { label: "Closed", value: "closed", color: "text-muted-foreground" },
+  { label: "Abierto", value: "open", color: "text-primary" },
+  { label: "Pendiente", value: "pending", color: "text-amber-400" },
+  { label: "Cerrada", value: "closed", color: "text-muted-foreground" },
 ];
 
 /**
@@ -207,7 +207,7 @@ export function MessageThread({
       .then(({ data, error }) => {
         if (cancelled) return;
         if (error) {
-          console.error("Failed to fetch profiles:", error);
+          console.error("No se pudieron obtener los perfiles:", error);
           return;
         }
         setProfiles((data as Profile[]) ?? []);
@@ -226,13 +226,13 @@ export function MessageThread({
       .reverse()
       .find((m) => m.sender_type === "customer");
 
-    if (!lastCustomerMsg) return { expired: true, remaining: "No customer messages" };
+    if (!lastCustomerMsg) return { expired: true, remaining: "Sin mensajes del cliente" };
 
     const hoursSince = differenceInHours(new Date(), new Date(lastCustomerMsg.created_at));
     const expired = hoursSince >= 24;
 
     if (expired) {
-      return { expired: true, remaining: "Expired" };
+      return { expired: true, remaining: "Vencida" };
     }
 
     const hoursLeft = 24 - hoursSince;
@@ -281,7 +281,7 @@ export function MessageThread({
       if (cancelled) return;
 
       if (error) {
-        console.error("Failed to fetch messages:", error);
+        console.error("No se pudieron obtener los mensajes:", error);
       } else {
         onMessagesLoadedRef.current(data ?? []);
       }
@@ -317,7 +317,7 @@ export function MessageThread({
         .eq("conversation_id", conversationId);
       if (cancelled) return;
       if (error) {
-        console.error("Failed to fetch reactions:", error);
+        console.error("No se pudieron obtener las reacciones:", error);
         return;
       }
       setReactions((data as MessageReaction[]) ?? []);
@@ -424,7 +424,7 @@ export function MessageThread({
       .update({ unread_count: 0 })
       .eq("id", conversationId)
       .then(({ error }) => {
-        if (error) console.error("Failed to reset unread_count:", error);
+        if (error) console.error("No se pudo reiniciar el contador de no leídos:", error);
       });
   }, [conversationId, hasUnread]);
 
@@ -472,8 +472,8 @@ export function MessageThread({
 
         if (!res.ok) {
           const reason = payload?.error || `HTTP ${res.status}`;
-          console.error("Failed to send message:", reason);
-          toast.error(`Failed to send: ${reason}`);
+          console.error("No se pudo enviar el mensaje:", reason);
+          toast.error(`No se pudo enviar: ${reason}`);
           // Mark the optimistic bubble as failed so the user sees what happened
           onUpdateMessage(tempId, { status: "failed" });
           return;
@@ -484,9 +484,9 @@ export function MessageThread({
         // flip status to 'sent' so the UI stops showing "sending".
         onUpdateMessage(tempId, { status: "sent" });
       } catch (err) {
-        console.error("Failed to send message:", err);
-        const reason = err instanceof Error ? err.message : "network error";
-        toast.error(`Failed to send: ${reason}`);
+        console.error("No se pudo enviar el mensaje:", err);
+        const reason = err instanceof Error ? err.message : "error de red";
+        toast.error(`No se pudo enviar: ${reason}`);
         onUpdateMessage(tempId, { status: "failed" });
       }
     },
@@ -538,8 +538,8 @@ export function MessageThread({
 
         if (!res.ok) {
           const reason = data?.error || `HTTP ${res.status}`;
-          console.error("Failed to send media:", reason);
-          toast.error(`Failed to send: ${reason}`);
+          console.error("No se pudo enviar el archivo:", reason);
+          toast.error(`No se pudo enviar: ${reason}`);
           onUpdateMessage(tempId, { status: "failed" });
           // The upload never reached the recipient — GC the orphaned
           // object rather than leaving it in the public bucket forever.
@@ -549,9 +549,9 @@ export function MessageThread({
 
         onUpdateMessage(tempId, { status: "sent" });
       } catch (err) {
-        console.error("Failed to send media:", err);
-        const reason = err instanceof Error ? err.message : "network error";
-        toast.error(`Failed to send: ${reason}`);
+        console.error("No se pudo enviar el archivo:", err);
+        const reason = err instanceof Error ? err.message : "error de red";
+        toast.error(`No se pudo enviar: ${reason}`);
         onUpdateMessage(tempId, { status: "failed" });
         void deleteAccountMedia(CHAT_MEDIA_BUCKET, payload.path).catch(() => {});
       }
@@ -631,17 +631,17 @@ export function MessageThread({
 
         if (!res.ok) {
           const reason = payload?.error || `HTTP ${res.status}`;
-          console.error("Failed to send template:", reason);
-          toast.error(`Failed to send template: ${reason}`);
+          console.error("No se pudo enviar la plantilla:", reason);
+          toast.error(`No se pudo enviar la plantilla: ${reason}`);
           onUpdateMessage(tempId, { status: "failed" });
           return;
         }
 
         onUpdateMessage(tempId, { status: "sent" });
       } catch (err) {
-        console.error("Failed to send template:", err);
-        const reason = err instanceof Error ? err.message : "network error";
-        toast.error(`Failed to send template: ${reason}`);
+        console.error("No se pudo enviar la plantilla:", err);
+        const reason = err instanceof Error ? err.message : "error de red";
+        toast.error(`No se pudo enviar la plantilla: ${reason}`);
         onUpdateMessage(tempId, { status: "failed" });
       }
     },
@@ -675,7 +675,7 @@ export function MessageThread({
     (m: Message): string => {
       const isAgentMsg =
         m.sender_type === "agent" || m.sender_type === "bot";
-      return isAgentMsg ? "You" : contactDisplayName;
+      return isAgentMsg ? "Tú" : contactDisplayName;
     },
     [contactDisplayName],
   );
@@ -702,7 +702,7 @@ export function MessageThread({
         return;
       }
       if (messageId.startsWith("temp-")) {
-        toast.error("Wait for the message to finish sending");
+        toast.error("Espera a que termine de enviarse el mensaje");
         return;
       }
 
@@ -747,8 +747,8 @@ export function MessageThread({
           throw new Error(payload?.error || `HTTP ${res.status}`);
         }
       } catch (err) {
-        const reason = err instanceof Error ? err.message : "network error";
-        toast.error(`Reaction failed: ${reason}`);
+        const reason = err instanceof Error ? err.message : "error de red";
+        toast.error(`Falló la reacción: ${reason}`);
         setReactions(snapshot);
       }
     },
@@ -766,8 +766,8 @@ export function MessageThread({
         .eq("id", conversation.id);
 
       if (error) {
-        console.error("Failed to update assignment:", error);
-        toast.error("Failed to update assignment");
+        console.error("No se pudo actualizar la asignación:", error);
+        toast.error("No se pudo actualizar la asignación");
         return;
       }
 
@@ -786,10 +786,10 @@ export function MessageThread({
           <MessageSquare className="h-8 w-8 text-muted-foreground" />
         </div>
         <h3 className="mt-4 text-sm font-medium text-muted-foreground">
-          Select a conversation
+          Selecciona una conversación
         </h3>
         <p className="mt-1 text-xs text-muted-foreground">
-          Choose a conversation from the left to start messaging
+          Elige una conversación a la izquierda para empezar a escribir
         </p>
       </div>
     );
@@ -826,7 +826,7 @@ export function MessageThread({
             <button
               type="button"
               onClick={onBack}
-              aria-label="Back to conversations"
+              aria-label="Volver a las conversaciones"
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground lg:hidden"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -864,10 +864,10 @@ export function MessageThread({
               type="button"
               onClick={onToggleContactPanel}
               aria-label={
-                contactPanelOpen ? "Hide contact panel" : "Show contact panel"
+                contactPanelOpen ? "Ocultar panel del contacto" : "Mostrar panel del contacto"
               }
               aria-pressed={contactPanelOpen}
-              title={contactPanelOpen ? "Hide contact" : "Show contact"}
+              title={contactPanelOpen ? "Ocultar contacto" : "Mostrar contacto"}
               className={cn(
                 "hidden h-7 w-7 items-center justify-center rounded-md transition-colors hover:bg-muted hover:text-foreground lg:inline-flex",
                 contactPanelOpen ? "text-primary" : "text-muted-foreground",
@@ -891,8 +891,8 @@ export function MessageThread({
               type="button"
               onClick={handleRefreshClick}
               disabled={isRefreshing}
-              aria-label="Refresh conversation"
-              title="Refresh"
+              aria-label="Actualizar conversación"
+              title="Actualizar"
               className={cn(
                 "inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-60",
               )}
@@ -909,7 +909,7 @@ export function MessageThread({
                   "inline-flex items-center justify-center h-7 gap-1 px-2 text-xs rounded-md hover:bg-muted",
                   currentStatus?.color ?? "text-muted-foreground"
                 )}>
-                {currentStatus?.label ?? "Status"}
+                {currentStatus?.label ?? "Estado"}
                 <ChevronDown className="h-3 w-3" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -946,7 +946,7 @@ export function MessageThread({
             >
               {profiles.length === 0 ? (
                 <DropdownMenuItem disabled className="text-sm text-muted-foreground">
-                  No teammates available
+                  No hay compañeros disponibles
                 </DropdownMenuItem>
               ) : (
                 profiles.map((p) => {
@@ -972,7 +972,7 @@ export function MessageThread({
                       />
                       <span className="flex-1">
                         {p.full_name}
-                        {p.user_id === user?.id ? " (me)" : ""}
+                        {p.user_id === user?.id ? " (yo)" : ""}
                       </span>
                       {isSelected && <Check className="ml-2 h-3 w-3" />}
                     </DropdownMenuItem>
@@ -986,7 +986,7 @@ export function MessageThread({
                     onClick={() => handleAssignChange(null)}
                     className="text-sm text-muted-foreground"
                   >
-                    Unassign
+                    Desasignar
                   </DropdownMenuItem>
                 </>
               )}
@@ -1003,9 +1003,9 @@ export function MessageThread({
           </div>
         ) : messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12">
-            <p className="text-sm text-muted-foreground">No messages yet</p>
+            <p className="text-sm text-muted-foreground">Aún no hay mensajes</p>
             <p className="text-xs text-muted-foreground">
-              Send a template to start the conversation
+              Envía una plantilla para iniciar la conversación
             </p>
           </div>
         ) : (

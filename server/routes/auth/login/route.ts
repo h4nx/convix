@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   const password = body?.password;
   if (!email || !password) {
     return NextResponse.json(
-      { error: 'Email and password are required' },
+      { error: 'Correo y contraseña son obligatorios' },
       { status: 400 }
     );
   }
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
   const user = await verifyCredentials(email, password);
   if (!user) {
     return NextResponse.json(
-      { error: 'Invalid login credentials' },
+      { error: 'Credenciales de acceso no válidas' },
       { status: 401 }
     );
   }

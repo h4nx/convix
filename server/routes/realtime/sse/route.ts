@@ -14,7 +14,7 @@ export async function GET() {
   const cookieStore = await cookies();
   const user = await getSessionUser(cookieStore.get(SESSION_COOKIE)?.value);
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
 
   const { rows } = await getPool().query(
@@ -23,7 +23,7 @@ export async function GET() {
   );
   const accountId: string | undefined = rows[0]?.account_id;
   if (!accountId) {
-    return NextResponse.json({ error: 'No account' }, { status: 403 });
+    return NextResponse.json({ error: 'Sin cuenta' }, { status: 403 });
   }
 
   const encoder = new TextEncoder();

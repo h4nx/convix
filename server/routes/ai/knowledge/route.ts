@@ -25,7 +25,7 @@ export async function GET() {
     if (error) {
       console.error('[ai/knowledge GET] error:', error)
       return NextResponse.json(
-        { error: 'Failed to load knowledge base' },
+        { error: 'No se pudo cargar la base de conocimiento' },
         { status: 500 },
       )
     }
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     const content = typeof body?.content === 'string' ? body.content.trim() : ''
     if (!title || !content) {
       return NextResponse.json(
-        { error: 'title and content are required' },
+        { error: 'título y contenido son obligatorios' },
         { status: 400 },
       )
     }
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     if (error || !doc) {
       console.error('[ai/knowledge POST] insert error:', error)
       return NextResponse.json(
-        { error: 'Failed to save document' },
+        { error: 'No se pudo guardar el documento' },
         { status: 500 },
       )
     }
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
         {
           success: true,
           id: doc.id,
-          warning: `Saved, but semantic indexing failed (${message}). Lexical search still works; use Reindex to retry.`,
+          warning: `Guardado, pero falló la indexación semántica (${message}). La búsqueda por palabras clave sigue funcionando; usa Reindexar para reintentar.`,
         },
         { status: 200 },
       )
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
         success: true,
         id: doc.id,
         warning:
-          'Saved with keyword search only — your embeddings key could not be decrypted (check ENCRYPTION_KEY, then re-enter the key).',
+          'Guardado solo con búsqueda por palabras clave — no se pudo descifrar tu clave de embeddings (revisa ENCRYPTION_KEY y vuelve a ingresarla).',
       })
     }
     return NextResponse.json({ success: true, id: doc.id })

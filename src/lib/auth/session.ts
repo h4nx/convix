@@ -103,6 +103,60 @@ export async function deleteAllSessions(userId: string): Promise<void> {
   await getPool().query(`DELETE FROM sessions WHERE user_id = $1`, [userId]);
 }
 
+export interface SessionInfo {
+  id: string;
+  user_agent: string | null;
+  created_at: string;
+  last_used_at: string;
+  current: boolean;
+}
+
+/** Sesiones vigentes del usuario; `current` marca la del token que llama. */
+export async function listSessions(
+  userId: string,
+  currentToken: string | undefined
+): Promise<SessionInfo[]> {
+  const currentHash = currentToken ? hashToken(currentToken) : null;
+  const { rows } = await getPool().query(
+    `SELECT id, user_agent, created_at, last_used_at, (token_hash = $2) AS current
+     FROM sessions
+     WHERE user_id = $1 AND expires_at > now()
+     ORDER BY (token_hash = $2) DESC, last_used_at DESC`,
+    [userId, currentHash]
+  );
+  return rows.map((r) => ({
+    id: r.id,
+    user_agent: r.user_agent,
+    created_at: new Date(r.created_at).toISOString(),
+    last_used_at: new Date(r.last_used_at).toISOString(),
+    current: Boolean(r.current),
+  }));
+}
+
+/** Revoca una sesión concreta del usuario. Devuelve false si no existe. */
+export async function deleteSessionById(
+  userId: string,
+  sessionId: string
+): Promise<boolean> {
+  const { rowCount } = await getPool().query(
+    `DELETE FROM sessions WHERE id = $1 AND user_id = $2`,
+    [sessionId, userId]
+  );
+  return (rowCount ?? 0) > 0;
+}
+
+/** Revoca todas las sesiones del usuario salvo la del token dado. */
+export async function deleteOtherSessions(
+  userId: string,
+  keepToken: string | undefined
+): Promise<number> {
+  const { rowCount } = await getPool().query(
+    `DELETE FROM sessions WHERE user_id = $1 AND token_hash IS DISTINCT FROM $2`,
+    [userId, keepToken ? hashToken(keepToken) : null]
+  );
+  return rowCount ?? 0;
+}
+
 // ------------------------------------------------------------------
 // Tokens de reseteo de contraseña
 // ------------------------------------------------------------------

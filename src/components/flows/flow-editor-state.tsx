@@ -140,17 +140,17 @@ export function defaultConfigFor(type: NodeType): Record<string, unknown> {
     case "send_buttons":
       return {
         text: "",
-        buttons: [{ reply_id: "yes", title: "Yes", next_node_key: "" }],
+        buttons: [{ reply_id: "yes", title: "Sí", next_node_key: "" }],
       };
     case "send_list":
       return {
         text: "",
-        button_label: "View options",
+        button_label: "Ver opciones",
         sections: [
           {
             title: "",
             rows: [
-              { reply_id: "row_1", title: "Option 1", next_node_key: "" },
+              { reply_id: "row_1", title: "Opción 1", next_node_key: "" },
             ],
           },
         ],
@@ -342,12 +342,12 @@ export function FlowEditorProvider({
       });
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
-        throw new Error(json.error ?? `Save failed: ${res.status}`);
+        throw new Error(json.error ?? `Falló el guardado: ${res.status}`);
       }
       setDirty(false);
-      toast.success("Saved.");
+      toast.success("Guardado.");
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Save failed";
+      const msg = err instanceof Error ? err.message : "Falló el guardado";
       toast.error(msg);
     } finally {
       setSaving(false);
@@ -358,7 +358,7 @@ export function FlowEditorProvider({
   const setStatus = useCallback(
     async (next: BuilderState["status"]) => {
       if (next === "active" && !canActivate) {
-        toast.error("Fix the issues below before activating.");
+        toast.error("Corrige los problemas de abajo antes de activar.");
         return;
       }
       setActivating(true);
@@ -376,18 +376,18 @@ export function FlowEditorProvider({
         });
         if (!res.ok) {
           const json = await res.json().catch(() => ({}));
-          throw new Error(json.error ?? `Status update failed: ${res.status}`);
+          throw new Error(json.error ?? `Falló el cambio de estado: ${res.status}`);
         }
         setStateRaw((s) => ({ ...s, status: next }));
         toast.success(
           next === "active"
-            ? "Flow activated."
+            ? "Flujo activado."
             : next === "archived"
-              ? "Archived."
-              : "Saved as draft.",
+              ? "Archivado."
+              : "Guardado como borrador.",
         );
       } catch (err) {
-        const msg = err instanceof Error ? err.message : "Status update failed";
+        const msg = err instanceof Error ? err.message : "Falló el cambio de estado";
         toast.error(msg);
       } finally {
         setActivating(false);
@@ -399,17 +399,17 @@ export function FlowEditorProvider({
   // ---- Delete ----
   const deleteFlow = useCallback(async () => {
     const yes = window.confirm(
-      `Delete "${state.name}"? Any active runs end immediately. This can't be undone.`,
+      `¿Eliminar "${state.name}"? Las ejecuciones activas terminan de inmediato. No se puede deshacer.`,
     );
     if (!yes) return;
     try {
       const res = await fetch(`/api/flows/${initialFlow.id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error(`Delete failed: ${res.status}`);
+      if (!res.ok) throw new Error(`Falló la eliminación: ${res.status}`);
       navigate("/flows");
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Delete failed";
+      const msg = err instanceof Error ? err.message : "Falló la eliminación";
       toast.error(msg);
     }
   }, [initialFlow.id, navigate, state.name]);

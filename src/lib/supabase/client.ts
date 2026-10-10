@@ -34,7 +34,7 @@ async function httpExecutor(descriptor: Descriptor): Promise<DbResult> {
     return {
       data: null,
       error: {
-        message: err instanceof Error ? err.message : 'network error',
+        message: err instanceof Error ? err.message : 'error de red',
         details: null,
         hint: null,
         code: 'CONVIX_FETCH',
@@ -99,7 +99,7 @@ async function authRequest(
   } catch (err) {
     return {
       user: null,
-      error: { message: err instanceof Error ? err.message : 'network error' },
+      error: { message: err instanceof Error ? err.message : 'error de red' },
     };
   }
 }
@@ -117,7 +117,7 @@ const browserAuth = {
       return {
         data: { user: null },
         error: {
-          message: err instanceof Error ? err.message : 'network error',
+          message: err instanceof Error ? err.message : 'error de red',
         },
       };
     }
@@ -167,6 +167,7 @@ const browserAuth = {
   async updateUser(attributes: {
     email?: string;
     password?: string;
+    current_password?: string;
     data?: Record<string, unknown>;
   }) {
     const { user, error } = await authRequest('update-user', attributes);
@@ -246,7 +247,7 @@ const browserStorage = {
           return {
             data: null,
             error: {
-              message: err instanceof Error ? err.message : 'network error',
+              message: err instanceof Error ? err.message : 'error de red',
             },
           };
         }
@@ -287,7 +288,7 @@ const browserStorage = {
           return {
             data: null,
             error: {
-              message: err instanceof Error ? err.message : 'network error',
+              message: err instanceof Error ? err.message : 'error de red',
             },
           };
         }

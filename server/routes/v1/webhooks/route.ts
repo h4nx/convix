@@ -30,7 +30,7 @@ export async function GET(request: Request) {
 
     if (error) {
       console.error('[api/v1/webhooks] list error:', error);
-      return fail('internal', 'Failed to list webhooks', 500);
+      return fail('internal', 'No se pudieron listar los webhooks', 500);
     }
 
     // The roster is small and settings-class — return it whole (the
@@ -55,19 +55,19 @@ export async function POST(request: Request) {
       unknown
     > | null;
     if (!body || typeof body !== 'object') {
-      return fail('bad_request', 'Request body must be a JSON object', 400);
+      return fail('bad_request', 'El cuerpo de la solicitud debe ser un objeto JSON', 400);
     }
 
     const url = normalizeWebhookUrl(body.url);
     if (!url) {
-      return fail('bad_request', "'url' must be a valid https:// URL", 400);
+      return fail('bad_request', "'url' debe ser una URL https:// válida", 400);
     }
 
     const events = normalizeEvents(body.events);
     if (!events) {
       return fail(
         'bad_request',
-        "'events' must be a non-empty array of known event names",
+        "'events' debe ser una lista no vacía de nombres de evento conocidos",
         400
       );
     }
@@ -88,7 +88,7 @@ export async function POST(request: Request) {
 
     if (error || !created) {
       console.error('[api/v1/webhooks] create error:', error);
-      return fail('internal', 'Failed to create webhook', 500);
+      return fail('internal', 'No se pudo crear el webhook', 500);
     }
 
     // Secret shown exactly once.

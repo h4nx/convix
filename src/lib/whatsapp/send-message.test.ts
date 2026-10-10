@@ -53,7 +53,7 @@ describe('sendMessageToConversation — param validation (pre-DB)', () => {
     await expectSendError(
       { ...base, messageType: 'text' },
       400,
-      /content_text is required/
+      /content_text es obligatorio/
     );
   });
 
@@ -61,7 +61,7 @@ describe('sendMessageToConversation — param validation (pre-DB)', () => {
     await expectSendError(
       { ...base, messageType: 'template' },
       400,
-      /template_name is required/
+      /template_name es obligatorio/
     );
   });
 
@@ -70,7 +70,7 @@ describe('sendMessageToConversation — param validation (pre-DB)', () => {
       await expectSendError(
         { ...base, messageType: kind },
         400,
-        /media_url is required/
+        /media_url es obligatorio/
       );
     }
   });
@@ -84,7 +84,7 @@ describe('sendMessageToConversation — param validation (pre-DB)', () => {
         contentText: 'a'.repeat(1025),
       },
       400,
-      /1024-character limit/
+      /límite de 1024 caracteres/
     );
   });
 

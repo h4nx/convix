@@ -279,7 +279,7 @@ async function executeStepsFrom(args: ExecuteArgs): Promise<void> {
         step_id: step.id,
         step_type: step.step_type,
         status: 'success',
-        detail: `waiting ${cfg.amount} ${cfg.unit}`,
+        detail: `esperando ${cfg.amount} ${cfg.unit}`,
       })
       status = 'partial'
       await appendResults(args.logId, results, status, errorMessage)
@@ -294,7 +294,7 @@ async function executeStepsFrom(args: ExecuteArgs): Promise<void> {
           step_id: step.id,
           step_type: 'condition',
           status: 'success',
-          detail: `branch=${taken ? 'yes' : 'no'}`,
+          detail: `rama=${taken ? 'yes' : 'no'}`,
         })
         // Recurse into the chosen branch at position 0 (children use their
         // own ordering within the branch scope).
@@ -343,9 +343,9 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
   switch (step.step_type) {
     case 'send_message': {
       const cfg = step.step_config as SendMessageStepConfig
-      if (!args.contactId) throw new Error('send_message needs a contact')
+      if (!args.contactId) throw new Error('send_message necesita un contacto')
       const text = interpolate(cfg.text, args)
-      if (!text.trim()) throw new Error('send_message has empty text')
+      if (!text.trim()) throw new Error('send_message tiene el texto vacío')
       const conversationId = await resolveConversationId(args)
       const { whatsapp_message_id } = await engineSendText({
         accountId: args.automation.account_id,
@@ -354,13 +354,13 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
         contactId: args.contactId,
         text,
       })
-      return `sent via Meta (${whatsapp_message_id})`
+      return `enviado por Meta (${whatsapp_message_id})`
     }
 
     case 'send_template': {
       const cfg = step.step_config as SendTemplateStepConfig
-      if (!args.contactId) throw new Error('send_template needs a contact')
-      if (!cfg.template_name) throw new Error('send_template needs template_name')
+      if (!args.contactId) throw new Error('send_template necesita un contacto')
+      if (!cfg.template_name) throw new Error('send_template necesita template_name')
       const conversationId = await resolveConversationId(args)
       // Meta templates use positional {{1}}, {{2}}, … placeholders, so
       // we MUST emit params in strict numeric order. Lexicographic sort
@@ -389,7 +389,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
         language: cfg.language,
         params,
       })
-      return `template sent via Meta (${whatsapp_message_id})`
+      return `template enviado por Meta (${whatsapp_message_id})`
     }
 
     case 'add_tag': {
@@ -397,7 +397,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
       // the attacker-supplied contactId comes from the ownership guard in
       // runAutomationsForTrigger.
       const cfg = step.step_config as TagStepConfig
-      if (!args.contactId || !cfg.tag_id) throw new Error('add_tag needs contact + tag_id')
+      if (!args.contactId || !cfg.tag_id) throw new Error('add_tag necesita contacto + tag_id')
       await db
         .from('contact_tags')
         .upsert(
@@ -411,7 +411,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
       // See add_tag: tenant scoping relies on the runAutomationsForTrigger
       // ownership guard, since contact_tags carries no account_id.
       const cfg = step.step_config as TagStepConfig
-      if (!args.contactId || !cfg.tag_id) throw new Error('remove_tag needs contact + tag_id')
+      if (!args.contactId || !cfg.tag_id) throw new Error('remove_tag necesita contacto + tag_id')
       await db
         .from('contact_tags')
         .delete()
@@ -422,7 +422,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
 
     case 'assign_conversation': {
       const cfg = step.step_config as AssignConversationStepConfig
-      if (!args.contactId) throw new Error('assign_conversation needs a contact')
+      if (!args.contactId) throw new Error('assign_conversation necesita un contacto')
       let agentId = cfg.agent_id
       if (cfg.mode === 'round_robin') {
         // Pick any member of the account. The existing implementation
@@ -435,18 +435,18 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
           .limit(1)
         agentId = profiles?.[0]?.user_id
       }
-      if (!agentId) return 'no agent resolved'
+      if (!agentId) return 'no se resolvió ningún agente'
       await db
         .from('conversations')
         .update({ assigned_agent_id: agentId })
         .eq('account_id', args.automation.account_id)
         .eq('contact_id', args.contactId)
-      return `assigned to ${agentId}`
+      return `asignada a ${agentId}`
     }
 
     case 'update_contact_field': {
       const cfg = step.step_config as UpdateContactFieldStepConfig
-      if (!args.contactId) throw new Error('update_contact_field needs a contact')
+      if (!args.contactId) throw new Error('update_contact_field necesita un contacto')
       // Resolve workflow variables ({{ vars.* }}, {{ message.text }}) so custom
       // values can be populated dynamically from the triggering context.
       const value = interpolate(cfg.value, args)
@@ -498,7 +498,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
 
     case 'create_deal': {
       const cfg = step.step_config as CreateDealStepConfig
-      if (!cfg.pipeline_id || !cfg.stage_id) throw new Error('create_deal needs pipeline + stage')
+      if (!cfg.pipeline_id || !cfg.stage_id) throw new Error('create_deal necesita pipeline + etapa')
       // Match the account's configured default currency rather than
       // the static `deals.currency` DB default — keeps automation-
       // created deals consistent with the one-currency-per-account
@@ -521,24 +521,24 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
         currency: acct?.default_currency ?? 'USD',
         status: 'open',
       })
-      return 'deal created'
+      return 'negocio creado'
     }
 
     case 'send_webhook': {
       const cfg = step.step_config as SendWebhookStepConfig
-      if (!cfg.url) throw new Error('send_webhook needs url')
+      if (!cfg.url) throw new Error('send_webhook necesita url')
       const body = cfg.body_template ? interpolate(cfg.body_template, args) : JSON.stringify(args.context)
       const res = await fetch(cfg.url, {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...(cfg.headers ?? {}) },
         body,
       })
-      if (!res.ok) throw new Error(`webhook returned ${res.status}`)
+      if (!res.ok) throw new Error(`el webhook devolvió ${res.status}`)
       return `webhook ${res.status}`
     }
 
     case 'close_conversation': {
-      if (!args.contactId) throw new Error('close_conversation needs a contact')
+      if (!args.contactId) throw new Error('close_conversation necesita un contacto')
       await db
         .from('conversations')
         .update({ status: 'closed', updated_at: new Date().toISOString() })
@@ -548,7 +548,7 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
     }
 
     default:
-      return `unknown step: ${step.step_type}`
+      return `paso desconocido: ${step.step_type}`
   }
 }
 
@@ -566,15 +566,15 @@ async function runStep(step: AutomationStep, args: ExecuteArgs): Promise<string>
 async function resolveConversationId(args: ExecuteArgs): Promise<string> {
   const fromCtx = args.context.conversation_id
   if (fromCtx) return fromCtx
-  if (!args.contactId) throw new Error('cannot resolve conversation: no contact')
+  if (!args.contactId) throw new Error('no se puede resolver la conversación: sin contacto')
   const { data, error } = await supabaseAdmin()
     .from('conversations')
     .select('id')
     .eq('account_id', args.automation.account_id)
     .eq('contact_id', args.contactId)
     .maybeSingle()
-  if (error) throw new Error(`conversation lookup failed: ${error.message}`)
-  if (!data?.id) throw new Error('no conversation for contact')
+  if (error) throw new Error(`falló la búsqueda de la conversación: ${error.message}`)
+  if (!data?.id) throw new Error('no hay conversación para el contacto')
   return data.id as string
 }
 

@@ -35,7 +35,7 @@ export async function GET() {
     error: authError,
   } = await supabase.auth.getUser()
   if (authError || !user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
   }
 
   // whatsapp_config is one-row-per-account post-017. Resolve the
@@ -51,7 +51,7 @@ export async function GET() {
     return NextResponse.json({
       live: false,
       checks: { config_exists: false },
-      message: 'Your profile is not linked to an account.',
+      message: 'Tu perfil no está vinculado a una cuenta.',
     })
   }
 
@@ -65,7 +65,7 @@ export async function GET() {
     return NextResponse.json({
       live: false,
       checks: { config_exists: false },
-      message: 'No WhatsApp configuration saved yet.',
+      message: 'Aún no hay configuración de WhatsApp guardada.',
     })
   }
 
@@ -80,7 +80,7 @@ export async function GET() {
         token_decryptable: false,
       },
       message:
-        'Stored access token can\'t be decrypted — likely ENCRYPTION_KEY changed. Re-enter the token to repair.',
+        'No se puede descifrar el token de acceso guardado — probablemente cambió ENCRYPTION_KEY. Vuelve a ingresar el token para repararlo.',
     })
   }
 
@@ -126,7 +126,7 @@ export async function GET() {
       checks.waba_subscribed_to_app = subs.length > 0
       if (!checks.waba_subscribed_to_app) {
         errors.push(
-          'WABA has no subscribed apps. Re-save the configuration to subscribe.',
+          'La WABA no tiene apps suscritas. Vuelve a guardar la configuración para suscribirla.',
         )
       }
     } catch (err) {

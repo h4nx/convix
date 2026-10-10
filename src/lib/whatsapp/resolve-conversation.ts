@@ -48,7 +48,7 @@ export async function resolveConversationByPhone(
   if (!isValidE164(sanitized)) {
     throw new SendMessageError(
       'bad_request',
-      "'to' must be a valid phone number in E.164 format (e.g. +14155550123)",
+      "'to' debe ser un número de teléfono válido en formato E.164 (p. ej. +593991234567)",
       400
     );
   }
@@ -63,7 +63,7 @@ export async function resolveConversationByPhone(
   if (!config) {
     throw new SendMessageError(
       'whatsapp_not_configured',
-      'WhatsApp not configured. Please set up your WhatsApp integration first.',
+      'WhatsApp no está configurado. Primero configura tu integración de WhatsApp.',
       400
     );
   }
@@ -119,7 +119,7 @@ export async function resolveConversationByPhone(
         } else {
           throw new SendMessageError(
             'db_error',
-            'Failed to create contact',
+            'No se pudo crear el contacto',
             500
           );
         }
@@ -128,7 +128,7 @@ export async function resolveConversationByPhone(
           '[resolve-conversation] contact create error:',
           createErr
         );
-        throw new SendMessageError('db_error', 'Failed to create contact', 500);
+        throw new SendMessageError('db_error', 'No se pudo crear el contacto', 500);
       }
     } else {
       contactId = created.id;
@@ -164,7 +164,7 @@ export async function resolveConversationByPhone(
     console.error('[resolve-conversation] conversation create error:', convErr);
     throw new SendMessageError(
       'db_error',
-      'Failed to create conversation',
+      'No se pudo crear la conversación',
       500
     );
   }

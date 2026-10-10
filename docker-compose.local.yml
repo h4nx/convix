@@ -81,10 +81,6 @@ services:
   app:
     build:
       context: .
-      args:
-        # El idioma de la UI se compila en el bundle (Vite) — ver el comentario en
-        # el Dockerfile. Es un build-arg, no una env var de runtime.
-        VITE_APP_LOCALE: es
     depends_on:
       db:
         condition: service_healthy

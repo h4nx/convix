@@ -102,7 +102,7 @@ export async function requireApiKey(
   }
 
   if (scope && !hasScope(row.scopes, scope)) {
-    throw forbidden(`This API key is missing the '${scope}' scope`);
+    throw forbidden(`A esta clave de API le falta el permiso '${scope}'`);
   }
 
   touchLastUsed(row.id);

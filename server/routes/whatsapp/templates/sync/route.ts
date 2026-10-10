@@ -137,7 +137,7 @@ export async function POST() {
     } = await supabase.auth.getUser()
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     }
 
     // Resolve the caller's account_id — both whatsapp_config and
@@ -150,7 +150,7 @@ export async function POST() {
     const accountId = profile?.account_id as string | undefined
     if (!accountId) {
       return NextResponse.json(
-        { error: 'Your profile is not linked to an account.' },
+        { error: 'Tu perfil no está vinculado a una cuenta.' },
         { status: 403 },
       )
     }
@@ -165,7 +165,7 @@ export async function POST() {
       return NextResponse.json(
         {
           error:
-            'WhatsApp not configured. Connect your WhatsApp Business account in Settings first.',
+            'WhatsApp no está configurado. Primero conecta tu cuenta de WhatsApp Business en Ajustes.',
         },
         { status: 400 },
       )
@@ -175,7 +175,7 @@ export async function POST() {
       return NextResponse.json(
         {
           error:
-            'WABA (WhatsApp Business Account) ID missing. Re-connect your account in Settings.',
+            'Falta el ID de la WABA (cuenta de WhatsApp Business). Vuelve a conectar tu cuenta en Ajustes.',
         },
         { status: 400 },
       )
@@ -197,7 +197,7 @@ export async function POST() {
       })
 
       if (!metaRes.ok) {
-        let metaErr = `Meta API error: ${metaRes.status}`
+        let metaErr = `Error de la API de Meta: ${metaRes.status}`
         try {
           const body = await metaRes.json()
           if (body?.error?.message) metaErr = body.error.message
@@ -346,7 +346,7 @@ export async function POST() {
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : 'Failed to sync templates',
+          error instanceof Error ? error.message : 'No se pudieron sincronizar las plantillas',
       },
       { status: 500 },
     )

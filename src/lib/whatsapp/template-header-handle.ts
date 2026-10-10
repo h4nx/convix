@@ -29,7 +29,7 @@ export async function ensureImageHeaderHandle(
   const appId = process.env.META_APP_ID
   if (!appId) {
     throw new Error(
-      'Image-header templates need META_APP_ID set (used for Meta’s Resumable Upload). Add it to your environment, or remove the image header.',
+      'Las plantillas con imagen en el encabezado requieren META_APP_ID (se usa para la subida reanudable de Meta). Agrégalo a tu entorno o quita la imagen del encabezado.',
     )
   }
 
@@ -39,24 +39,24 @@ export async function ensureImageHeaderHandle(
   try {
     res = await fetch(payload.header_media_url)
   } catch {
-    throw new Error('Could not fetch the header image URL. Make sure it is publicly reachable.')
+    throw new Error('No se pudo obtener la URL de la imagen del encabezado. Asegúrate de que sea accesible públicamente.')
   }
   if (!res.ok) {
-    throw new Error(`Header image URL returned ${res.status}. It must be publicly reachable.`)
+    throw new Error(`La URL de la imagen del encabezado devolvió ${res.status}. Debe ser accesible públicamente.`)
   }
 
   const contentType = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase()
   if (contentType && !ALLOWED_IMAGE_TYPES.includes(contentType)) {
-    throw new Error(`Header image must be JPEG or PNG (got ${contentType}).`)
+    throw new Error(`La imagen del encabezado debe ser JPEG o PNG (se recibió ${contentType}).`)
   }
 
   const bytes = new Uint8Array(await res.arrayBuffer())
   if (bytes.byteLength === 0) {
-    throw new Error('Header image is empty.')
+    throw new Error('La imagen del encabezado está vacía.')
   }
   if (bytes.byteLength > IMAGE_MAX_BYTES) {
     throw new Error(
-      `Header image is ${(bytes.byteLength / 1024 / 1024).toFixed(1)} MB — Meta's limit is 5 MB.`,
+      `La imagen del encabezado pesa ${(bytes.byteLength / 1024 / 1024).toFixed(1)} MB — el límite de Meta es 5 MB.`,
     )
   }
 

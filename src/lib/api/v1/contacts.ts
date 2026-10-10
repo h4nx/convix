@@ -88,7 +88,7 @@ export async function resolveAuditUserId(
     .maybeSingle();
   const owner = account?.owner_user_id as string | undefined;
   if (!owner) {
-    throw new ContactError('Account owner could not be resolved', 500);
+    throw new ContactError('No se pudo determinar al propietario de la cuenta', 500);
   }
   return owner;
 }
@@ -115,7 +115,7 @@ export async function findOrCreateContact(
   const sanitized = sanitizePhoneForMeta(input.phone);
   if (!isValidE164(sanitized)) {
     throw new ContactError(
-      "'phone' must be a valid phone number in E.164 format (e.g. +14155550123)",
+      "'phone' debe ser un número de teléfono válido en formato E.164 (p. ej. +593991234567)",
       400
     );
   }
@@ -144,7 +144,7 @@ export async function findOrCreateContact(
       if (raced) return { id: raced.id, created: false };
     }
     console.error('[api/v1/contacts] create error:', error);
-    throw new ContactError('Failed to create contact', 500);
+    throw new ContactError('No se pudo crear el contacto', 500);
   }
 
   return { id: created.id, created: true };
@@ -181,7 +181,7 @@ export async function setContactTags(
     .select('tag_id')
     .eq('contact_id', contactId);
   if (readErr) {
-    throw new ContactError('Failed to read contact tags', 500);
+    throw new ContactError('No se pudieron leer las etiquetas del contacto', 500);
   }
   const existing = new Set(
     (current ?? []).map((r) => r.tag_id as string)
@@ -196,13 +196,13 @@ export async function setContactTags(
       .delete()
       .eq('contact_id', contactId)
       .in('tag_id', toRemove);
-    if (error) throw new ContactError('Failed to update contact tags', 500);
+    if (error) throw new ContactError('No se pudieron actualizar las etiquetas del contacto', 500);
   }
   if (toAdd.length > 0) {
     const { error } = await db
       .from('contact_tags')
       .insert(toAdd.map((tag_id) => ({ contact_id: contactId, tag_id })));
-    if (error) throw new ContactError('Failed to update contact tags', 500);
+    if (error) throw new ContactError('No se pudieron actualizar las etiquetas del contacto', 500);
   }
 }
 

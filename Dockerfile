@@ -14,11 +14,6 @@ FROM node:24-alpine AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# VITE_APP_LOCALE decide qué mensajes se compilan en el bundle (src/i18n/messages.ts).
-# Se incrusta al compilar: no alcanza con setearla solo en runtime (docker-compose
-# `environment:`). Default "en" si no se pasa nada.
-ARG VITE_APP_LOCALE=en
-ENV VITE_APP_LOCALE=$VITE_APP_LOCALE
 RUN npm run build
 
 FROM node:24-alpine AS prod-deps

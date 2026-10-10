@@ -16,13 +16,13 @@ interface RouteParams {
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const { bucket } = await params;
   if (!isBucket(bucket)) {
-    return NextResponse.json({ error: 'Invalid bucket' }, { status: 400 });
+    return NextResponse.json({ error: 'Bucket no válido' }, { status: 400 });
   }
 
   const cookieStore = await cookies();
   const user = await getSessionUser(cookieStore.get(SESSION_COOKIE)?.value);
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
 
   const body = (await request.json().catch(() => null)) as {
@@ -31,7 +31,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const paths = body?.paths;
   if (!Array.isArray(paths) || paths.length === 0 || paths.length > 50) {
     return NextResponse.json(
-      { error: 'paths (1–50) is required' },
+      { error: 'paths (1–50) es obligatorio' },
       { status: 400 }
     );
   }
@@ -49,7 +49,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       ? profile.account_role
       : null;
     if (!profile || !role || !canSendMessages(role)) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: 'Prohibido' }, { status: 403 });
     }
     allowedPrefix = `account-${profile.account_id}/`;
   }
@@ -61,7 +61,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       !p.startsWith(allowedPrefix)
     ) {
       return NextResponse.json(
-        { error: `Forbidden path: ${p}` },
+        { error: `Ruta prohibida: ${p}` },
         { status: 403 }
       );
     }

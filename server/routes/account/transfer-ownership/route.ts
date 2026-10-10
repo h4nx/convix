@@ -37,7 +37,7 @@ function rpcErrorToResponse(err: PostgrestError): NextResponse {
   }
   console.error("[transfer-ownership] unexpected RPC error:", err);
   return NextResponse.json(
-    { error: "Failed to transfer ownership" },
+    { error: "No se pudo transferir la propiedad" },
     { status: 500 },
   );
 }
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
 
     if (!looksLikeUuid(newOwnerUserId)) {
       return NextResponse.json(
-        { error: "'newOwnerUserId' must be a valid UUID" },
+        { error: "'newOwnerUserId' debe ser un UUID válido" },
         { status: 400 },
       );
     }

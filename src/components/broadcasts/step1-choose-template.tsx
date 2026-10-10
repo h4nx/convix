@@ -38,7 +38,7 @@ export function Step1ChooseTemplate({ selectedTemplate, onSelect, onNext, onBack
         if (fetchError) throw fetchError;
         setTemplates(data ?? []);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load templates');
+        setError(err instanceof Error ? err.message : 'No se pudieron cargar las plantillas');
       } finally {
         setLoading(false);
       }
@@ -66,17 +66,17 @@ export function Step1ChooseTemplate({ selectedTemplate, onSelect, onNext, onBack
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Choose a Template</h2>
+        <h2 className="text-lg font-semibold text-foreground">Elige una plantilla</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Select an approved message template for your broadcast.
+          Selecciona una plantilla de mensaje aprobada para tu difusión.
         </p>
       </div>
 
       {templates.length === 0 ? (
         <div className="flex h-48 flex-col items-center justify-center rounded-xl border border-border bg-card/50">
           <FileText className="mb-2 h-8 w-8 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">No templates available.</p>
-          <p className="mt-1 text-xs text-muted-foreground">Create a template in Settings first.</p>
+          <p className="text-sm text-muted-foreground">No hay plantillas disponibles.</p>
+          <p className="mt-1 text-xs text-muted-foreground">Primero crea una plantilla en Ajustes.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -104,7 +104,7 @@ export function Step1ChooseTemplate({ selectedTemplate, onSelect, onNext, onBack
                 </div>
                 <p className="line-clamp-3 text-xs text-muted-foreground">{template.body_text}</p>
                 <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                  <span>{template.language ?? 'en_US'}</span>
+                  <span>{template.language ?? 'es_ES'}</span>
                   {/* Status is omitted on purpose — every template
                       shown here is already filtered to APPROVED,
                       so the chip carried no information. */}
@@ -117,14 +117,14 @@ export function Step1ChooseTemplate({ selectedTemplate, onSelect, onNext, onBack
 
       <div className="flex items-center justify-between border-t border-border pt-4">
         <Button variant="outline" onClick={onBack} className="border-border text-muted-foreground">
-          Back
+          Atrás
         </Button>
         <Button
           onClick={onNext}
           disabled={!selectedTemplate}
           className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          Next
+          Siguiente
           <ArrowRight className="h-4 w-4" />
         </Button>
       </div>

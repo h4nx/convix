@@ -39,12 +39,12 @@ function SignupPageInner() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Las contraseñas no coinciden");
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
@@ -80,15 +80,15 @@ function SignupPageInner() {
       <AuthLayout>
         <div className="mb-8">
           <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-            Convix &middot; Sign up
+            Convix &middot; Registro
           </p>
           <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-            Account created
+            Cuenta creada
           </h2>
           <p className="mt-1.5 text-sm text-auth-form-muted">
-            You&apos;re signed in as{" "}
-            <span className="text-auth-form-foreground">{email}</span>. Taking
-            you to your dashboard…
+            Iniciaste sesión como{" "}
+            <span className="text-auth-form-foreground">{email}</span>. Te estamos
+            llevando a tu panel…
           </p>
         </div>
         <Link
@@ -102,7 +102,7 @@ function SignupPageInner() {
             variant="outline"
             className="h-11 w-full rounded-xl border-auth-form-border text-auth-form-muted hover:bg-auth-form-input hover:text-auth-form-foreground"
           >
-            Back to sign in
+            Volver a iniciar sesión
           </Button>
         </Link>
       </AuthLayout>
@@ -113,15 +113,15 @@ function SignupPageInner() {
     <AuthLayout>
       <div className="mb-8">
         <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-          Convix &middot; Sign up
+          Convix &middot; Registro
         </p>
         <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-          {inviteToken ? "Create account & join" : "Create account"}
+          {inviteToken ? "Crear cuenta y unirme" : "Crear cuenta"}
         </h2>
         <p className="mt-1.5 text-sm text-auth-form-muted">
           {inviteToken
-            ? "Verify your email, then accept the invitation to join your team."
-            : "Get started with CRM Template for WhatsApp"}
+            ? "Verifica tu correo y luego acepta la invitación para unirte a tu equipo."
+            : "Empieza con Convix, el CRM de WhatsApp"}
         </p>
       </div>
 
@@ -134,12 +134,12 @@ function SignupPageInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="fullName" className="text-auth-form-muted">
-            Full name
+            Nombre completo
           </Label>
           <Input
             id="fullName"
             type="text"
-            placeholder="John Doe"
+            placeholder="Juan Pérez"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             required
@@ -149,7 +149,7 @@ function SignupPageInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="email" className="text-auth-form-muted">
-            Email
+            Correo
           </Label>
           <Input
             id="email"
@@ -164,12 +164,12 @@ function SignupPageInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="password" className="text-auth-form-muted">
-            Password
+            Contraseña
           </Label>
           <Input
             id="password"
             type="password"
-            placeholder="At least 6 characters"
+            placeholder="Al menos 6 caracteres"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -179,12 +179,12 @@ function SignupPageInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="confirmPassword" className="text-auth-form-muted">
-            Confirm password
+            Confirmar contraseña
           </Label>
           <Input
             id="confirmPassword"
             type="password"
-            placeholder="Repeat your password"
+            placeholder="Repite tu contraseña"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
@@ -197,12 +197,12 @@ function SignupPageInner() {
           disabled={loading}
           className="mt-2 h-11 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          {loading ? "Creating account..." : "Create account"}
+          {loading ? "Creando cuenta..." : "Crear cuenta"}
         </Button>
       </form>
 
       <p className="mt-6 text-center text-sm text-auth-form-muted">
-        Already have an account?{" "}
+        ¿Ya tienes una cuenta?{" "}
         <Link
           to={
             inviteToken
@@ -211,7 +211,7 @@ function SignupPageInner() {
           }
           className="text-primary hover:text-primary/80"
         >
-          Sign in
+          Iniciar sesión
         </Link>
       </p>
     </AuthLayout>

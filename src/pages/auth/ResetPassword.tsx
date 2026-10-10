@@ -29,11 +29,11 @@ function ResetPasswordInner() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Las contraseñas no coinciden");
       return;
     }
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
@@ -46,7 +46,7 @@ function ResetPasswordInner() {
     const json = (await response.json().catch(() => ({}))) as { error?: string };
 
     if (!response.ok) {
-      setError(json.error ?? "Something went wrong");
+      setError(json.error ?? "Algo salió mal");
       setLoading(false);
       return;
     }
@@ -60,14 +60,13 @@ function ResetPasswordInner() {
       <AuthLayout>
         <div className="mb-8">
           <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-            Convix &middot; Reset password
+            Convix &middot; Restablecer contraseña
           </p>
           <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-            Invalid reset link
+            Enlace de restablecimiento no válido
           </h2>
           <p className="mt-1.5 text-sm text-auth-form-muted">
-            This link is missing its token. Request a new one from the
-            forgot-password page.
+            A este enlace le falta el token. Solicita uno nuevo desde la página de recuperación de contraseña.
           </p>
         </div>
         <Link to="/forgot-password">
@@ -75,7 +74,7 @@ function ResetPasswordInner() {
             variant="outline"
             className="h-11 w-full rounded-xl border-auth-form-border text-auth-form-foreground hover:bg-auth-form-input"
           >
-            Request a new link
+            Solicitar un enlace nuevo
           </Button>
         </Link>
       </AuthLayout>
@@ -86,13 +85,13 @@ function ResetPasswordInner() {
     <AuthLayout>
       <div className="mb-8">
         <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-          Convix &middot; Reset password
+          Convix &middot; Restablecer contraseña
         </p>
         <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-          Choose a new password
+          Elige una nueva contraseña
         </h2>
         <p className="mt-1.5 text-sm text-auth-form-muted">
-          The link is valid for one hour and can be used once.
+          El enlace es válido por una hora y se puede usar una sola vez.
         </p>
       </div>
 
@@ -105,7 +104,7 @@ function ResetPasswordInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="password" className="text-auth-form-muted">
-            New password
+            Nueva contraseña
           </Label>
           <Input
             id="password"
@@ -119,7 +118,7 @@ function ResetPasswordInner() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="confirmPassword" className="text-auth-form-muted">
-            Confirm password
+            Confirmar contraseña
           </Label>
           <Input
             id="confirmPassword"
@@ -136,7 +135,7 @@ function ResetPasswordInner() {
           disabled={loading}
           className="mt-2 h-11 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          {loading ? "Saving…" : "Set new password"}
+          {loading ? "Guardando…" : "Definir contraseña nueva"}
         </Button>
       </form>
     </AuthLayout>

@@ -102,7 +102,7 @@ export default function NotificationsPage() {
         .eq("id", id)
         .is("read_at", null);
       if (updateErr) {
-        toast.error("Failed to mark notification as read");
+        toast.error("No se pudo marcar la notificación como leída");
         load();
       }
     },
@@ -135,7 +135,7 @@ export default function NotificationsPage() {
       .is("read_at", null);
     setMarkingAll(false);
     if (updateErr) {
-      toast.error("Failed to mark all as read");
+      toast.error("No se pudieron marcar todas como leídas");
       load();
     }
   }, [unreadIds.length, load]);
@@ -145,7 +145,7 @@ export default function NotificationsPage() {
       <div className="flex h-64 flex-col items-center justify-center gap-2">
         <p className="text-sm text-destructive">{error}</p>
         <Button variant="outline" onClick={() => window.location.reload()}>
-          Retry
+          Reintentar
         </Button>
       </div>
     );
@@ -163,9 +163,9 @@ export default function NotificationsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Notifications</h1>
+          <h1 className="text-2xl font-bold text-foreground">Notificaciones</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Conversations other teammates assign to you show up here.
+            Las conversaciones que te asignen tus compañeros aparecerán aquí.
           </p>
         </div>
         <Button
@@ -179,7 +179,7 @@ export default function NotificationsPage() {
           ) : (
             <CheckCheck className="h-4 w-4" />
           )}
-          Mark all as read
+          Marcar todas como leídas
         </Button>
       </div>
 
@@ -189,11 +189,10 @@ export default function NotificationsPage() {
             <Bell className="h-6 w-6 text-primary" />
           </div>
           <p className="mt-3 text-sm font-medium text-foreground">
-            No notifications yet
+            Aún no hay notificaciones
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            You&apos;ll see an alert here when someone assigns you a
-            conversation.
+            Aquí verás una alerta cuando alguien te asigne una conversación.
           </p>
         </div>
       ) : (
@@ -239,7 +238,7 @@ export default function NotificationsPage() {
                       </span>
                       {isUnread && (
                         <span
-                          aria-label="Unread"
+                          aria-label="Sin leer"
                           className="h-2 w-2 shrink-0 rounded-full bg-primary"
                         />
                       )}

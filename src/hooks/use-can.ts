@@ -59,7 +59,7 @@ export function useCan(action: CanAction): boolean {
       // for valid inputs; it only fires if someone bypasses the
       // type system at the call site (e.g. with a wrong-typed cast).
       const _exhaustive: never = action;
-      throw new Error(`Unknown CanAction: ${String(_exhaustive)}`);
+      throw new Error(`CanAction desconocida: ${String(_exhaustive)}`);
     }
   }
 }

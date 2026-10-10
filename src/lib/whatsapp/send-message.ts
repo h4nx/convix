@@ -107,7 +107,7 @@ export function validateSendMessageParams(params: {
   const { messageType, contentText, mediaUrl, templateName } = params;
 
   if (!messageType) {
-    throw new SendMessageError('bad_request', 'message_type is required', 400);
+    throw new SendMessageError('bad_request', 'message_type es obligatorio', 400);
   }
 
   const isMediaKind = (MEDIA_KINDS as readonly string[]).includes(messageType);
@@ -123,7 +123,7 @@ export function validateSendMessageParams(params: {
   if (messageType === 'text' && !contentText) {
     throw new SendMessageError(
       'bad_request',
-      'content_text is required for text messages',
+      'content_text es obligatorio para mensajes de texto',
       400
     );
   }
@@ -131,7 +131,7 @@ export function validateSendMessageParams(params: {
   if (messageType === 'template' && !templateName) {
     throw new SendMessageError(
       'bad_request',
-      'template_name is required for template messages',
+      'template_name es obligatorio para mensajes de plantilla',
       400
     );
   }
@@ -139,7 +139,7 @@ export function validateSendMessageParams(params: {
   if (isMediaKind && !mediaUrl) {
     throw new SendMessageError(
       'bad_request',
-      `media_url is required for ${messageType} messages`,
+      `media_url es obligatorio para mensajes de tipo ${messageType}`,
       400
     );
   }
@@ -153,7 +153,7 @@ export function validateSendMessageParams(params: {
   ) {
     throw new SendMessageError(
       'bad_request',
-      'Caption exceeds the 1024-character limit',
+      'El pie de foto supera el límite de 1024 caracteres',
       400
     );
   }
@@ -180,7 +180,7 @@ export async function sendMessageToConversation(
   if (!conversationId) {
     throw new SendMessageError(
       'bad_request',
-      'conversation_id is required',
+      'conversation_id es obligatorio',
       400
     );
   }
@@ -198,14 +198,14 @@ export async function sendMessageToConversation(
     .single();
 
   if (convError || !conversation) {
-    throw new SendMessageError('not_found', 'Conversation not found', 404);
+    throw new SendMessageError('not_found', 'Conversación no encontrada', 404);
   }
 
   const contact = conversation.contact;
   if (!contact?.phone) {
     throw new SendMessageError(
       'bad_request',
-      'Contact phone number not found',
+      'No se encontró el teléfono del contacto',
       400
     );
   }
@@ -229,7 +229,7 @@ export async function sendMessageToConversation(
   if (configError || !config) {
     throw new SendMessageError(
       'whatsapp_not_configured',
-      'WhatsApp not configured. Please set up your WhatsApp integration first.',
+      'WhatsApp no está configurado. Primero configura tu integración de WhatsApp.',
       400
     );
   }
@@ -267,7 +267,7 @@ export async function sendMessageToConversation(
     if (parentError || !parent) {
       throw new SendMessageError(
         'bad_request',
-        'reply_to_message_id not found in this conversation',
+        'reply_to_message_id no existe en esta conversación',
         400
       );
     }
@@ -294,7 +294,7 @@ export async function sendMessageToConversation(
     if (data && !isMessageTemplate(data)) {
       throw new SendMessageError(
         'template_malformed',
-        'Template row is malformed locally — run "Sync from Meta" in Settings to repair it.',
+        'La fila de la plantilla está mal formada localmente — ejecuta «Sincronizar desde Meta» en Ajustes para repararla.',
         500
       );
     }
@@ -369,9 +369,9 @@ export async function sendMessageToConversation(
     if (lastError) throw lastError;
   } catch (err) {
     const message =
-      err instanceof Error ? err.message : 'Unknown Meta API error';
+      err instanceof Error ? err.message : 'Error desconocido de la API de Meta';
     console.error('[send-message] Meta send failed for all variants:', message);
-    throw new SendMessageError('meta_error', `Meta API error: ${message}`, 502);
+    throw new SendMessageError('meta_error', `Error de la API de Meta: ${message}`, 502);
   }
 
   if (workingPhone !== sanitizedPhone) {
@@ -406,7 +406,7 @@ export async function sendMessageToConversation(
     console.error('[send-message] error inserting sent message:', msgError);
     throw new SendMessageError(
       'db_error',
-      `Message sent to Meta but failed to save to DB: ${msgError.message}`,
+      `Mensaje enviado a Meta pero falló el guardado en la base de datos: ${msgError.message}`,
       500
     );
   }

@@ -25,7 +25,7 @@ export class ServerClient extends DbClient {
         return {
           data: null,
           error: {
-            message: 'Unauthorized',
+            message: 'No autorizado',
             details: null,
             hint: null,
             code: '401',

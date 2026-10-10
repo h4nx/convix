@@ -46,9 +46,9 @@ export function AiKnowledgeCard({
       const res = await fetch('/api/ai/knowledge');
       const data = await res.json();
       if (res.ok) setDocs(data.documents ?? []);
-      else toast.error(data.error ?? 'Failed to load knowledge base');
+      else toast.error(data.error ?? 'No se pudo cargar la base de conocimiento');
     } catch {
-      toast.error('Failed to load knowledge base');
+      toast.error('No se pudo cargar la base de conocimiento');
     } finally {
       setLoading(false);
     }
@@ -71,14 +71,14 @@ export function AiKnowledgeCard({
       const res = await fetch(`/api/ai/knowledge/${id}`);
       const data = await res.json();
       if (!res.ok) {
-        toast.error(data.error ?? 'Failed to open document');
+        toast.error(data.error ?? 'No se pudo abrir el documento');
         return;
       }
       setEditing(id);
       setTitle(data.title ?? '');
       setContent(data.content ?? '');
     } catch {
-      toast.error('Failed to open document');
+      toast.error('No se pudo abrir el documento');
     }
   };
 
@@ -90,7 +90,7 @@ export function AiKnowledgeCard({
 
   const save = async () => {
     if (!title.trim() || !content.trim()) {
-      toast.error('Title and content are required.');
+      toast.error('El título y el contenido son obligatorios.');
       return;
     }
     setSaving(true);
@@ -108,14 +108,14 @@ export function AiKnowledgeCard({
       if (res.ok) {
         // A 200 with `warning` means saved but indexing degraded.
         if (data.warning) toast.warning(data.warning);
-        else toast.success(isNew ? 'Document added.' : 'Document updated.');
+        else toast.success(isNew ? 'Documento agregado.' : 'Documento actualizado.');
         cancelEdit();
         await fetchDocs();
       } else {
-        toast.error(data.error ?? 'Failed to save.');
+        toast.error(data.error ?? 'No se pudo guardar.');
       }
     } catch {
-      toast.error('Failed to save.');
+      toast.error('No se pudo guardar.');
     } finally {
       setSaving(false);
     }
@@ -125,14 +125,14 @@ export function AiKnowledgeCard({
     try {
       const res = await fetch(`/api/ai/knowledge/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        toast.success('Document removed.');
+        toast.success('Documento eliminado.');
         setDocs((d) => d.filter((x) => x.id !== id));
       } else {
         const data = await res.json();
-        toast.error(data.error ?? 'Failed to remove.');
+        toast.error(data.error ?? 'No se pudo quitar.');
       }
     } catch {
-      toast.error('Failed to remove.');
+      toast.error('No se pudo quitar.');
     }
   };
 
@@ -142,12 +142,12 @@ export function AiKnowledgeCard({
       const res = await fetch('/api/ai/knowledge/reindex', { method: 'POST' });
       const data = await res.json();
       if (res.ok && data.success) {
-        toast.success(`Reindexed ${data.reindexed} document(s).`);
+        toast.success(`Reindexados ${data.reindexed} documento(s).`);
       } else {
-        toast.error(data.error ?? 'Reindex failed.');
+        toast.error(data.error ?? 'Falló la reindexación.');
       }
     } catch {
-      toast.error('Reindex failed.');
+      toast.error('Falló la reindexación.');
     } finally {
       setReindexing(false);
     }
@@ -157,27 +157,25 @@ export function AiKnowledgeCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <BookOpen className="h-4 w-4 text-primary" /> Knowledge base
+          <BookOpen className="h-4 w-4 text-primary" /> Base de conocimiento
         </CardTitle>
         <CardDescription>
-          Add FAQs, policies, or product details. The assistant retrieves the
-          relevant pieces when drafting and auto-replying, so it can answer
-          instead of handing off.
+          Agrega preguntas frecuentes, políticas o detalles de producto. El asistente recupera lo relevante al redactar y responder automáticamente, para poder contestar en vez de derivar.
           {hasEmbeddingsKey
-            ? ' Semantic search is on (embeddings key set).'
-            : ' Using keyword search — add an embeddings key above for semantic search.'}
+            ? ' La búsqueda semántica está activa (clave de embeddings configurada).'
+            : ' Usando búsqueda por palabras clave — agrega una clave de embeddings arriba para activar la búsqueda semántica.'}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {loading ? (
           <div className="flex items-center py-4 text-sm text-muted-foreground">
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Loading…
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Cargando…
           </div>
         ) : (
           <>
             {docs.length === 0 && editing === null && (
               <p className="text-sm text-muted-foreground">
-                No documents yet.
+                Aún no hay documentos.
               </p>
             )}
 
@@ -198,7 +196,7 @@ export function AiKnowledgeCard({
                           size="sm"
                           className="h-8 w-8 p-0"
                           onClick={() => void openEdit(doc.id)}
-                          title="Edit"
+                          title="Editar"
                         >
                           <Pencil className="h-4 w-4" />
                         </Button>
@@ -207,7 +205,7 @@ export function AiKnowledgeCard({
                           size="sm"
                           className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                           onClick={() => void remove(doc.id)}
-                          title="Delete"
+                          title="Eliminar"
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -221,33 +219,33 @@ export function AiKnowledgeCard({
             {editing !== null ? (
               <div className="space-y-3 rounded-md border border-border p-3">
                 <div className="space-y-2">
-                  <Label htmlFor="kb-title">Title</Label>
+                  <Label htmlFor="kb-title">Título</Label>
                   <Input
                     id="kb-title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Returns & refunds policy"
+                    placeholder="p. ej. Política de devoluciones y reembolsos"
                     disabled={saving}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="kb-content">Content</Label>
+                  <Label htmlFor="kb-content">Contenido</Label>
                   <Textarea
                     id="kb-content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder="Paste the FAQ answer, policy text, or product details…"
+                    placeholder="Pega la respuesta de la pregunta frecuente, el texto de la política o los detalles del producto…"
                     rows={8}
                     disabled={saving}
                   />
                 </div>
                 <div className="flex justify-end gap-2">
                   <Button variant="ghost" onClick={cancelEdit} disabled={saving}>
-                    Cancel
+                    Cancelar
                   </Button>
                   <Button onClick={save} disabled={saving}>
                     {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Save document
+                    Guardar documento
                   </Button>
                 </div>
               </div>
@@ -255,7 +253,7 @@ export function AiKnowledgeCard({
               canEdit && (
                 <div className="flex items-center justify-between">
                   <Button variant="outline" size="sm" onClick={openNew}>
-                    <Plus className="mr-2 h-4 w-4" /> Add document
+                    <Plus className="mr-2 h-4 w-4" /> Agregar documento
                   </Button>
                   {hasEmbeddingsKey && docs.length > 0 && (
                     <Button
@@ -263,14 +261,14 @@ export function AiKnowledgeCard({
                       size="sm"
                       onClick={reindex}
                       disabled={reindexing}
-                      title="Re-embed all documents (e.g. after adding an embeddings key)"
+                      title="Reindexar todos los documentos (p. ej. después de agregar una clave de embeddings)"
                     >
                       {reindexing ? (
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       ) : (
                         <RefreshCw className="mr-2 h-4 w-4" />
                       )}
-                      Reindex
+                      Reindexar
                     </Button>
                   )}
                 </div>

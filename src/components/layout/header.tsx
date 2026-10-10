@@ -15,14 +15,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const pageTitles: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/inbox": "Inbox",
-  "/notifications": "Notifications",
-  "/contacts": "Contacts",
+  "/dashboard": "Panel",
+  "/inbox": "Bandeja",
+  "/notifications": "Notificaciones",
+  "/contacts": "Contactos",
   "/pipelines": "Pipelines",
-  "/broadcasts": "Broadcasts",
-  "/automations": "Automations",
-  "/settings": "Settings",
+  "/broadcasts": "Difusiones",
+  "/automations": "Automatizaciones",
+  "/flows": "Flujos",
+  "/agents": "Agentes de IA",
+  "/settings": "Ajustes",
 };
 
 function getPageTitle(pathname: string): string {
@@ -30,7 +32,7 @@ function getPageTitle(pathname: string): string {
   const match = Object.entries(pageTitles).find(([path]) =>
     pathname.startsWith(path),
   );
-  return match ? match[1] : "Dashboard";
+  return match ? match[1] : "Panel";
 }
 
 interface HeaderProps {
@@ -56,7 +58,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
         <button
           type="button"
           onClick={onOpenSidebar}
-          aria-label="Open menu"
+          aria-label="Abrir menú"
           className="flex h-10 w-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:hidden"
         >
           <Menu className="h-5 w-5" />
@@ -70,13 +72,13 @@ export function Header({ onOpenSidebar }: HeaderProps) {
         <DropdownMenu>
         <DropdownMenuTrigger
           className="flex items-center gap-2 rounded-md px-1 py-1 transition-colors hover:bg-muted/70 focus:bg-muted/70 focus:outline-none data-popup-open:bg-muted/70 sm:gap-3 sm:pl-1 sm:pr-3"
-          aria-label="Open account menu"
+          aria-label="Abrir menú de la cuenta"
         >
           <Avatar className="size-8">
             {profile?.avatar_url ? (
               <AvatarImage
                 src={profile.avatar_url}
-                alt={profile.full_name ?? "Avatar"}
+                alt={profile.full_name ?? "Foto"}
               />
             ) : null}
             <AvatarFallback className="bg-primary/10 text-sm font-medium text-primary">
@@ -84,7 +86,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             </AvatarFallback>
           </Avatar>
           <span className="hidden text-sm font-medium text-foreground sm:inline">
-            {profile?.full_name ?? "User"}
+            {profile?.full_name ?? "Usuario"}
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -94,7 +96,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
         >
           <div className="px-2 py-1.5">
             <p className="truncate text-sm font-medium text-foreground">
-              {profile?.full_name ?? "User"}
+              {profile?.full_name ?? "Usuario"}
             </p>
             <p className="truncate text-xs text-muted-foreground">
               {profile?.email ?? ""}
@@ -110,7 +112,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             }
           >
             <User className="size-4" />
-            Profile
+            Perfil
           </DropdownMenuItem>
           <DropdownMenuItem
             render={
@@ -121,7 +123,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             }
           >
             <SettingsIcon className="size-4" />
-            Settings
+            Ajustes
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem
@@ -129,7 +131,7 @@ export function Header({ onOpenSidebar }: HeaderProps) {
             className="text-popover-foreground focus:bg-accent focus:text-accent-foreground"
           >
             <LogOut className="size-4" />
-            Sign out
+            Cerrar sesión
           </DropdownMenuItem>
         </DropdownMenuContent>
         </DropdownMenu>

@@ -38,15 +38,15 @@ export default function ForgotPasswordPage() {
       <AuthLayout>
         <div className="mb-8">
           <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-            Convix &middot; Reset password
+            Convix &middot; Restablecer contraseña
           </p>
           <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-            Check your email
+            Revisa tu correo
           </h2>
           <p className="mt-1.5 text-sm text-auth-form-muted">
-            We&apos;ve sent a password reset link to{" "}
+            Enviamos un enlace para restablecer la contraseña a{" "}
             <span className="text-auth-form-foreground">{email}</span>.
-            Please check your inbox.
+            Revisa tu bandeja de entrada.
           </p>
         </div>
         <Link to="/login">
@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
             variant="outline"
             className="h-11 w-full rounded-xl border-auth-form-border text-auth-form-muted hover:bg-auth-form-input hover:text-auth-form-foreground"
           >
-            Back to sign in
+            Volver a iniciar sesión
           </Button>
         </Link>
       </AuthLayout>
@@ -65,13 +65,13 @@ export default function ForgotPasswordPage() {
     <AuthLayout>
       <div className="mb-8">
         <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
-          Convix &middot; Reset password
+          Convix &middot; Restablecer contraseña
         </p>
         <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
-          Reset password
+          Restablecer contraseña
         </h2>
         <p className="mt-1.5 text-sm text-auth-form-muted">
-          Enter your email and we&apos;ll send you a reset link
+          Ingresa tu correo y te enviaremos un enlace para restablecerla
         </p>
       </div>
 
@@ -84,7 +84,7 @@ export default function ForgotPasswordPage() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="email" className="text-auth-form-muted">
-            Email
+            Correo
           </Label>
           <Input
             id="email"
@@ -102,7 +102,7 @@ export default function ForgotPasswordPage() {
           disabled={loading}
           className="mt-2 h-11 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
         >
-          {loading ? "Sending..." : "Send reset link"}
+          {loading ? "Enviando..." : "Enviar enlace de restablecimiento"}
         </Button>
       </form>
 
@@ -111,7 +111,7 @@ export default function ForgotPasswordPage() {
         className="mt-6 flex items-center justify-center gap-2 text-sm text-auth-form-muted hover:text-auth-form-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
-        Back to sign in
+        Volver a iniciar sesión
       </Link>
     </AuthLayout>
   );

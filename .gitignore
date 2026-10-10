@@ -47,3 +47,12 @@ yarn-error.log*
 
 # convix — storage local de archivos (driver "local")
 /data/
+
+# next/vite/tooling artefacts
+/.next/
+/.vite/
+/.turbo/
+.claude/
+.idea/
+.vscode/
+*.log

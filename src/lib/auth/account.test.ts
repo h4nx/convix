@@ -112,7 +112,7 @@ describe("getCurrentAccount", () => {
     await expect(getCurrentAccount()).rejects.toBeInstanceOf(UnauthorizedError);
   });
 
-  it("maps a profiles query error to 'Could not load account context'", async () => {
+  it("maps a profiles query error to 'No se pudo cargar el contexto de la cuenta'", async () => {
     const { client } = makeClient({
       user: { id: "user-1" },
       byTable: {
@@ -121,11 +121,11 @@ describe("getCurrentAccount", () => {
     });
     createClient.mockReturnValue(client);
     await expect(getCurrentAccount()).rejects.toThrow(
-      "Could not load account context",
+      "No se pudo cargar el contexto de la cuenta",
     );
   });
 
-  it("maps an accounts query error to 'Could not load account context'", async () => {
+  it("maps an accounts query error to 'No se pudo cargar el contexto de la cuenta'", async () => {
     // The exact #294 shape if the embed were still in play, but now on
     // the decoupled accounts lookup: profile resolves, account read errors.
     const { client } = makeClient({
@@ -141,7 +141,7 @@ describe("getCurrentAccount", () => {
     createClient.mockReturnValue(client);
     const err = await getCurrentAccount().catch((e) => e);
     expect(err).toBeInstanceOf(ForbiddenError);
-    expect(err.message).toBe("Could not load account context");
+    expect(err.message).toBe("No se pudo cargar el contexto de la cuenta");
   });
 
   it("rejects a profile not linked to an account", async () => {
@@ -153,7 +153,7 @@ describe("getCurrentAccount", () => {
     });
     createClient.mockReturnValue(client);
     await expect(getCurrentAccount()).rejects.toThrow(
-      "Profile is not linked to an account",
+      "El perfil no está vinculado a una cuenta",
     );
   });
 
@@ -170,7 +170,7 @@ describe("getCurrentAccount", () => {
     });
     createClient.mockReturnValue(client);
     await expect(getCurrentAccount()).rejects.toThrow(
-      "Profile is not linked to an account",
+      "El perfil no está vinculado a una cuenta",
     );
   });
 });

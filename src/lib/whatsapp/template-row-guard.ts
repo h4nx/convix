@@ -44,7 +44,7 @@ export function assertMessageTemplate(
         ? String((row as { id: unknown }).id)
         : '(unknown id)';
     throw new Error(
-      `Malformed message_templates row ${id} in ${context} — missing required fields (id, user_id, name, body_text).`,
+      `Fila de message_templates mal formada ${id} en ${context} — faltan campos obligatorios (id, user_id, name, body_text).`,
     );
   }
   return row;

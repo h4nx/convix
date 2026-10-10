@@ -75,7 +75,7 @@ export function AuthBrandPanel() {
             Convix
           </div>
           <div className="mt-0.5 font-mono text-[11px] tracking-[0.14em] text-primary/80 uppercase">
-            WhatsApp CRM
+            CRM de WhatsApp
           </div>
         </div>
       </div>

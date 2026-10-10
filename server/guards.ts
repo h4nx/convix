@@ -13,7 +13,7 @@ export function apiSessionGuard(request: NextRequest): NextResponse | null {
     pathname.startsWith('/api/whatsapp/') &&
     !pathname.includes('/webhook')
   ) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
   return null;
 }

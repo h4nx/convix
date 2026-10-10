@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   const cookieStore = await cookies();
   const user = await getSessionUser(cookieStore.get(SESSION_COOKIE)?.value);
   if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
 
   const body = (await request.json().catch(() => null)) as {
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   } | null;
   if (!body?.channel || !body.event) {
     return NextResponse.json(
-      { error: 'channel and event are required' },
+      { error: 'channel y event son obligatorios' },
       { status: 400 }
     );
   }
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
   );
   const accountId: string | undefined = rows[0]?.account_id;
   if (!accountId) {
-    return NextResponse.json({ error: 'No account' }, { status: 403 });
+    return NextResponse.json({ error: 'Sin cuenta' }, { status: 403 });
   }
 
   const message = JSON.stringify({
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     account_id: accountId,
   });
   if (Buffer.byteLength(message) > 7500) {
-    return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
+    return NextResponse.json({ error: 'Carga demasiado grande' }, { status: 413 });
   }
 
   await getPool().query(`SELECT pg_notify('convix_broadcast', $1)`, [message]);

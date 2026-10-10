@@ -132,7 +132,7 @@ async function deliverOne(
       redirect: 'manual',
       signal: AbortSignal.timeout(DELIVERY_TIMEOUT_MS),
     });
-    if (!res.ok) throw new Error(`endpoint responded ${res.status}`);
+    if (!res.ok) throw new Error(`el endpoint respondió ${res.status}`);
 
     // Success: clear the failure streak.
     await db

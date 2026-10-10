@@ -109,6 +109,30 @@ const NODE_WIDTH = 240;
 // safer than over (tighter layout that still doesn't overlap).
 const NODE_HEIGHT = 90;
 
+// Altura aproximada por tipo de nodo: los de botones/lista/condición muestran
+// una fila por salida, así que con la altura fija el autolayout los solapaba.
+function estimateNodeHeight(n: {
+  node_type: string;
+  config: Record<string, unknown>;
+}): number {
+  const cfg = n.config as {
+    buttons?: unknown[];
+    sections?: Array<{ rows?: unknown[] }>;
+  };
+  if (n.node_type === 'send_buttons') {
+    return NODE_HEIGHT + 40 + (cfg.buttons?.length ?? 0) * 26;
+  }
+  if (n.node_type === 'send_list') {
+    const rows = (cfg.sections ?? []).reduce(
+      (sum, sec) => sum + (sec.rows?.length ?? 0),
+      0
+    );
+    return NODE_HEIGHT + 40 + rows * 26;
+  }
+  if (n.node_type === 'condition') return NODE_HEIGHT + 60;
+  return NODE_HEIGHT + 20;
+}
+
 // ============================================================
 // Custom node — one card per flow node, styled to match the list
 // view's collapsed card so the two views feel like the same product.
@@ -193,7 +217,7 @@ function FlowNodeCard({ data, selected }: NodeProps) {
         </span>
         {isEntry && (
           <span className="border-border text-muted-foreground ml-auto rounded-sm border px-1.5 py-0.5 text-[8.5px] font-bold tracking-[0.1em] uppercase">
-            Entry
+            Entrada
           </span>
         )}
       </div>
@@ -301,10 +325,10 @@ function FlowCanvasInner() {
           builderNodes.map((n) => ({
             id: n.node_key,
             width: NODE_WIDTH,
-            height: NODE_HEIGHT,
+            height: estimateNodeHeight(n),
           })),
           canvasEdges.map((e) => ({ source: e.source, target: e.target })),
-          { direction: 'TB' }
+          { direction: 'TB', rankSep: 100 }
         )
       : null;
   }, [builderNodes]);
@@ -506,7 +530,7 @@ function FlowCanvasInner() {
   if (rfNodes.length === 0) {
     return (
       <div className="text-muted-foreground flex h-full flex-col items-center justify-center gap-3 text-sm">
-        <p>No nodes yet.</p>
+        <p>Aún no hay nodos.</p>
         <CanvasAddNodeButton />
       </div>
     );
@@ -629,7 +653,7 @@ function NodeEditSheet({
               <span style={{ color: c.text }}>{meta.label}</span>
               {isEntry && (
                 <span className="rounded-sm bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold tracking-wider text-emerald-300 uppercase">
-                  Entry
+                  Entrada
                 </span>
               )}
             </SheetTitle>
@@ -654,7 +678,7 @@ function NodeEditSheet({
         <SheetFooter className="border-border border-t px-5 py-3 sm:flex-row sm:justify-between">
           {!isEntry ? (
             <Button variant="ghost" size="sm" onClick={onSetEntry}>
-              Set as entry
+              Definir como entrada
             </Button>
           ) : (
             <span />
@@ -666,7 +690,7 @@ function NodeEditSheet({
             className="text-red-400 hover:bg-red-500/10 hover:text-red-300"
           >
             <Trash2 className="h-3.5 w-3.5" />
-            Delete node
+            Eliminar nodo
           </Button>
         </SheetFooter>
       </SheetContent>
@@ -726,10 +750,10 @@ function CanvasAddNodeButton() {
     <DropdownMenu>
       <DropdownMenuTrigger
         className="bg-primary text-primary-foreground hover:bg-primary-hover inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[13px] font-medium shadow-[0_6px_20px_-8px_rgba(0,0,0,0.5)] transition-colors"
-        aria-label="Add node"
+        aria-label="Agregar nodo"
       >
         <Plus className="h-4 w-4" />
-        Add node
+        Agregar nodo
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="start"

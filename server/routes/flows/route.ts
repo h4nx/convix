@@ -22,7 +22,7 @@ async function requireUser(): Promise<
     data: { user },
   } = await supabase.auth.getUser()
   if (!user) {
-    return { ok: false, status: 401, body: { error: 'Unauthorized' } }
+    return { ok: false, status: 401, body: { error: 'No autorizado' } }
   }
   return { ok: true, userId: user.id, supabase }
 }
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
   const accountId = profile?.account_id as string | undefined
   if (!accountId) {
     return NextResponse.json(
-      { error: 'Your profile is not linked to an account.' },
+      { error: 'Tu perfil no está vinculado a una cuenta.' },
       { status: 403 },
     )
   }
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       }
     | null
   if (!body) {
-    return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+    return NextResponse.json({ error: 'JSON no válido' }, { status: 400 })
   }
 
   const admin = supabaseAdmin()
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
     const template = getFlowTemplate(body.template_slug)
     if (!template) {
       return NextResponse.json(
-        { error: `Unknown template_slug "${body.template_slug}"` },
+        { error: `template_slug desconocido "${body.template_slug}"` },
         { status: 400 },
       )
     }
@@ -113,7 +113,7 @@ export async function POST(request: Request) {
       .single()
     if (flowErr || !flow) {
       return NextResponse.json(
-        { error: flowErr?.message ?? 'flow insert failed' },
+        { error: flowErr?.message ?? 'falló la creación del flujo' },
         { status: 500 },
       )
     }
@@ -142,7 +142,7 @@ export async function POST(request: Request) {
 
   // -------- Plain (empty) create path --------
   if (!body.name?.trim()) {
-    return NextResponse.json({ error: 'name is required' }, { status: 400 })
+    return NextResponse.json({ error: 'el nombre es obligatorio' }, { status: 400 })
   }
   const trigger_type = body.trigger_type ?? 'keyword'
 
@@ -161,7 +161,7 @@ export async function POST(request: Request) {
     .single()
   if (error || !data) {
     return NextResponse.json(
-      { error: error?.message ?? 'insert failed' },
+      { error: error?.message ?? 'falló la inserción' },
       { status: 500 },
     )
   }

@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       {
         data: null,
         error: {
-          message: 'Unauthorized',
+          message: 'No autorizado',
           code: '401',
           details: null,
           hint: null,
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       {
         data: null,
         error: {
-          message: 'Invalid JSON body',
+          message: 'Cuerpo JSON no válido',
           code: '400',
           details: null,
           hint: null,

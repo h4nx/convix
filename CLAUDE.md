@@ -149,8 +149,8 @@ The app used to be a Next.js full-stack app. It is now two halves in one repo, s
 in production (same origin, so cookies/CSP/SSE behave as before):
 
 - **Frontend** — Vite 6 SPA with React Router 7 (`src/main.tsx`, `src/App.tsx`, pages in
-  `src/pages/`). Messages via `use-intl` (locale fixed at build time with `VITE_APP_LOCALE`,
-  see `src/i18n/messages.ts`). Public client env uses the `VITE_*` prefix.
+  `src/pages/`). Messages via `use-intl` (la UI es solo en español: `messages/es.json`,
+  ver `src/i18n/messages.ts`; no hay selector de idioma ni de color de acento). Public client env uses the `VITE_*` prefix.
 - **Backend** — Hono on `@hono/node-server` (`server/`). The former App Router route handlers live
   unchanged in `server/routes/**/route.ts` (`GET/POST/...(request, { params })`); a tiny shim in
   `server/shim/` provides `NextRequest`/`NextResponse`/`after` (`@server/shim/next-server`) and

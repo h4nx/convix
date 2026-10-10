@@ -314,7 +314,7 @@ function LegendDot({ color, label }: { color: string; label: string }) {
 // Formats dates in the app's configured locale (not the visitor's
 // browser locale) so month/weekday names stay consistent regardless
 // of who's viewing — see src/i18n/request.ts for the same source.
-const APP_LOCALE = import.meta.env.VITE_APP_LOCALE || 'en'
+const APP_LOCALE = 'es'
 
 function shortDayLabel(key: string): string {
   // key is YYYY-MM-DD; return "Apr 17"-style. Using Date with an

@@ -42,7 +42,7 @@ describe('buildSendComponents — body', () => {
         row({ body_text: 'Hi {{1}} {{2}}' }),
         { body: ['just one'] },
       ),
-    ).toThrow(/2 variable\(s\) but only 1/);
+    ).toThrow(/2 variable\(s\) pero solo 1/);
   });
 
   it('trims extra body values silently (legacy callers may overshoot)', () => {
@@ -80,7 +80,7 @@ describe('buildSendComponents — header', () => {
       buildSendComponents(
         row({ header_type: 'text', header_content: 'Hello {{1}}' }),
       ),
-    ).toThrow(/Header text variable \{\{1\}\}/);
+    ).toThrow(/variable \{\{1\}\} del encabezado de texto/);
   });
 
   it('auto-includes IMAGE header from the stored sample URL', () => {
@@ -146,7 +146,7 @@ describe('buildSendComponents — header', () => {
   it('throws on media header with no link OR id available', () => {
     expect(() =>
       buildSendComponents(row({ header_type: 'image' })),
-    ).toThrow(/requires a media link or id/);
+    ).toThrow(/requiere un enlace o id de medio/);
   });
 });
 
@@ -190,7 +190,7 @@ describe('buildSendComponents — buttons', () => {
           ],
         }),
       ),
-    ).toThrow(/URL button #1 uses \{\{1\}\}/);
+    ).toThrow(/botón URL n\.º 1 usa \{\{1\}\}/i);
   });
 
   it('uses the correct index when QR buttons precede the URL button', () => {
