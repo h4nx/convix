@@ -128,7 +128,11 @@ export async function resolveConversationByPhone(
           '[resolve-conversation] contact create error:',
           createErr
         );
-        throw new SendMessageError('db_error', 'No se pudo crear el contacto', 500);
+        throw new SendMessageError(
+          'db_error',
+          'No se pudo crear el contacto',
+          500
+        );
       }
     } else {
       contactId = created.id;

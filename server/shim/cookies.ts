@@ -17,7 +17,8 @@ export function parseCookieHeader(header: string | null): Map<string, string> {
     const name = part.slice(0, eq).trim();
     if (!name) continue;
     let value = part.slice(eq + 1).trim();
-    if (value.startsWith('"') && value.endsWith('"')) value = value.slice(1, -1);
+    if (value.startsWith('"') && value.endsWith('"'))
+      value = value.slice(1, -1);
     try {
       jar.set(name, decodeURIComponent(value));
     } catch {
@@ -27,12 +28,18 @@ export function parseCookieHeader(header: string | null): Map<string, string> {
   return jar;
 }
 
-export function serializeCookie(name: string, value: string, options: CookieOptions = {}): string {
+export function serializeCookie(
+  name: string,
+  value: string,
+  options: CookieOptions = {}
+): string {
   const parts = [`${name}=${encodeURIComponent(value)}`];
   parts.push(`Path=${options.path ?? '/'}`);
   if (options.domain) parts.push(`Domain=${options.domain}`);
-  if (options.maxAge !== undefined) parts.push(`Max-Age=${Math.floor(options.maxAge)}`);
-  if (options.expires !== undefined) parts.push(`Expires=${new Date(options.expires).toUTCString()}`);
+  if (options.maxAge !== undefined)
+    parts.push(`Max-Age=${Math.floor(options.maxAge)}`);
+  if (options.expires !== undefined)
+    parts.push(`Expires=${new Date(options.expires).toUTCString()}`);
   if (options.httpOnly) parts.push('HttpOnly');
   if (options.secure) parts.push('Secure');
   if (options.sameSite) {

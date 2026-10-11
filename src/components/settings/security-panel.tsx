@@ -7,7 +7,7 @@ import { SettingsPanelHead } from './settings-panel-head';
  */
 export function SecurityPanel() {
   return (
-    <section className="w-full animate-in fade-in-50 duration-200">
+    <section className="animate-in fade-in-50 w-full duration-200">
       <SettingsPanelHead
         title="Inicio de sesión y seguridad"
         description="Cambia tu contraseña y controla en qué dispositivos tienes la sesión abierta."

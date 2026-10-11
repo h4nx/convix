@@ -24,7 +24,9 @@ describe('apiSessionGuard — chequeo optimista por cookie de sesión', () => {
   });
 
   it('deja pasar el webhook de WhatsApp sin cookie (lo llama Meta)', () => {
-    expect(apiSessionGuard(makeRequest('/api/whatsapp/webhook', false))).toBeNull();
+    expect(
+      apiSessionGuard(makeRequest('/api/whatsapp/webhook', false))
+    ).toBeNull();
   });
 
   it('no toca otras rutas de la API', () => {

@@ -8,11 +8,7 @@ import { ROLE_META } from './role-meta';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 import { SettingsPanelHead } from './settings-panel-head';
 
@@ -56,7 +52,7 @@ export function ProfileForm() {
   }, [previewUrl]);
 
   const currentAvatar =
-    previewUrl ?? (!removeAvatar ? profile?.avatar_url ?? null : null);
+    previewUrl ?? (!removeAvatar ? (profile?.avatar_url ?? null) : null);
 
   const initial = (fullName || profile?.full_name || profile?.email || 'U')
     .charAt(0)
@@ -114,8 +110,7 @@ export function ProfileForm() {
 
       // Sube la imagen nueva, si hay una.
       if (pendingAvatar) {
-        const ext =
-          pendingAvatar.name.split('.').pop()?.toLowerCase() || 'png';
+        const ext = pendingAvatar.name.split('.').pop()?.toLowerCase() || 'png';
         const path = `${user.id}/avatar-${Date.now()}.${ext}`;
         const { error: uploadError } = await supabase.storage
           .from('avatars')
@@ -173,7 +168,7 @@ export function ProfileForm() {
       await refreshProfile();
 
       toast.success(
-        emailChanged ? 'Perfil y correo actualizados' : 'Perfil guardado',
+        emailChanged ? 'Perfil y correo actualizados' : 'Perfil guardado'
       );
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Error desconocido';
@@ -204,7 +199,7 @@ export function ProfileForm() {
     : '—';
 
   return (
-    <section className="w-full animate-in fade-in-50 duration-200">
+    <section className="animate-in fade-in-50 w-full duration-200">
       <SettingsPanelHead
         title="Tu perfil"
         description="Cómo apareces en la aplicación. Tu foto y nombre se ven en el encabezado, el menú lateral y donde tus compañeros te vean."
@@ -212,141 +207,147 @@ export function ProfileForm() {
       <form onSubmit={onSubmit} className="space-y-4">
         <Card>
           <CardContent className="space-y-6">
-          {/* Avatar row */}
-          <div className="flex flex-wrap items-center gap-5">
-            <Avatar size="lg" className="size-16">
-              {currentAvatar ? (
-                <AvatarImage src={currentAvatar} alt={fullName || 'Foto de perfil'} />
-              ) : null}
-              <AvatarFallback className="bg-primary/10 text-base text-primary">
-                {initial}
-              </AvatarFallback>
-            </Avatar>
+            {/* Avatar row */}
+            <div className="flex flex-wrap items-center gap-5">
+              <Avatar size="lg" className="size-16">
+                {currentAvatar ? (
+                  <AvatarImage
+                    src={currentAvatar}
+                    alt={fullName || 'Foto de perfil'}
+                  />
+                ) : null}
+                <AvatarFallback className="bg-primary/10 text-primary text-base">
+                  {initial}
+                </AvatarFallback>
+              </Avatar>
 
-            <div className="flex flex-wrap gap-2">
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/gif"
-                className="hidden"
-                onChange={onPickFile}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={saving}
-              >
-                <Upload className="size-4" />
-                {currentAvatar ? 'Cambiar foto' : 'Subir foto'}
-              </Button>
-              {currentAvatar && (
+              <div className="flex flex-wrap gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  className="hidden"
+                  onChange={onPickFile}
+                />
                 <Button
                   type="button"
-                  variant="ghost"
-                  onClick={onRemoveAvatar}
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
                   disabled={saving}
-                  className="text-muted-foreground hover:text-foreground"
                 >
-                  <Trash2 className="size-4" />
-                  Quitar
+                  <Upload className="size-4" />
+                  {currentAvatar ? 'Cambiar foto' : 'Subir foto'}
                 </Button>
-              )}
-              <p className="w-full text-xs text-muted-foreground">
-                PNG, JPG, WebP o GIF. Hasta 2 MB.
-              </p>
-            </div>
-          </div>
-
-          {/* Name */}
-          <div className="space-y-2">
-            <Label htmlFor="profile-full-name" className="text-foreground">
-              Nombre
-            </Label>
-            <Input
-              id="profile-full-name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="Ada Lovelace" autoComplete="name"
-              maxLength={120}
-              disabled={saving}
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div className="space-y-2">
-            <Label htmlFor="profile-email" className="text-foreground">
-              Correo electrónico
-            </Label>
-            <Input
-              id="profile-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={saving}
-              required
-            />
-            {emailChanged && (
-              <div className="space-y-2 rounded-md border border-amber-500/30 bg-amber-500/10 p-3">
-                <p className="flex items-start gap-2 text-xs text-amber-700">
-                  <Mail className="mt-0.5 size-3.5 shrink-0" />
-                  <span>
-                    Cambiarás el correo con el que inicias sesión. Confirma con
-                    tu contraseña actual.
-                  </span>
+                {currentAvatar && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={onRemoveAvatar}
+                    disabled={saving}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <Trash2 className="size-4" />
+                    Quitar
+                  </Button>
+                )}
+                <p className="text-muted-foreground w-full text-xs">
+                  PNG, JPG, WebP o GIF. Hasta 2 MB.
                 </p>
-                <Input
-                  id="profile-current-password"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Contraseña actual"
-                  autoComplete="current-password"
-                  disabled={saving}
-                  aria-label="Contraseña actual"
-                />
               </div>
+            </div>
+
+            {/* Name */}
+            <div className="space-y-2">
+              <Label htmlFor="profile-full-name" className="text-foreground">
+                Nombre
+              </Label>
+              <Input
+                id="profile-full-name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                placeholder="Ada Lovelace"
+                autoComplete="name"
+                maxLength={120}
+                disabled={saving}
+                required
+              />
+            </div>
+
+            {/* Email */}
+            <div className="space-y-2">
+              <Label htmlFor="profile-email" className="text-foreground">
+                Correo electrónico
+              </Label>
+              <Input
+                id="profile-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={saving}
+                required
+              />
+              {emailChanged && (
+                <div className="space-y-2 rounded-md border border-amber-500/30 bg-amber-500/10 p-3">
+                  <p className="flex items-start gap-2 text-xs text-amber-700">
+                    <Mail className="mt-0.5 size-3.5 shrink-0" />
+                    <span>
+                      Cambiarás el correo con el que inicias sesión. Confirma
+                      con tu contraseña actual.
+                    </span>
+                  </p>
+                  <Input
+                    id="profile-current-password"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Contraseña actual"
+                    autoComplete="current-password"
+                    disabled={saving}
+                    aria-label="Contraseña actual"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Read-only block */}
+            <div className="border-border bg-muted rounded-lg border p-4">
+              <p className="text-muted-foreground mb-3 text-xs font-semibold tracking-wider uppercase">
+                Detalles de la cuenta
+              </p>
+              <dl className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
+                <div>
+                  <dt className="text-muted-foreground">Rol</dt>
+                  <dd className="text-foreground mt-0.5">{roleLabel}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted-foreground">Miembro desde</dt>
+                  <dd className="text-foreground mt-0.5">{joined}</dd>
+                </div>
+                <div className="sm:col-span-2">
+                  <dt className="text-muted-foreground">ID de usuario</dt>
+                  <dd className="text-muted-foreground mt-0.5 font-mono text-xs break-all">
+                    {user?.id ?? '—'}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            {!profile && (
+              <p className="text-muted-foreground flex items-center gap-2 text-sm">
+                <CircleAlert className="size-4" />
+                Cargando tu perfil…
+              </p>
             )}
-          </div>
-
-          {/* Read-only block */}
-          <div className="rounded-lg border border-border bg-muted p-4">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Detalles de la cuenta
-            </p>
-            <dl className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-              <div>
-                <dt className="text-muted-foreground">Rol</dt>
-                <dd className="mt-0.5 text-foreground">
-                  {roleLabel}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-muted-foreground">Miembro desde</dt>
-                <dd className="mt-0.5 text-foreground">{joined}</dd>
-              </div>
-              <div className="sm:col-span-2">
-                <dt className="text-muted-foreground">ID de usuario</dt>
-                <dd className="mt-0.5 break-all font-mono text-xs text-muted-foreground">
-                  {user?.id ?? '—'}
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-          {!profile && (
-            <p className="flex items-center gap-2 text-sm text-muted-foreground">
-              <CircleAlert className="size-4" />
-              Cargando tu perfil…
-            </p>
-          )}
-
-        </CardContent>
+          </CardContent>
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={saving || !dirty || !profile || (emailChanged && !currentPassword)}>
+          <Button
+            type="submit"
+            disabled={
+              saving || !dirty || !profile || (emailChanged && !currentPassword)
+            }
+          >
             {saving ? (
               <>
                 <Loader2 className="size-4 animate-spin" />

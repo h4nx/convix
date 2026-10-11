@@ -17,7 +17,8 @@ async function currentUser() {
 /** Lista las sesiones activas del usuario (la actual marcada con `current`). */
 export async function GET() {
   const { token, user } = await currentUser();
-  if (!user) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!user)
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   return NextResponse.json({ sessions: await listSessions(user.id, token) });
 }
 
@@ -27,7 +28,8 @@ export async function GET() {
  */
 export async function DELETE(request: NextRequest) {
   const { token, user } = await currentUser();
-  if (!user) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  if (!user)
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
 
   const body = (await request.json().catch(() => null)) as {
     id?: string;
@@ -47,7 +49,10 @@ export async function DELETE(request: NextRequest) {
       );
     }
     const ok = await deleteSessionById(user.id, body.id);
-    return NextResponse.json({ revoked: ok ? 1 : 0 }, { status: ok ? 200 : 404 });
+    return NextResponse.json(
+      { revoked: ok ? 1 : 0 },
+      { status: ok ? 200 : 404 }
+    );
   }
   return NextResponse.json({ error: 'Cuerpo no válido' }, { status: 400 });
 }

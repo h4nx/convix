@@ -88,7 +88,10 @@ export async function resolveAuditUserId(
     .maybeSingle();
   const owner = account?.owner_user_id as string | undefined;
   if (!owner) {
-    throw new ContactError('No se pudo determinar al propietario de la cuenta', 500);
+    throw new ContactError(
+      'No se pudo determinar al propietario de la cuenta',
+      500
+    );
   }
   return owner;
 }
@@ -181,11 +184,12 @@ export async function setContactTags(
     .select('tag_id')
     .eq('contact_id', contactId);
   if (readErr) {
-    throw new ContactError('No se pudieron leer las etiquetas del contacto', 500);
+    throw new ContactError(
+      'No se pudieron leer las etiquetas del contacto',
+      500
+    );
   }
-  const existing = new Set(
-    (current ?? []).map((r) => r.tag_id as string)
-  );
+  const existing = new Set((current ?? []).map((r) => r.tag_id as string));
 
   const toAdd = [...desired].filter((id) => !existing.has(id));
   const toRemove = [...existing].filter((id) => !desired.has(id));
@@ -196,13 +200,21 @@ export async function setContactTags(
       .delete()
       .eq('contact_id', contactId)
       .in('tag_id', toRemove);
-    if (error) throw new ContactError('No se pudieron actualizar las etiquetas del contacto', 500);
+    if (error)
+      throw new ContactError(
+        'No se pudieron actualizar las etiquetas del contacto',
+        500
+      );
   }
   if (toAdd.length > 0) {
     const { error } = await db
       .from('contact_tags')
       .insert(toAdd.map((tag_id) => ({ contact_id: contactId, tag_id })));
-    if (error) throw new ContactError('No se pudieron actualizar las etiquetas del contacto', 500);
+    if (error)
+      throw new ContactError(
+        'No se pudieron actualizar las etiquetas del contacto',
+        500
+      );
   }
 }
 

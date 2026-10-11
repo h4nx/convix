@@ -20,7 +20,7 @@
  * /flows/[id]/runs) — those don't belong in the hook.
  */
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   CircleDot,
@@ -31,14 +31,11 @@ import {
   Save,
   Trash2,
   Workflow,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  useFlowEditor,
-  type BuilderState,
-} from "./flow-editor-state";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { useFlowEditor, type BuilderState } from './flow-editor-state';
 
 export function EditorHeader() {
   const navigate = useNavigate();
@@ -61,14 +58,14 @@ export function EditorHeader() {
         {/* ---- left: back · icon · name · status · edited ---- */}
         <button
           type="button"
-          onClick={() => navigate("/flows")}
+          onClick={() => navigate('/flows')}
           title="Volver a Flujos"
           aria-label="Volver a Flujos"
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="text-muted-foreground hover:bg-muted hover:text-foreground inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary">
+        <span className="bg-primary-soft text-primary flex h-8 w-8 shrink-0 items-center justify-center rounded-lg">
           <Workflow className="h-[18px] w-[18px]" />
         </span>
         <input
@@ -77,12 +74,12 @@ export function EditorHeader() {
           placeholder="Nombre del flujo"
           spellCheck={false}
           aria-label="Nombre del flujo"
-          className="min-w-[120px] max-w-[340px] rounded-lg border border-transparent bg-transparent px-2 py-1 text-lg font-bold leading-tight tracking-tight text-foreground outline-hidden transition-colors hover:bg-muted focus:border-primary focus:bg-transparent focus:shadow-[0_0_0_3px_var(--primary-soft)]"
+          className="text-foreground hover:bg-muted focus:border-primary max-w-[340px] min-w-[120px] rounded-lg border border-transparent bg-transparent px-2 py-1 text-lg leading-tight font-bold tracking-tight outline-hidden transition-colors focus:bg-transparent focus:shadow-[0_0_0_3px_var(--primary-soft)]"
         />
         <StatusChip status={state.status} />
         {dirty && (
           <span
-            className="inline-flex shrink-0 items-center gap-1.5 text-[10px] font-medium uppercase tracking-wide text-amber-300"
+            className="inline-flex shrink-0 items-center gap-1.5 text-[10px] font-medium tracking-wide text-amber-300 uppercase"
             title="Cambios sin guardar — presiona Guardar para conservarlos"
             aria-live="polite"
           >
@@ -100,7 +97,7 @@ export function EditorHeader() {
           >
             <History className="h-3.5 w-3.5" />
             Ejecuciones
-            <span className="ml-0.5 rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+            <span className="bg-muted text-muted-foreground ml-0.5 rounded-sm px-1.5 py-0.5 font-mono text-[11px]">
               {flow.execution_count}
             </span>
           </Button>
@@ -113,11 +110,11 @@ export function EditorHeader() {
             <Trash2 className="h-3.5 w-3.5" />
             Eliminar
           </Button>
-          {state.status === "active" ? (
+          {state.status === 'active' ? (
             <Button
               variant="outline"
               size="sm"
-              onClick={() => void setStatus("draft")}
+              onClick={() => void setStatus('draft')}
               disabled={activating}
             >
               {activating ? (
@@ -131,11 +128,11 @@ export function EditorHeader() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => void setStatus("active")}
+              onClick={() => void setStatus('active')}
               disabled={activating || !canActivate}
               title={
                 !canActivate
-                  ? "Corrige los problemas de abajo antes de activar"
+                  ? 'Corrige los problemas de abajo antes de activar'
                   : undefined
               }
             >
@@ -166,34 +163,34 @@ export function EditorHeader() {
         }
         placeholder="Agrega una descripción corta (interna: los clientes no la ven)"
         aria-label="Descripción del flujo"
-        className="w-full max-w-[78ch] rounded-md border border-transparent bg-transparent px-2 py-1 text-[13px] text-muted-foreground outline-hidden transition-colors placeholder:text-muted-foreground/60 hover:bg-muted/50 focus:border-primary focus:bg-transparent focus:text-foreground"
+        className="text-muted-foreground placeholder:text-muted-foreground/60 hover:bg-muted/50 focus:border-primary focus:text-foreground w-full max-w-[78ch] rounded-md border border-transparent bg-transparent px-2 py-1 text-[13px] outline-hidden transition-colors focus:bg-transparent"
       />
     </div>
   );
 }
 
-function StatusChip({ status }: { status: BuilderState["status"] }) {
+function StatusChip({ status }: { status: BuilderState['status'] }) {
   const cfg = {
     draft: {
       // Neutral, not amber — amber is reserved for the adjacent
       // "Edited" dirty signal, so the two don't read as the same alert.
-      cls: "border-border bg-muted text-muted-foreground",
-      label: "Borrador",
+      cls: 'border-border bg-muted text-muted-foreground',
+      label: 'Borrador',
     },
     active: {
-      cls: "border-emerald-600/40 bg-emerald-500/10 text-emerald-300",
-      label: "Activo",
+      cls: 'border-emerald-600/40 bg-emerald-500/10 text-emerald-300',
+      label: 'Activo',
     },
     archived: {
-      cls: "border-border bg-muted/50 text-muted-foreground",
-      label: "Archivado",
+      cls: 'border-border bg-muted/50 text-muted-foreground',
+      label: 'Archivado',
     },
   }[status];
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-medium",
-        cfg.cls,
+        'inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-medium',
+        cfg.cls
       )}
     >
       <CircleDot className="h-3 w-3" />

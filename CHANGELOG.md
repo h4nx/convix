@@ -14,8 +14,22 @@ and polish.
 ## [Unreleased]
 
 ### Changed
+
 - **Migración de Next.js a Vite**: el frontend es ahora una SPA Vite 6 + React Router 7 (`src/pages`), y los route handlers pasaron a `server/routes` sobre un servidor Node/Hono con un shim de `NextRequest`/`NextResponse`/`cookies()`. Un solo proceso sirve la API y `dist/`. `next-intl` → `use-intl`; `proxy.ts` → `server/guards.ts` + guards en el cliente.
-- Variables: `NEXT_PUBLIC_SITE_URL` → `SITE_URL` (la antigua sigue aceptándose); `NEXT_PUBLIC_APP_LOCALE` → `VITE_APP_LOCALE` (se fija al compilar).
+- Variables: `NEXT_PUBLIC_SITE_URL` → `SITE_URL` (la antigua sigue aceptándose). `NEXT_PUBLIC_APP_LOCALE` / `VITE_APP_LOCALE` ya no existen: la interfaz es solo en español.
+- **Interfaz solo en español**: se eliminó `messages/en.json` y el selector de idioma; textos, mensajes del servidor y plantillas en español.
+- **Color único y fijo**: se eliminaron los temas y la sección «Apariencia» de Ajustes; la paleta violeta del login se aplica a todo el producto.
+- **Rediseño H&M Business**: login, registro y panel con identidad del ecosistema (ilustración de contactos, conversaciones y difusiones, pie «© H&M Business. Todos los derechos reservados» en el menú lateral). El encabezado muestra nombre y rol del usuario.
+- **Ajustes a ancho completo**: «Tu perfil», «Inicio de sesión y seguridad», «Campos y etiquetas» y «Negocios y moneda».
+
+### Added
+- **Tu perfil**: cambio de correo con contraseña actual, rol de la cuenta y fecha de alta.
+- **Inicio de sesión y seguridad**: cambio de contraseña verificado en el servidor con indicador de fortaleza, lista de sesiones activas (`/api/auth/sessions`), cierre de una sesión, de las demás o de todas.
+- **Flujos**: autodisposición del lienzo (dagre), validación previa a activar, palabras clave y políticas de respaldo; planificador interno (`server/scheduler.ts`) que ejecuta los cron de automatizaciones (60 s) y flujos (5 min).
+
+### Security
+- Dependencias actualizadas (`hono`, `@hono/node-server`, `nodemailer` 10): `npm audit --omit=dev` sin vulnerabilidades.
+- Cambiar contraseña o correo exige la contraseña actual (con límite de intentos) y cierra las demás sesiones.
 
 ## [0.9.0] — 2026-07-12 · Convix
 

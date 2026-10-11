@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import { AuthBrandPanel } from "./auth-brand-panel";
-import { ConvixLogo } from "@/components/ui/convix-logo";
+import type { ReactNode } from 'react';
+import { AuthBrandPanel } from './auth-brand-panel';
+import { ConvixLogo } from '@/components/ui/convix-logo';
 
 // Shared chrome for every unauthenticated page (login, signup,
 // forgot-password, reset-password): a persistent dark brand panel
@@ -16,15 +16,15 @@ export function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <AuthBrandPanel />
-      <div className="flex min-w-0 flex-1 items-center justify-center bg-auth-form px-6 py-12 sm:px-10">
+      <div className="bg-auth-form flex min-w-0 flex-1 items-center justify-center px-6 py-12 sm:px-10">
         <div className="w-full max-w-sm">
           {/* Marca compacta: el panel grande se oculta bajo `lg`. */}
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <ConvixLogo className="h-8 w-8 text-primary" />
-            <span className="text-lg font-semibold tracking-tight text-auth-form-foreground">
+            <ConvixLogo className="text-primary h-8 w-8" />
+            <span className="text-auth-form-foreground text-lg font-semibold tracking-tight">
               Convix
             </span>
-            <span className="font-mono text-[10px] tracking-[0.14em] text-auth-form-muted uppercase">
+            <span className="text-auth-form-muted font-mono text-[10px] tracking-[0.14em] uppercase">
               · H&amp;M Business
             </span>
           </div>

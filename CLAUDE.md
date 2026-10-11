@@ -92,7 +92,7 @@ SELECT set_config('app.user_id', $uid, true);
 
 `app_uid()` (reads the `app.user_id` GUC) replaced `auth.uid()` in every policy. Service-side
 code paths (Meta webhook ingestion, the automations engine, the public API) use the pool
-*without* `SET ROLE`, so as schema owner they bypass RLS — the same semantics Supabase's
+_without_ `SET ROLE`, so as schema owner they bypass RLS — the same semantics Supabase's
 service-role key had. When adding a new table or query path, decide explicitly which of these
 two contexts it belongs to.
 

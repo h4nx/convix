@@ -77,7 +77,8 @@ contenedor: `npm run build && npm start` en cualquier Node ≥ 20.
 Variables de entorno: ver [.env.local.example](./.env.local.example).
 
 Para un stack local completo (app en :11000 + Postgres + Kafka + MinIO
-+ Mailpit) bajo el proyecto Docker `convix-dev`:
+
+- Mailpit) bajo el proyecto Docker `convix-dev`:
 
 ```bash
 docker compose -p convix-dev -f docker-compose.local.yml \

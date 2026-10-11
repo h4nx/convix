@@ -22,30 +22,26 @@
  * renders the advanced rows.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  Loader2,
-  Paperclip,
-  Plus,
-  Trash2,
-  Upload,
-  X,
-} from "lucide-react";
-import { toast } from "sonner";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Loader2, Paperclip, Plus, Trash2, Upload, X } from 'lucide-react';
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { uploadAccountMedia, MEDIA_MAX_BYTES } from "@/lib/storage/upload-media";
-import { slugify, type BuilderNode } from "../shared";
-import { NextNodeRow, NodeKeySelect, TextRow } from "./fields";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import {
+  uploadAccountMedia,
+  MEDIA_MAX_BYTES,
+} from '@/lib/storage/upload-media';
+import { slugify, type BuilderNode } from '../shared';
+import { NextNodeRow, NodeKeySelect, TextRow } from './fields';
 
 interface NodeConfigFormProps {
   node: BuilderNode;
@@ -62,10 +58,10 @@ export function NodeConfigForm({
 }: NodeConfigFormProps) {
   const cfg = node.config;
   switch (node.node_type) {
-    case "start":
+    case 'start':
       return (
         <NextNodeRow
-          value={(cfg as { next_node_key?: string }).next_node_key ?? ""}
+          value={(cfg as { next_node_key?: string }).next_node_key ?? ''}
           allNodes={allNodes}
           currentKey={node.node_key}
           onChange={(v) => onUpdateConfig({ next_node_key: v })}
@@ -73,16 +69,16 @@ export function NodeConfigForm({
         />
       );
 
-    case "send_message":
+    case 'send_message':
       return (
         <>
           <TextRow
             label="Texto enviado al cliente"
-            value={(cfg as { text?: string }).text ?? ""}
+            value={(cfg as { text?: string }).text ?? ''}
             onChange={(v) => onUpdateConfig({ text: v })}
           />
           <NextNodeRow
-            value={(cfg as { next_node_key?: string }).next_node_key ?? ""}
+            value={(cfg as { next_node_key?: string }).next_node_key ?? ''}
             allNodes={allNodes}
             currentKey={node.node_key}
             onChange={(v) => onUpdateConfig({ next_node_key: v })}
@@ -91,7 +87,7 @@ export function NodeConfigForm({
         </>
       );
 
-    case "send_buttons":
+    case 'send_buttons':
       return (
         <SendButtonsForm
           cfg={cfg as SendButtonsCfg}
@@ -102,7 +98,7 @@ export function NodeConfigForm({
         />
       );
 
-    case "send_list":
+    case 'send_list':
       return (
         <SendListForm
           cfg={cfg as SendListCfg}
@@ -113,7 +109,7 @@ export function NodeConfigForm({
         />
       );
 
-    case "send_media":
+    case 'send_media':
       return (
         <SendMediaForm
           cfg={cfg as SendMediaCfg}
@@ -123,41 +119,42 @@ export function NodeConfigForm({
         />
       );
 
-    case "collect_input":
+    case 'collect_input':
       return (
         <>
           <TextRow
             label="Mensaje enviado al cliente"
-            value={(cfg as { prompt_text?: string }).prompt_text ?? ""}
+            value={(cfg as { prompt_text?: string }).prompt_text ?? ''}
             onChange={(v) => onUpdateConfig({ prompt_text: v })}
             rows={2}
           />
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">
-              Clave de la variable (se guarda en flow_runs.vars; alfanumérica y guion bajo)
+            <label className="text-muted-foreground mb-1 block text-xs">
+              Clave de la variable (se guarda en flow_runs.vars; alfanumérica y
+              guion bajo)
             </label>
             <Input
-              value={(cfg as { var_key?: string }).var_key ?? ""}
+              value={(cfg as { var_key?: string }).var_key ?? ''}
               onChange={(e) =>
                 onUpdateConfig({
-                  var_key: e.target.value.replace(/[^a-zA-Z0-9_]/g, ""),
+                  var_key: e.target.value.replace(/[^a-zA-Z0-9_]/g, ''),
                 })
               }
               placeholder="p. ej. nombre, correo, empresa"
               className="bg-muted font-mono text-xs"
             />
-            <p className="mt-1 text-[10px] text-muted-foreground">
-              Interpola en prompts posteriores y notas de derivación con{" "}
-              <code className="rounded-sm bg-muted px-1">
-                {"{{vars."}
-                {(cfg as { var_key?: string }).var_key || "name"}
-                {"}}"}
+            <p className="text-muted-foreground mt-1 text-[10px]">
+              Interpola en prompts posteriores y notas de derivación con{' '}
+              <code className="bg-muted rounded-sm px-1">
+                {'{{vars.'}
+                {(cfg as { var_key?: string }).var_key || 'name'}
+                {'}}'}
               </code>
               .
             </p>
           </div>
           <NextNodeRow
-            value={(cfg as { next_node_key?: string }).next_node_key ?? ""}
+            value={(cfg as { next_node_key?: string }).next_node_key ?? ''}
             allNodes={allNodes}
             currentKey={node.node_key}
             onChange={(v) => onUpdateConfig({ next_node_key: v })}
@@ -166,7 +163,7 @@ export function NodeConfigForm({
         </>
       );
 
-    case "condition":
+    case 'condition':
       return (
         <ConditionForm
           cfg={cfg as ConditionCfg}
@@ -176,7 +173,7 @@ export function NodeConfigForm({
         />
       );
 
-    case "set_tag":
+    case 'set_tag':
       return (
         <SetTagForm
           cfg={cfg as SetTagCfg}
@@ -186,20 +183,21 @@ export function NodeConfigForm({
         />
       );
 
-    case "handoff":
+    case 'handoff':
       return (
         <TextRow
           label="Nota interna (para quien retome la conversación)"
-          value={(cfg as { note?: string }).note ?? ""}
+          value={(cfg as { note?: string }).note ?? ''}
           onChange={(v) => onUpdateConfig({ note: v })}
           rows={2}
         />
       );
 
-    case "end":
+    case 'end':
       return (
-        <p className="text-xs text-muted-foreground">
-          Nodo terminal. Cuando el flujo llega a este nodo, la ejecución se marca como completada. No requiere configuración.
+        <p className="text-muted-foreground text-xs">
+          Nodo terminal. Cuando el flujo llega a este nodo, la ejecución se
+          marca como completada. No requiere configuración.
         </p>
       );
   }
@@ -231,7 +229,7 @@ function SendButtonsForm({
   const buttons = cfg.buttons ?? [];
   const updateButton = (
     idx: number,
-    patch: Partial<NonNullable<SendButtonsCfg["buttons"]>[number]>,
+    patch: Partial<NonNullable<SendButtonsCfg['buttons']>[number]>
   ) => {
     onUpdateConfig({
       buttons: buttons.map((b, i) => (i === idx ? { ...b, ...patch } : b)),
@@ -243,8 +241,8 @@ function SendButtonsForm({
         ...buttons,
         {
           reply_id: `btn_${buttons.length + 1}`,
-          title: "Opción",
-          next_node_key: "",
+          title: 'Opción',
+          next_node_key: '',
         },
       ],
     });
@@ -255,18 +253,18 @@ function SendButtonsForm({
     <>
       <TextRow
         label="Texto del cuerpo"
-        value={cfg.text ?? ""}
+        value={cfg.text ?? ''}
         onChange={(v) => onUpdateConfig({ text: v })}
         rows={3}
       />
       <TextRow
         label="Pie (opcional, 60 caracteres)"
-        value={cfg.footer_text ?? ""}
+        value={cfg.footer_text ?? ''}
         onChange={(v) => onUpdateConfig({ footer_text: v })}
       />
       <div>
         <div className="mb-2 flex items-center justify-between">
-          <label className="text-xs text-muted-foreground">
+          <label className="text-muted-foreground text-xs">
             Botones (1–3): cada uno lleva a un nodo siguiente distinto
           </label>
         </div>
@@ -275,10 +273,10 @@ function SendButtonsForm({
             <div
               key={i}
               className={cn(
-                "grid grid-cols-1 gap-2 rounded-md border border-border bg-muted/40 p-3",
+                'border-border bg-muted/40 grid grid-cols-1 gap-2 rounded-md border p-3',
                 showAdvanced
-                  ? "md:grid-cols-[1fr_2fr_2fr_auto]"
-                  : "md:grid-cols-[2fr_2fr_auto]",
+                  ? 'md:grid-cols-[1fr_2fr_2fr_auto]'
+                  : 'md:grid-cols-[2fr_2fr_auto]'
               )}
             >
               {showAdvanced && (
@@ -304,7 +302,7 @@ function SendButtonsForm({
                 value={b.next_node_key || null}
                 nodes={allNodes}
                 excludeKey={currentKey}
-                onChange={(v) => updateButton(i, { next_node_key: v ?? "" })}
+                onChange={(v) => updateButton(i, { next_node_key: v ?? '' })}
                 placeholder="Nodo siguiente…"
               />
               <Button
@@ -371,12 +369,10 @@ function SendListForm({
 
   const updateSection = (
     sIdx: number,
-    patch: Partial<NonNullable<SendListCfg["sections"]>[number]>,
+    patch: Partial<NonNullable<SendListCfg['sections']>[number]>
   ) => {
     onUpdateConfig({
-      sections: sections.map((s, i) =>
-        i === sIdx ? { ...s, ...patch } : s,
-      ),
+      sections: sections.map((s, i) => (i === sIdx ? { ...s, ...patch } : s)),
     });
   };
   const addSection = () =>
@@ -384,12 +380,12 @@ function SendListForm({
       sections: [
         ...sections,
         {
-          title: "",
+          title: '',
           rows: [
             {
               reply_id: `row_${totalRows + 1}`,
               title: `Opción ${totalRows + 1}`,
-              next_node_key: "",
+              next_node_key: '',
             },
           ],
         },
@@ -400,9 +396,7 @@ function SendListForm({
   const updateRow = (
     sIdx: number,
     rIdx: number,
-    patch: Partial<
-      NonNullable<SendListCfg["sections"]>[number]["rows"][number]
-    >,
+    patch: Partial<NonNullable<SendListCfg['sections']>[number]['rows'][number]>
   ) => {
     onUpdateConfig({
       sections: sections.map((s, i) =>
@@ -411,7 +405,7 @@ function SendListForm({
               ...s,
               rows: s.rows.map((r, j) => (j === rIdx ? { ...r, ...patch } : r)),
             }
-          : s,
+          : s
       ),
     });
   };
@@ -426,17 +420,17 @@ function SendListForm({
                 {
                   reply_id: `row_${totalRows + 1}`,
                   title: `Opción ${totalRows + 1}`,
-                  next_node_key: "",
+                  next_node_key: '',
                 },
               ],
             }
-          : s,
+          : s
       ),
     });
   const removeRow = (sIdx: number, rIdx: number) =>
     onUpdateConfig({
       sections: sections.map((s, i) =>
-        i === sIdx ? { ...s, rows: s.rows.filter((_, j) => j !== rIdx) } : s,
+        i === sIdx ? { ...s, rows: s.rows.filter((_, j) => j !== rIdx) } : s
       ),
     });
 
@@ -444,38 +438,36 @@ function SendListForm({
     <>
       <TextRow
         label="Texto del cuerpo"
-        value={cfg.text ?? ""}
+        value={cfg.text ?? ''}
         onChange={(v) => onUpdateConfig({ text: v })}
         rows={3}
       />
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <TextRow
           label="Texto del botón desplegable (≤20 caracteres)"
-          value={cfg.button_label ?? ""}
+          value={cfg.button_label ?? ''}
           onChange={(v) => onUpdateConfig({ button_label: v })}
         />
         <TextRow
           label="Pie (opcional, 60 caracteres)"
-          value={cfg.footer_text ?? ""}
+          value={cfg.footer_text ?? ''}
           onChange={(v) => onUpdateConfig({ footer_text: v })}
         />
       </div>
 
       <div className="mt-2">
-        <label className="mb-2 block text-xs text-muted-foreground">
+        <label className="text-muted-foreground mb-2 block text-xs">
           Filas (1–10 en total entre todas las secciones)
         </label>
         {sections.map((section, sIdx) => (
           <div
             key={sIdx}
-            className="mb-3 rounded-md border border-border bg-muted/40 p-3"
+            className="border-border bg-muted/40 mb-3 rounded-md border p-3"
           >
             <div className="mb-2 flex items-center gap-2">
               <Input
-                value={section.title ?? ""}
-                onChange={(e) =>
-                  updateSection(sIdx, { title: e.target.value })
-                }
+                value={section.title ?? ''}
+                onChange={(e) => updateSection(sIdx, { title: e.target.value })}
                 placeholder={`Sección ${sIdx + 1} título (opcional)`}
                 className="bg-muted text-xs"
               />
@@ -495,10 +487,10 @@ function SendListForm({
               <div
                 key={rIdx}
                 className={cn(
-                  "mb-2 grid grid-cols-1 gap-2",
+                  'mb-2 grid grid-cols-1 gap-2',
                   showAdvanced
-                    ? "md:grid-cols-[1fr_2fr_2fr_auto]"
-                    : "md:grid-cols-[2fr_2fr_auto]",
+                    ? 'md:grid-cols-[1fr_2fr_2fr_auto]'
+                    : 'md:grid-cols-[2fr_2fr_auto]'
                 )}
               >
                 {showAdvanced && (
@@ -506,10 +498,7 @@ function SendListForm({
                     value={row.reply_id}
                     onChange={(e) =>
                       updateRow(sIdx, rIdx, {
-                        reply_id: slugify(
-                          e.target.value,
-                          `row_${rIdx + 1}`,
-                        ),
+                        reply_id: slugify(e.target.value, `row_${rIdx + 1}`),
                       })
                     }
                     placeholder="reply_id"
@@ -530,7 +519,7 @@ function SendListForm({
                   nodes={allNodes}
                   excludeKey={currentKey}
                   onChange={(v) =>
-                    updateRow(sIdx, rIdx, { next_node_key: v ?? "" })
+                    updateRow(sIdx, rIdx, { next_node_key: v ?? '' })
                   }
                   placeholder="Nodo siguiente…"
                 />
@@ -576,9 +565,9 @@ function SendListForm({
 // ============================================================
 
 interface ConditionCfg {
-  subject?: "var" | "tag" | "contact_field";
+  subject?: 'var' | 'tag' | 'contact_field';
   subject_key?: string;
-  operator?: "equals" | "contains" | "present" | "absent";
+  operator?: 'equals' | 'contains' | 'present' | 'absent';
   value?: string;
   true_next?: string;
   false_next?: string;
@@ -603,19 +592,19 @@ function ConditionForm({
 }) {
   const tags = useUserTags();
 
-  const subject = cfg.subject ?? "var";
-  const operator = cfg.operator ?? "equals";
-  const showValue = operator === "equals" || operator === "contains";
+  const subject = cfg.subject ?? 'var';
+  const operator = cfg.operator ?? 'equals';
+  const showValue = operator === 'equals' || operator === 'contains';
 
   return (
     <>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <div>
-          <label className="mb-1 block text-xs text-muted-foreground">Si</label>
+          <label className="text-muted-foreground mb-1 block text-xs">Si</label>
           <Select
             value={subject}
             onValueChange={(v) =>
-              onUpdateConfig({ subject: v as ConditionCfg["subject"] })
+              onUpdateConfig({ subject: v as ConditionCfg['subject'] })
             }
           >
             <SelectTrigger className="bg-muted">
@@ -629,16 +618,16 @@ function ConditionForm({
           </Select>
         </div>
         <div className="md:col-span-2">
-          <label className="mb-1 block text-xs text-muted-foreground">
-            {subject === "var"
-              ? "nombre_variable"
-              : subject === "tag"
-                ? "Etiqueta"
-                : "Campo"}
+          <label className="text-muted-foreground mb-1 block text-xs">
+            {subject === 'var'
+              ? 'nombre_variable'
+              : subject === 'tag'
+                ? 'Etiqueta'
+                : 'Campo'}
           </label>
-          {subject === "tag" && tags.length > 0 ? (
+          {subject === 'tag' && tags.length > 0 ? (
             <Select
-              value={cfg.subject_key ?? ""}
+              value={cfg.subject_key ?? ''}
               onValueChange={(v) => onUpdateConfig({ subject_key: v })}
             >
               <SelectTrigger className="bg-muted">
@@ -652,9 +641,9 @@ function ConditionForm({
                 ))}
               </SelectContent>
             </Select>
-          ) : subject === "contact_field" ? (
+          ) : subject === 'contact_field' ? (
             <Select
-              value={cfg.subject_key ?? ""}
+              value={cfg.subject_key ?? ''}
               onValueChange={(v) => onUpdateConfig({ subject_key: v })}
             >
               <SelectTrigger className="bg-muted">
@@ -669,11 +658,11 @@ function ConditionForm({
             </Select>
           ) : (
             <Input
-              value={cfg.subject_key ?? ""}
-              onChange={(e) =>
-                onUpdateConfig({ subject_key: e.target.value })
+              value={cfg.subject_key ?? ''}
+              onChange={(e) => onUpdateConfig({ subject_key: e.target.value })}
+              placeholder={
+                subject === 'var' ? 'p. ej. correo' : 'UUID de la etiqueta'
               }
-              placeholder={subject === "var" ? "p. ej. correo" : "UUID de la etiqueta"}
               className="bg-muted font-mono text-xs"
             />
           )}
@@ -682,16 +671,18 @@ function ConditionForm({
 
       <div
         className={cn(
-          "grid grid-cols-1 gap-3",
-          showValue ? "md:grid-cols-2" : "",
+          'grid grid-cols-1 gap-3',
+          showValue ? 'md:grid-cols-2' : ''
         )}
       >
         <div>
-          <label className="mb-1 block text-xs text-muted-foreground">Operador</label>
+          <label className="text-muted-foreground mb-1 block text-xs">
+            Operador
+          </label>
           <Select
             value={operator}
             onValueChange={(v) =>
-              onUpdateConfig({ operator: v as ConditionCfg["operator"] })
+              onUpdateConfig({ operator: v as ConditionCfg['operator'] })
             }
           >
             <SelectTrigger className="bg-muted">
@@ -707,9 +698,11 @@ function ConditionForm({
         </div>
         {showValue && (
           <div>
-            <label className="mb-1 block text-xs text-muted-foreground">Valor</label>
+            <label className="text-muted-foreground mb-1 block text-xs">
+              Valor
+            </label>
             <Input
-              value={cfg.value ?? ""}
+              value={cfg.value ?? ''}
               onChange={(e) => onUpdateConfig({ value: e.target.value })}
               className="bg-muted"
             />
@@ -719,14 +712,14 @@ function ConditionForm({
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <NextNodeRow
-          value={cfg.true_next ?? ""}
+          value={cfg.true_next ?? ''}
           allNodes={allNodes}
           currentKey={currentKey}
           onChange={(v) => onUpdateConfig({ true_next: v })}
           label="Si es verdadero → avanza a"
         />
         <NextNodeRow
-          value={cfg.false_next ?? ""}
+          value={cfg.false_next ?? ''}
           allNodes={allNodes}
           currentKey={currentKey}
           onChange={(v) => onUpdateConfig({ false_next: v })}
@@ -742,7 +735,7 @@ function ConditionForm({
 // ============================================================
 
 interface SetTagCfg {
-  mode?: "add" | "remove";
+  mode?: 'add' | 'remove';
   tag_id?: string;
   next_node_key?: string;
 }
@@ -764,11 +757,13 @@ function SetTagForm({
     <>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-muted-foreground">Acción</label>
+          <label className="text-muted-foreground mb-1 block text-xs">
+            Acción
+          </label>
           <Select
-            value={cfg.mode ?? "add"}
+            value={cfg.mode ?? 'add'}
             onValueChange={(v) =>
-              onUpdateConfig({ mode: v as SetTagCfg["mode"] })
+              onUpdateConfig({ mode: v as SetTagCfg['mode'] })
             }
           >
             <SelectTrigger className="bg-muted">
@@ -781,10 +776,12 @@ function SetTagForm({
           </Select>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-muted-foreground">Etiqueta</label>
+          <label className="text-muted-foreground mb-1 block text-xs">
+            Etiqueta
+          </label>
           {tags.length > 0 ? (
             <Select
-              value={cfg.tag_id ?? ""}
+              value={cfg.tag_id ?? ''}
               onValueChange={(v) => onUpdateConfig({ tag_id: v })}
             >
               <SelectTrigger className="bg-muted">
@@ -800,7 +797,7 @@ function SetTagForm({
             </Select>
           ) : (
             <Input
-              value={cfg.tag_id ?? ""}
+              value={cfg.tag_id ?? ''}
               onChange={(e) => onUpdateConfig({ tag_id: e.target.value })}
               placeholder="UUID de la etiqueta"
               className="bg-muted font-mono text-xs"
@@ -809,7 +806,7 @@ function SetTagForm({
         </div>
       </div>
       <NextNodeRow
-        value={cfg.next_node_key ?? ""}
+        value={cfg.next_node_key ?? ''}
         allNodes={allNodes}
         currentKey={currentKey}
         onChange={(v) => onUpdateConfig({ next_node_key: v })}
@@ -830,7 +827,7 @@ function useUserTags(): UserTag[] {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch("/api/tags").catch(() => null);
+        const res = await fetch('/api/tags').catch(() => null);
         if (!res || !res.ok) return;
         const json = (await res.json()) as { tags?: UserTag[] };
         if (!cancelled) setTags(json.tags ?? []);
@@ -850,7 +847,7 @@ function useUserTags(): UserTag[] {
 // ============================================================
 
 interface SendMediaCfg {
-  media_type?: "image" | "video" | "document";
+  media_type?: 'image' | 'video' | 'document';
   media_url?: string;
   caption?: string;
   filename?: string;
@@ -861,14 +858,14 @@ interface SendMediaCfg {
 // sync with the storage policy so the picker rejects unsupported files
 // before they hit the network rather than failing with a confusing
 // Supabase RLS / mime-type error.
-const MEDIA_ACCEPT: Record<NonNullable<SendMediaCfg["media_type"]>, string> = {
-  image: "image/png,image/jpeg,image/webp",
-  video: "video/mp4,video/3gpp",
+const MEDIA_ACCEPT: Record<NonNullable<SendMediaCfg['media_type']>, string> = {
+  image: 'image/png,image/jpeg,image/webp',
+  video: 'video/mp4,video/3gpp',
   document:
-    "application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain",
+    'application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,text/plain',
 };
 
-const FLOW_MEDIA_BUCKET = "flow-media";
+const FLOW_MEDIA_BUCKET = 'flow-media';
 
 function SendMediaForm({
   cfg,
@@ -884,17 +881,17 @@ function SendMediaForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
-  const mediaType = cfg.media_type ?? "image";
-  const isDocument = mediaType === "document";
+  const mediaType = cfg.media_type ?? 'image';
+  const isDocument = mediaType === 'document';
   const displayName =
     cfg.filename ||
-    (cfg.media_url ? cfg.media_url.split("/").pop() ?? "" : "");
+    (cfg.media_url ? (cfg.media_url.split('/').pop() ?? '') : '');
 
   const handleFile = useCallback(
     async (file: File) => {
       if (file.size > MEDIA_MAX_BYTES) {
         toast.error(
-          `El archivo pesa ${(file.size / 1024 / 1024).toFixed(1)} MB — el límite es 16 MB.`,
+          `El archivo pesa ${(file.size / 1024 / 1024).toFixed(1)} MB — el límite es 16 MB.`
         );
         return;
       }
@@ -909,25 +906,27 @@ function SendMediaForm({
           media_url: publicUrl,
           filename: file.name,
         });
-        toast.success("Archivo subido.");
+        toast.success('Archivo subido.');
       } catch (err) {
-        const msg = err instanceof Error ? err.message : "Falló la subida.";
+        const msg = err instanceof Error ? err.message : 'Falló la subida.';
         toast.error(msg);
       } finally {
         setUploading(false);
       }
     },
-    [onUpdateConfig],
+    [onUpdateConfig]
   );
 
   const handleClear = () => {
-    onUpdateConfig({ media_url: "", filename: "" });
+    onUpdateConfig({ media_url: '', filename: '' });
   };
 
   return (
     <>
       <div>
-        <label className="mb-1 block text-xs text-muted-foreground">Tipo de medio</label>
+        <label className="text-muted-foreground mb-1 block text-xs">
+          Tipo de medio
+        </label>
         <Select
           value={mediaType}
           onValueChange={(v) => {
@@ -935,9 +934,9 @@ function SendMediaForm({
             // accepts different MIME sets per type and a previously
             // uploaded PDF can't be sent as an image.
             onUpdateConfig({
-              media_type: v as NonNullable<SendMediaCfg["media_type"]>,
-              media_url: "",
-              filename: "",
+              media_type: v as NonNullable<SendMediaCfg['media_type']>,
+              media_url: '',
+              filename: '',
             });
           }}
         >
@@ -955,15 +954,17 @@ function SendMediaForm({
       </div>
 
       <div>
-        <label className="mb-1 block text-xs text-muted-foreground">Archivo</label>
+        <label className="text-muted-foreground mb-1 block text-xs">
+          Archivo
+        </label>
         {cfg.media_url ? (
-          <div className="flex items-center gap-2 rounded-md border border-border bg-muted px-3 py-2 text-xs">
+          <div className="border-border bg-muted flex items-center gap-2 rounded-md border px-3 py-2 text-xs">
             <Paperclip className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
             <a
               href={cfg.media_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 flex-1 truncate text-foreground hover:text-cyan-300"
+              className="text-foreground min-w-0 flex-1 truncate hover:text-cyan-300"
               title={displayName || cfg.media_url}
             >
               {displayName || cfg.media_url}
@@ -971,7 +972,7 @@ function SendMediaForm({
             <button
               type="button"
               onClick={handleClear}
-              className="rounded-sm p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="text-muted-foreground hover:bg-muted hover:text-foreground rounded-sm p-1"
               aria-label="Quitar archivo"
               disabled={uploading}
             >
@@ -983,7 +984,7 @@ function SendMediaForm({
             type="button"
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border bg-card px-3 py-4 text-xs text-muted-foreground transition-colors hover:border-border hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            className="border-border bg-card text-muted-foreground hover:border-border hover:bg-muted hover:text-foreground flex w-full items-center justify-center gap-2 rounded-md border border-dashed px-3 py-4 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-60"
           >
             {uploading ? (
               <>
@@ -1007,25 +1008,25 @@ function SendMediaForm({
             const f = e.target.files?.[0];
             if (f) void handleFile(f);
             // Reset so picking the same file twice still fires onChange.
-            e.target.value = "";
+            e.target.value = '';
           }}
         />
       </div>
 
       <TextRow
         label="Pie de foto (opcional, se muestra bajo el archivo)"
-        value={cfg.caption ?? ""}
+        value={cfg.caption ?? ''}
         onChange={(v) => onUpdateConfig({ caption: v })}
         rows={2}
       />
 
       {isDocument && (
         <div>
-          <label className="mb-1 block text-xs text-muted-foreground">
+          <label className="text-muted-foreground mb-1 block text-xs">
             Nombre de archivo que ve el cliente (solo documentos)
           </label>
           <Input
-            value={cfg.filename ?? ""}
+            value={cfg.filename ?? ''}
             onChange={(e) => onUpdateConfig({ filename: e.target.value })}
             placeholder="invoice.pdf"
             className="bg-muted text-xs"
@@ -1034,7 +1035,7 @@ function SendMediaForm({
       )}
 
       <NextNodeRow
-        value={cfg.next_node_key ?? ""}
+        value={cfg.next_node_key ?? ''}
         allNodes={allNodes}
         currentKey={currentKey}
         onChange={(v) => onUpdateConfig({ next_node_key: v })}

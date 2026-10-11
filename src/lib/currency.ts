@@ -11,7 +11,7 @@
  */
 
 /** App-wide fallback when no account/deal currency is available. */
-export const DEFAULT_CURRENCY = "USD";
+export const DEFAULT_CURRENCY = 'USD';
 
 export interface CurrencyOption {
   /** ISO-4217 code, e.g. "USD". Stored verbatim in the DB. */
@@ -28,20 +28,20 @@ export interface CurrencyOption {
  * list to offer more — nothing else needs to change.
  */
 export const CURRENCIES: CurrencyOption[] = [
-  { code: "USD", label: "Dólar estadounidense", symbol: "$" },
-  { code: "EUR", label: "Euro", symbol: "€" },
-  { code: "GBP", label: "Libra esterlina", symbol: "£" },
-  { code: "INR", label: "Rupia india", symbol: "₹" },
-  { code: "AUD", label: "Dólar australiano", symbol: "A$" },
-  { code: "CAD", label: "Dólar canadiense", symbol: "C$" },
-  { code: "BRL", label: "Real brasileño", symbol: "R$" },
-  { code: "JPY", label: "Yen japonés", symbol: "¥" },
-  { code: "CNY", label: "Yuan chino", symbol: "¥" },
-  { code: "AED", label: "Dírham de los EAU", symbol: "د.إ" },
-  { code: "ZAR", label: "Rand sudafricano", symbol: "R" },
-  { code: "NGN", label: "Naira nigeriano", symbol: "₦" },
-  { code: "SGD", label: "Dólar singapurense", symbol: "S$" },
-  { code: "MXN", label: "Peso mexicano", symbol: "$" },
+  { code: 'USD', label: 'Dólar estadounidense', symbol: '$' },
+  { code: 'EUR', label: 'Euro', symbol: '€' },
+  { code: 'GBP', label: 'Libra esterlina', symbol: '£' },
+  { code: 'INR', label: 'Rupia india', symbol: '₹' },
+  { code: 'AUD', label: 'Dólar australiano', symbol: 'A$' },
+  { code: 'CAD', label: 'Dólar canadiense', symbol: 'C$' },
+  { code: 'BRL', label: 'Real brasileño', symbol: 'R$' },
+  { code: 'JPY', label: 'Yen japonés', symbol: '¥' },
+  { code: 'CNY', label: 'Yuan chino', symbol: '¥' },
+  { code: 'AED', label: 'Dírham de los EAU', symbol: 'د.إ' },
+  { code: 'ZAR', label: 'Rand sudafricano', symbol: 'R' },
+  { code: 'NGN', label: 'Naira nigeriano', symbol: '₦' },
+  { code: 'SGD', label: 'Dólar singapurense', symbol: 'S$' },
+  { code: 'MXN', label: 'Peso mexicano', symbol: '$' },
 ];
 
 /**
@@ -59,13 +59,13 @@ export const CURRENCIES: CurrencyOption[] = [
  */
 export function formatCurrency(
   value: number,
-  currency: string = DEFAULT_CURRENCY,
+  currency: string = DEFAULT_CURRENCY
 ): string {
   const code = (currency || DEFAULT_CURRENCY).trim();
   const amount = Number(value) || 0;
   try {
     return new Intl.NumberFormat(undefined, {
-      style: "currency",
+      style: 'currency',
       currency: code,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
@@ -86,7 +86,7 @@ export function formatCurrency(
  */
 export function formatCurrencyShort(
   value: number,
-  currency: string = DEFAULT_CURRENCY,
+  currency: string = DEFAULT_CURRENCY
 ): string {
   const code = currency || DEFAULT_CURRENCY;
   const symbol = CURRENCIES.find((c) => c.code === code)?.symbol ?? `${code} `;

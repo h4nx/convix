@@ -56,7 +56,11 @@ export async function PATCH(
       unknown
     > | null;
     if (!body || typeof body !== 'object') {
-      return fail('bad_request', 'El cuerpo de la solicitud debe ser un objeto JSON', 400);
+      return fail(
+        'bad_request',
+        'El cuerpo de la solicitud debe ser un objeto JSON',
+        400
+      );
     }
 
     const updates: Record<string, unknown> = {};
@@ -64,7 +68,11 @@ export async function PATCH(
     if ('url' in body) {
       const url = normalizeWebhookUrl(body.url);
       if (!url) {
-        return fail('bad_request', "'url' debe ser una URL https:// válida", 400);
+        return fail(
+          'bad_request',
+          "'url' debe ser una URL https:// válida",
+          400
+        );
       }
       updates.url = url;
     }

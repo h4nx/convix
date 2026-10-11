@@ -51,7 +51,9 @@ export class ApiError extends Error {
 }
 
 /** 401 — no usable credential. */
-export function unauthorized(message = 'Clave de API ausente o no válida'): ApiError {
+export function unauthorized(
+  message = 'Clave de API ausente o no válida'
+): ApiError {
   return new ApiError('unauthorized', message, 401);
 }
 

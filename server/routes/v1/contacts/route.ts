@@ -102,7 +102,11 @@ export async function POST(request: Request) {
       unknown
     > | null;
     if (!body || typeof body !== 'object') {
-      return fail('bad_request', 'El cuerpo de la solicitud debe ser un objeto JSON', 400);
+      return fail(
+        'bad_request',
+        'El cuerpo de la solicitud debe ser un objeto JSON',
+        400
+      );
     }
 
     const phone = typeof body.phone === 'string' ? body.phone.trim() : '';

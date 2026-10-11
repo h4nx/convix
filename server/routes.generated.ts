@@ -20,51 +20,52 @@ import * as r16 from './routes/auth/logout/route';
 import * as r17 from './routes/auth/providers/route';
 import * as r18 from './routes/auth/reset-password/route';
 import * as r19 from './routes/auth/session/route';
-import * as r20 from './routes/auth/signup/route';
-import * as r21 from './routes/auth/update-user/route';
-import * as r22 from './routes/automations/cron/route';
-import * as r23 from './routes/automations/engine/route';
-import * as r24 from './routes/flows/cron/route';
-import * as r25 from './routes/flows/templates/route';
-import * as r26 from './routes/realtime/broadcast/route';
-import * as r27 from './routes/realtime/sse/route';
-import * as r28 from './routes/v1/broadcasts/route';
-import * as r29 from './routes/v1/contacts/route';
-import * as r30 from './routes/v1/conversations/route';
-import * as r31 from './routes/v1/me/route';
-import * as r32 from './routes/v1/messages/route';
-import * as r33 from './routes/v1/webhooks/route';
-import * as r34 from './routes/whatsapp/broadcast/route';
-import * as r35 from './routes/whatsapp/config/route';
-import * as r36 from './routes/whatsapp/react/route';
-import * as r37 from './routes/whatsapp/send/route';
-import * as r38 from './routes/whatsapp/webhook/route';
-import * as r39 from './routes/ai/knowledge/reindex/route';
-import * as r40 from './routes/auth/oidc/callback/route';
-import * as r41 from './routes/auth/oidc/login/route';
-import * as r42 from './routes/whatsapp/config/verify-registration/route';
-import * as r43 from './routes/whatsapp/templates/submit/route';
-import * as r44 from './routes/whatsapp/templates/sync/route';
-import * as r45 from './routes/account/api-keys/[id]/route';
-import * as r46 from './routes/account/invitations/[id]/route';
-import * as r47 from './routes/account/members/[userId]/route';
-import * as r48 from './routes/ai/knowledge/[id]/route';
-import * as r49 from './routes/v1/broadcasts/[id]/route';
-import * as r50 from './routes/v1/contacts/[id]/route';
-import * as r51 from './routes/v1/conversations/[id]/route';
-import * as r52 from './routes/v1/webhooks/[id]/route';
-import * as r53 from './routes/whatsapp/media/[mediaId]/route';
-import * as r54 from './routes/whatsapp/templates/[id]/route';
-import * as r55 from './routes/v1/conversations/[id]/messages/route';
-import * as r56 from './routes/automations/[id]/route';
-import * as r57 from './routes/flows/[id]/route';
-import * as r58 from './routes/storage/[bucket]/route';
-import * as r59 from './routes/automations/[id]/duplicate/route';
-import * as r60 from './routes/flows/[id]/activate/route';
-import * as r61 from './routes/flows/[id]/runs/route';
-import * as r62 from './routes/invitations/[token]/peek/route';
-import * as r63 from './routes/invitations/[token]/redeem/route';
-import * as r64 from './routes/storage/[bucket]/[...path]/route';
+import * as r20 from './routes/auth/sessions/route';
+import * as r21 from './routes/auth/signup/route';
+import * as r22 from './routes/auth/update-user/route';
+import * as r23 from './routes/automations/cron/route';
+import * as r24 from './routes/automations/engine/route';
+import * as r25 from './routes/flows/cron/route';
+import * as r26 from './routes/flows/templates/route';
+import * as r27 from './routes/realtime/broadcast/route';
+import * as r28 from './routes/realtime/sse/route';
+import * as r29 from './routes/v1/broadcasts/route';
+import * as r30 from './routes/v1/contacts/route';
+import * as r31 from './routes/v1/conversations/route';
+import * as r32 from './routes/v1/me/route';
+import * as r33 from './routes/v1/messages/route';
+import * as r34 from './routes/v1/webhooks/route';
+import * as r35 from './routes/whatsapp/broadcast/route';
+import * as r36 from './routes/whatsapp/config/route';
+import * as r37 from './routes/whatsapp/react/route';
+import * as r38 from './routes/whatsapp/send/route';
+import * as r39 from './routes/whatsapp/webhook/route';
+import * as r40 from './routes/ai/knowledge/reindex/route';
+import * as r41 from './routes/auth/oidc/callback/route';
+import * as r42 from './routes/auth/oidc/login/route';
+import * as r43 from './routes/whatsapp/config/verify-registration/route';
+import * as r44 from './routes/whatsapp/templates/submit/route';
+import * as r45 from './routes/whatsapp/templates/sync/route';
+import * as r46 from './routes/account/api-keys/[id]/route';
+import * as r47 from './routes/account/invitations/[id]/route';
+import * as r48 from './routes/account/members/[userId]/route';
+import * as r49 from './routes/ai/knowledge/[id]/route';
+import * as r50 from './routes/v1/broadcasts/[id]/route';
+import * as r51 from './routes/v1/contacts/[id]/route';
+import * as r52 from './routes/v1/conversations/[id]/route';
+import * as r53 from './routes/v1/webhooks/[id]/route';
+import * as r54 from './routes/whatsapp/media/[mediaId]/route';
+import * as r55 from './routes/whatsapp/templates/[id]/route';
+import * as r56 from './routes/v1/conversations/[id]/messages/route';
+import * as r57 from './routes/automations/[id]/route';
+import * as r58 from './routes/flows/[id]/route';
+import * as r59 from './routes/storage/[bucket]/route';
+import * as r60 from './routes/automations/[id]/duplicate/route';
+import * as r61 from './routes/flows/[id]/activate/route';
+import * as r62 from './routes/flows/[id]/runs/route';
+import * as r63 from './routes/invitations/[token]/peek/route';
+import * as r64 from './routes/invitations/[token]/redeem/route';
+import * as r65 from './routes/storage/[bucket]/[...path]/route';
 
 export const routes: { pattern: string; module: RouteModule }[] = [
   { pattern: '/api/account', module: r0 as unknown as RouteModule },
@@ -87,49 +88,50 @@ export const routes: { pattern: string; module: RouteModule }[] = [
   { pattern: '/api/auth/providers', module: r17 as unknown as RouteModule },
   { pattern: '/api/auth/reset-password', module: r18 as unknown as RouteModule },
   { pattern: '/api/auth/session', module: r19 as unknown as RouteModule },
-  { pattern: '/api/auth/signup', module: r20 as unknown as RouteModule },
-  { pattern: '/api/auth/update-user', module: r21 as unknown as RouteModule },
-  { pattern: '/api/automations/cron', module: r22 as unknown as RouteModule },
-  { pattern: '/api/automations/engine', module: r23 as unknown as RouteModule },
-  { pattern: '/api/flows/cron', module: r24 as unknown as RouteModule },
-  { pattern: '/api/flows/templates', module: r25 as unknown as RouteModule },
-  { pattern: '/api/realtime/broadcast', module: r26 as unknown as RouteModule },
-  { pattern: '/api/realtime/sse', module: r27 as unknown as RouteModule },
-  { pattern: '/api/v1/broadcasts', module: r28 as unknown as RouteModule },
-  { pattern: '/api/v1/contacts', module: r29 as unknown as RouteModule },
-  { pattern: '/api/v1/conversations', module: r30 as unknown as RouteModule },
-  { pattern: '/api/v1/me', module: r31 as unknown as RouteModule },
-  { pattern: '/api/v1/messages', module: r32 as unknown as RouteModule },
-  { pattern: '/api/v1/webhooks', module: r33 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/broadcast', module: r34 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/config', module: r35 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/react', module: r36 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/send', module: r37 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/webhook', module: r38 as unknown as RouteModule },
-  { pattern: '/api/ai/knowledge/reindex', module: r39 as unknown as RouteModule },
-  { pattern: '/api/auth/oidc/callback', module: r40 as unknown as RouteModule },
-  { pattern: '/api/auth/oidc/login', module: r41 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/config/verify-registration', module: r42 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/templates/submit', module: r43 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/templates/sync', module: r44 as unknown as RouteModule },
-  { pattern: '/api/account/api-keys/:id', module: r45 as unknown as RouteModule },
-  { pattern: '/api/account/invitations/:id', module: r46 as unknown as RouteModule },
-  { pattern: '/api/account/members/:userId', module: r47 as unknown as RouteModule },
-  { pattern: '/api/ai/knowledge/:id', module: r48 as unknown as RouteModule },
-  { pattern: '/api/v1/broadcasts/:id', module: r49 as unknown as RouteModule },
-  { pattern: '/api/v1/contacts/:id', module: r50 as unknown as RouteModule },
-  { pattern: '/api/v1/conversations/:id', module: r51 as unknown as RouteModule },
-  { pattern: '/api/v1/webhooks/:id', module: r52 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/media/:mediaId', module: r53 as unknown as RouteModule },
-  { pattern: '/api/whatsapp/templates/:id', module: r54 as unknown as RouteModule },
-  { pattern: '/api/v1/conversations/:id/messages', module: r55 as unknown as RouteModule },
-  { pattern: '/api/automations/:id', module: r56 as unknown as RouteModule },
-  { pattern: '/api/flows/:id', module: r57 as unknown as RouteModule },
-  { pattern: '/api/storage/:bucket', module: r58 as unknown as RouteModule },
-  { pattern: '/api/automations/:id/duplicate', module: r59 as unknown as RouteModule },
-  { pattern: '/api/flows/:id/activate', module: r60 as unknown as RouteModule },
-  { pattern: '/api/flows/:id/runs', module: r61 as unknown as RouteModule },
-  { pattern: '/api/invitations/:token/peek', module: r62 as unknown as RouteModule },
-  { pattern: '/api/invitations/:token/redeem', module: r63 as unknown as RouteModule },
-  { pattern: '/api/storage/:bucket/:path{.+}', module: r64 as unknown as RouteModule },
+  { pattern: '/api/auth/sessions', module: r20 as unknown as RouteModule },
+  { pattern: '/api/auth/signup', module: r21 as unknown as RouteModule },
+  { pattern: '/api/auth/update-user', module: r22 as unknown as RouteModule },
+  { pattern: '/api/automations/cron', module: r23 as unknown as RouteModule },
+  { pattern: '/api/automations/engine', module: r24 as unknown as RouteModule },
+  { pattern: '/api/flows/cron', module: r25 as unknown as RouteModule },
+  { pattern: '/api/flows/templates', module: r26 as unknown as RouteModule },
+  { pattern: '/api/realtime/broadcast', module: r27 as unknown as RouteModule },
+  { pattern: '/api/realtime/sse', module: r28 as unknown as RouteModule },
+  { pattern: '/api/v1/broadcasts', module: r29 as unknown as RouteModule },
+  { pattern: '/api/v1/contacts', module: r30 as unknown as RouteModule },
+  { pattern: '/api/v1/conversations', module: r31 as unknown as RouteModule },
+  { pattern: '/api/v1/me', module: r32 as unknown as RouteModule },
+  { pattern: '/api/v1/messages', module: r33 as unknown as RouteModule },
+  { pattern: '/api/v1/webhooks', module: r34 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/broadcast', module: r35 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/config', module: r36 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/react', module: r37 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/send', module: r38 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/webhook', module: r39 as unknown as RouteModule },
+  { pattern: '/api/ai/knowledge/reindex', module: r40 as unknown as RouteModule },
+  { pattern: '/api/auth/oidc/callback', module: r41 as unknown as RouteModule },
+  { pattern: '/api/auth/oidc/login', module: r42 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/config/verify-registration', module: r43 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/templates/submit', module: r44 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/templates/sync', module: r45 as unknown as RouteModule },
+  { pattern: '/api/account/api-keys/:id', module: r46 as unknown as RouteModule },
+  { pattern: '/api/account/invitations/:id', module: r47 as unknown as RouteModule },
+  { pattern: '/api/account/members/:userId', module: r48 as unknown as RouteModule },
+  { pattern: '/api/ai/knowledge/:id', module: r49 as unknown as RouteModule },
+  { pattern: '/api/v1/broadcasts/:id', module: r50 as unknown as RouteModule },
+  { pattern: '/api/v1/contacts/:id', module: r51 as unknown as RouteModule },
+  { pattern: '/api/v1/conversations/:id', module: r52 as unknown as RouteModule },
+  { pattern: '/api/v1/webhooks/:id', module: r53 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/media/:mediaId', module: r54 as unknown as RouteModule },
+  { pattern: '/api/whatsapp/templates/:id', module: r55 as unknown as RouteModule },
+  { pattern: '/api/v1/conversations/:id/messages', module: r56 as unknown as RouteModule },
+  { pattern: '/api/automations/:id', module: r57 as unknown as RouteModule },
+  { pattern: '/api/flows/:id', module: r58 as unknown as RouteModule },
+  { pattern: '/api/storage/:bucket', module: r59 as unknown as RouteModule },
+  { pattern: '/api/automations/:id/duplicate', module: r60 as unknown as RouteModule },
+  { pattern: '/api/flows/:id/activate', module: r61 as unknown as RouteModule },
+  { pattern: '/api/flows/:id/runs', module: r62 as unknown as RouteModule },
+  { pattern: '/api/invitations/:token/peek', module: r63 as unknown as RouteModule },
+  { pattern: '/api/invitations/:token/redeem', module: r64 as unknown as RouteModule },
+  { pattern: '/api/storage/:bucket/:path{.+}', module: r65 as unknown as RouteModule },
 ];

@@ -14,7 +14,8 @@ export const SECURITY_HEADERS: Record<string, string> = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Permissions-Policy': 'camera=(), microphone=(self), geolocation=(), payment=(), usb=()',
+  'Permissions-Policy':
+    'camera=(), microphone=(self), geolocation=(), payment=(), usb=()',
   'Content-Security-Policy-Report-Only': [
     "default-src 'self'",
     // El script inline de arranque del tema (index.html) requiere 'unsafe-inline'.

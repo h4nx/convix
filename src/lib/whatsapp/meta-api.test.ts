@@ -1,10 +1,10 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   INTERACTIVE_LIMITS,
   deleteMessageTemplate,
   sendInteractiveButtons,
   sendInteractiveList,
-} from "./meta-api";
+} from './meta-api';
 
 // All assertions in this file run BEFORE the network call. We stub fetch
 // to a never-resolving mock so a test that accidentally falls through to
@@ -16,23 +16,23 @@ const neverFetch = () =>
   });
 
 const BASE_ARGS = {
-  phoneNumberId: "test-phone",
-  accessToken: "test-token",
-  to: "1234567890",
-  bodyText: "Body text",
+  phoneNumberId: 'test-phone',
+  accessToken: 'test-token',
+  to: '1234567890',
+  bodyText: 'Body text',
 } as const;
 
-describe("sendInteractiveButtons — validation", () => {
+describe('sendInteractiveButtons — validation', () => {
   beforeEach(() => {
-    vi.stubGlobal("fetch", vi.fn(neverFetch));
+    vi.stubGlobal('fetch', vi.fn(neverFetch));
   });
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
-  it("rejects an empty buttons array", async () => {
+  it('rejects an empty buttons array', async () => {
     await expect(
-      sendInteractiveButtons({ ...BASE_ARGS, buttons: [] }),
+      sendInteractiveButtons({ ...BASE_ARGS, buttons: [] })
     ).rejects.toThrow(/1 a 3/);
   });
 
@@ -41,100 +41,103 @@ describe("sendInteractiveButtons — validation", () => {
       sendInteractiveButtons({
         ...BASE_ARGS,
         buttons: [
-          { id: "a", title: "A" },
-          { id: "b", title: "B" },
-          { id: "c", title: "C" },
-          { id: "d", title: "D" },
+          { id: 'a', title: 'A' },
+          { id: 'b', title: 'B' },
+          { id: 'c', title: 'C' },
+          { id: 'd', title: 'D' },
         ],
-      }),
+      })
     ).rejects.toThrow(/1 a 3/);
   });
 
-  it("rejects a button title longer than 20 chars (Meta cap)", async () => {
+  it('rejects a button title longer than 20 chars (Meta cap)', async () => {
     await expect(
       sendInteractiveButtons({
         ...BASE_ARGS,
         buttons: [
-          { id: "a", title: "x".repeat(INTERACTIVE_LIMITS.buttonTitleMaxLength + 1) },
+          {
+            id: 'a',
+            title: 'x'.repeat(INTERACTIVE_LIMITS.buttonTitleMaxLength + 1),
+          },
         ],
-      }),
+      })
     ).rejects.toThrow(/supera 20/);
   });
 
-  it("rejects a button missing its id", async () => {
+  it('rejects a button missing its id', async () => {
     await expect(
       sendInteractiveButtons({
         ...BASE_ARGS,
-        buttons: [{ id: "", title: "Choose me" }],
-      }),
+        buttons: [{ id: '', title: 'Choose me' }],
+      })
     ).rejects.toThrow(/no tiene id/);
   });
 
-  it("rejects an empty body text", async () => {
+  it('rejects an empty body text', async () => {
     await expect(
       sendInteractiveButtons({
         ...BASE_ARGS,
-        bodyText: "",
-        buttons: [{ id: "a", title: "A" }],
-      }),
+        bodyText: '',
+        buttons: [{ id: 'a', title: 'A' }],
+      })
     ).rejects.toThrow(/requiere bodyText/);
   });
 
-  it("rejects a header text over the limit", async () => {
+  it('rejects a header text over the limit', async () => {
     await expect(
       sendInteractiveButtons({
         ...BASE_ARGS,
-        headerText: "x".repeat(INTERACTIVE_LIMITS.headerTextMaxLength + 1),
-        buttons: [{ id: "a", title: "A" }],
-      }),
+        headerText: 'x'.repeat(INTERACTIVE_LIMITS.headerTextMaxLength + 1),
+        buttons: [{ id: 'a', title: 'A' }],
+      })
     ).rejects.toThrow(/headerText interactivo supera/);
   });
 
-  it("sends the right payload shape when all inputs are valid", async () => {
+  it('sends the right payload shape when all inputs are valid', async () => {
     let captured: { url: string; body: unknown; method: string } | null = null;
     vi.stubGlobal(
-      "fetch",
+      'fetch',
       vi.fn(async (url: string, init: RequestInit) => {
         captured = {
           url,
-          method: init.method ?? "GET",
+          method: init.method ?? 'GET',
           body: JSON.parse(String(init.body)),
         };
         return new Response(
-          JSON.stringify({ messages: [{ id: "wamid.PASS" }] }),
-          { status: 200 },
+          JSON.stringify({ messages: [{ id: 'wamid.PASS' }] }),
+          { status: 200 }
         );
-      }),
+      })
     );
 
     const result = await sendInteractiveButtons({
       ...BASE_ARGS,
-      headerText: "Hello",
-      footerText: "Tap one",
+      headerText: 'Hello',
+      footerText: 'Tap one',
       buttons: [
-        { id: "yes", title: "Yes" },
-        { id: "no", title: "No" },
+        { id: 'yes', title: 'Yes' },
+        { id: 'no', title: 'No' },
       ],
     });
 
-    expect(result).toEqual({ messageId: "wamid.PASS" });
+    expect(result).toEqual({ messageId: 'wamid.PASS' });
     expect(captured).not.toBeNull();
-    expect(captured!.method).toBe("POST");
-    expect(captured!.url).toContain("test-phone/messages");
+    expect(captured!.method).toBe('POST');
+    expect(captured!.url).toContain('test-phone/messages');
     expect(captured!.body).toMatchObject({
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: "1234567890",
-      type: "interactive",
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: '1234567890',
+      type: 'interactive',
       interactive: {
-        type: "button",
-        body: { text: "Body text" },
-        header: { type: "text", text: "Hello" },
-        footer: { text: "Tap one" },
+        type: 'button',
+        body: { text: 'Body text' },
+        header: { type: 'text', text: 'Hello' },
+        footer: { text: 'Tap one' },
         action: {
           buttons: [
-            { type: "reply", reply: { id: "yes", title: "Yes" } },
-            { type: "reply", reply: { id: "no", title: "No" } },
+            { type: 'reply', reply: { id: 'yes', title: 'Yes' } },
+            { type: 'reply', reply: { id: 'no', title: 'No' } },
           ],
         },
       },
@@ -142,23 +145,23 @@ describe("sendInteractiveButtons — validation", () => {
   });
 });
 
-describe("sendInteractiveList — validation", () => {
+describe('sendInteractiveList — validation', () => {
   beforeEach(() => {
-    vi.stubGlobal("fetch", vi.fn(neverFetch));
+    vi.stubGlobal('fetch', vi.fn(neverFetch));
   });
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
-  const ROW = { id: "r1", title: "Row 1" };
+  const ROW = { id: 'r1', title: 'Row 1' };
 
-  it("rejects zero sections", async () => {
+  it('rejects zero sections', async () => {
     await expect(
       sendInteractiveList({
         ...BASE_ARGS,
-        buttonLabel: "Open",
+        buttonLabel: 'Open',
         sections: [],
-      }),
+      })
     ).rejects.toThrow(/1 a 10/);
   });
 
@@ -170,96 +173,96 @@ describe("sendInteractiveList — validation", () => {
     await expect(
       sendInteractiveList({
         ...BASE_ARGS,
-        buttonLabel: "Open",
+        buttonLabel: 'Open',
         sections: [{ rows }],
-      }),
+      })
     ).rejects.toThrow(/1 a 10/);
   });
 
-  it("rejects a row title longer than 24 chars (Meta cap)", async () => {
+  it('rejects a row title longer than 24 chars (Meta cap)', async () => {
     await expect(
       sendInteractiveList({
         ...BASE_ARGS,
-        buttonLabel: "Open",
+        buttonLabel: 'Open',
         sections: [
           {
             rows: [
               {
-                id: "r1",
-                title: "x".repeat(INTERACTIVE_LIMITS.listRowTitleMaxLength + 1),
+                id: 'r1',
+                title: 'x'.repeat(INTERACTIVE_LIMITS.listRowTitleMaxLength + 1),
               },
             ],
           },
         ],
-      }),
+      })
     ).rejects.toThrow(/supera 24/);
   });
 
-  it("rejects duplicate row ids across sections", async () => {
+  it('rejects duplicate row ids across sections', async () => {
     await expect(
       sendInteractiveList({
         ...BASE_ARGS,
-        buttonLabel: "Open",
+        buttonLabel: 'Open',
         sections: [
-          { rows: [{ id: "dupe", title: "First" }] },
-          { rows: [{ id: "dupe", title: "Second" }] },
+          { rows: [{ id: 'dupe', title: 'First' }] },
+          { rows: [{ id: 'dupe', title: 'Second' }] },
         ],
-      }),
+      })
     ).rejects.toThrow(/id de fila duplicado/);
   });
 
-  it("rejects an empty buttonLabel", async () => {
+  it('rejects an empty buttonLabel', async () => {
     await expect(
       sendInteractiveList({
         ...BASE_ARGS,
-        buttonLabel: "",
+        buttonLabel: '',
         sections: [{ rows: [ROW] }],
-      }),
+      })
     ).rejects.toThrow(/requiere un buttonLabel/);
   });
 
-  it("sends the right payload shape when valid", async () => {
+  it('sends the right payload shape when valid', async () => {
     let captured: { body: unknown } | null = null;
     vi.stubGlobal(
-      "fetch",
+      'fetch',
       vi.fn(async (_url: string, init: RequestInit) => {
         captured = { body: JSON.parse(String(init.body)) };
         return new Response(
-          JSON.stringify({ messages: [{ id: "wamid.LIST" }] }),
-          { status: 200 },
+          JSON.stringify({ messages: [{ id: 'wamid.LIST' }] }),
+          { status: 200 }
         );
-      }),
+      })
     );
 
     const result = await sendInteractiveList({
       ...BASE_ARGS,
-      buttonLabel: "Open menu",
+      buttonLabel: 'Open menu',
       sections: [
         {
-          title: "Orders",
+          title: 'Orders',
           rows: [
-            { id: "order_1", title: "Order #1", description: "€12" },
-            { id: "order_2", title: "Order #2" },
+            { id: 'order_1', title: 'Order #1', description: '€12' },
+            { id: 'order_2', title: 'Order #2' },
           ],
         },
       ],
     });
 
-    expect(result).toEqual({ messageId: "wamid.LIST" });
+    expect(result).toEqual({ messageId: 'wamid.LIST' });
     expect(captured).not.toBeNull();
     expect(captured!.body).toMatchObject({
-      type: "interactive",
+      type: 'interactive',
       interactive: {
-        type: "list",
-        body: { text: "Body text" },
+        type: 'list',
+        body: { text: 'Body text' },
         action: {
-          button: "Open menu",
+          button: 'Open menu',
           sections: [
             {
-              title: "Orders",
+              title: 'Orders',
               rows: [
-                { id: "order_1", title: "Order #1", description: "€12" },
-                { id: "order_2", title: "Order #2" },
+                { id: 'order_1', title: 'Order #1', description: '€12' },
+                { id: 'order_2', title: 'Order #2' },
               ],
             },
           ],
@@ -269,84 +272,101 @@ describe("sendInteractiveList — validation", () => {
   });
 });
 
-describe("deleteMessageTemplate", () => {
+describe('deleteMessageTemplate', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
   const ARGS = {
-    wabaId: "waba-1",
-    accessToken: "test-token",
-    name: "demo",
-    metaTemplateId: "12345",
+    wabaId: 'waba-1',
+    accessToken: 'test-token',
+    name: 'demo',
+    metaTemplateId: '12345',
   };
 
-  it("resolves on a clean 200", async () => {
+  it('resolves on a clean 200', async () => {
     vi.stubGlobal(
-      "fetch",
-      vi.fn(async () => new Response(JSON.stringify({ success: true }), { status: 200 })),
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(JSON.stringify({ success: true }), { status: 200 })
+      )
     );
     await expect(deleteMessageTemplate(ARGS)).resolves.toBeUndefined();
   });
 
-  it("treats a plain 404 as already-gone (no-op)", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => new Response(null, { status: 404 })));
+  it('treats a plain 404 as already-gone (no-op)', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => new Response(null, { status: 404 }))
+    );
     await expect(deleteMessageTemplate(ARGS)).resolves.toBeUndefined();
   });
 
   it("treats Meta's 'Message Template Not Found' (code 100 / subcode 2593002) as a no-op", async () => {
     // The exact shape confirmed live against the Graph API for a stale hsm_id.
     vi.stubGlobal(
-      "fetch",
+      'fetch',
       vi.fn(
         async () =>
           new Response(
             JSON.stringify({
               error: {
-                message: "Invalid parameter",
-                type: "OAuthException",
+                message: 'Invalid parameter',
+                type: 'OAuthException',
                 code: 100,
                 error_subcode: 2593002,
-                error_user_title: "Message Template Not Found",
-                error_user_msg: "The message template demo wasn't found for this account.",
+                error_user_title: 'Message Template Not Found',
+                error_user_msg:
+                  "The message template demo wasn't found for this account.",
               },
             }),
-            { status: 400 },
-          ),
-      ),
+            { status: 400 }
+          )
+      )
     );
     await expect(deleteMessageTemplate(ARGS)).resolves.toBeUndefined();
   });
 
   it("treats the generic 'object does not exist' (code 100 / subcode 33) as a no-op", async () => {
     vi.stubGlobal(
-      "fetch",
-      vi.fn(
-        async () =>
-          new Response(
-            JSON.stringify({ error: { message: "does not exist", code: 100, error_subcode: 33 } }),
-            { status: 400 },
-          ),
-      ),
-    );
-    await expect(deleteMessageTemplate(ARGS)).resolves.toBeUndefined();
-  });
-
-  it("still throws on an unrelated Meta error (e.g. invalid/expired token)", async () => {
-    vi.stubGlobal(
-      "fetch",
+      'fetch',
       vi.fn(
         async () =>
           new Response(
             JSON.stringify({
-              error: { message: "Error validating access token", code: 190, error_subcode: 463 },
+              error: {
+                message: 'does not exist',
+                code: 100,
+                error_subcode: 33,
+              },
             }),
-            { status: 401 },
-          ),
-      ),
+            { status: 400 }
+          )
+      )
+    );
+    await expect(deleteMessageTemplate(ARGS)).resolves.toBeUndefined();
+  });
+
+  it('still throws on an unrelated Meta error (e.g. invalid/expired token)', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({
+              error: {
+                message: 'Error validating access token',
+                code: 190,
+                error_subcode: 463,
+              },
+            }),
+            { status: 401 }
+          )
+      )
     );
     await expect(deleteMessageTemplate(ARGS)).rejects.toThrow(
-      /Error validating access token/,
+      /Error validating access token/
     );
   });
 });

@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from 'react';
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAuth } from '@/hooks/use-auth';
 import { SettingsRail } from '@/components/settings/settings-rail';
@@ -41,7 +41,7 @@ export default function SettingsPage() {
     () => ({
       deals: defaultCurrency,
     }),
-    [defaultCurrency],
+    [defaultCurrency]
   );
 
   const panel: Record<SettingsSection, ReactNode> = {
@@ -59,11 +59,12 @@ export default function SettingsPage() {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-foreground text-2xl font-bold tracking-tight">
           Ajustes
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Todo en un solo lugar: tu cuenta y tu espacio de trabajo. Elige una sección para gestionarla.
+        <p className="text-muted-foreground mt-1 text-sm">
+          Todo en un solo lugar: tu cuenta y tu espacio de trabajo. Elige una
+          sección para gestionarla.
         </p>
       </div>
 

@@ -92,7 +92,11 @@ export async function createBroadcast(
   const templateLanguage = params.templateLanguage || 'en_US';
 
   if (!templateName) {
-    throw new BroadcastError('bad_request', "'template_name' es obligatorio", 400);
+    throw new BroadcastError(
+      'bad_request',
+      "'template_name' es obligatorio",
+      400
+    );
   }
   if (!Array.isArray(recipients) || recipients.length === 0) {
     throw new BroadcastError(
@@ -148,7 +152,9 @@ export async function createBroadcast(
   const resolved: { contactId: string; phone: string; params: string[] }[] = [];
   let rejected = 0;
   for (const r of recipients) {
-    const sanitized = sanitizePhoneForMeta(typeof r.to === 'string' ? r.to : '');
+    const sanitized = sanitizePhoneForMeta(
+      typeof r.to === 'string' ? r.to : ''
+    );
     if (!isValidE164(sanitized)) {
       rejected++;
       continue;
@@ -231,7 +237,11 @@ export async function createBroadcast(
   const byContact = new Map(deduped.map((r) => [r.contactId, r]));
   const planned: PlannedRecipient[] = recipientRows.map((row) => {
     const r = byContact.get(row.contact_id as string)!;
-    return { recipientRowId: row.id as string, phone: r.phone, params: r.params };
+    return {
+      recipientRowId: row.id as string,
+      phone: r.phone,
+      params: r.params,
+    };
   });
 
   return {
@@ -285,7 +295,8 @@ export async function deliverBroadcast(
         lastError = null;
         break;
       } catch (error) {
-        const message = error instanceof Error ? error.message : 'Error desconocido';
+        const message =
+          error instanceof Error ? error.message : 'Error desconocido';
         lastError = message;
         // Only a "recipient not allowed" error is worth another variant.
         if (!isRecipientNotAllowedError(message)) break;

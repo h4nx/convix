@@ -1,68 +1,68 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom";
-import { Loader2 } from "lucide-react"
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 import {
   AutomationBuilder,
   fromServerSteps,
   type BuilderInitial,
   type ServerStepNode,
-} from "@/components/automations/automation-builder"
-import type { AutomationTriggerType } from "@/types"
+} from '@/components/automations/automation-builder';
+import type { AutomationTriggerType } from '@/types';
 
 export default function EditAutomationPage() {
-  const { id = "" } = useParams()
-  const navigate = useNavigate()
-  const [initial, setInitial] = useState<BuilderInitial | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const { id = '' } = useParams();
+  const navigate = useNavigate();
+  const [initial, setInitial] = useState<BuilderInitial | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
     async function load() {
-      const res = await fetch(`/api/automations/${id}`)
+      const res = await fetch(`/api/automations/${id}`);
       if (!res.ok) {
-        if (!cancelled) setError(`No se pudo cargar (${res.status})`)
-        return
+        if (!cancelled) setError(`No se pudo cargar (${res.status})`);
+        return;
       }
-      const body = await res.json()
-      if (cancelled) return
+      const body = await res.json();
+      if (cancelled) return;
       setInitial({
         id: body.automation.id,
-        name: body.automation.name ?? "",
-        description: body.automation.description ?? "",
+        name: body.automation.name ?? '',
+        description: body.automation.description ?? '',
         trigger_type: body.automation.trigger_type as AutomationTriggerType,
         trigger_config: body.automation.trigger_config ?? {},
         is_active: !!body.automation.is_active,
         steps: fromServerSteps((body.steps ?? []) as ServerStepNode[]),
-      })
+      });
     }
-    load()
+    load();
     return () => {
-      cancelled = true
-    }
-  }, [id])
+      cancelled = true;
+    };
+  }, [id]);
 
   if (error) {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-3">
         <p className="text-sm text-red-400">{error}</p>
         <button
-          onClick={() => navigate("/automations")}
-          className="text-sm text-primary hover:text-primary/80"
+          onClick={() => navigate('/automations')}
+          className="text-primary hover:text-primary/80 text-sm"
         >
           Volver a Automatizaciones
         </button>
       </div>
-    )
+    );
   }
 
   if (!initial) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <Loader2 className="text-primary h-6 w-6 animate-spin" />
       </div>
-    )
+    );
   }
 
-  return <AutomationBuilder initial={initial} />
+  return <AutomationBuilder initial={initial} />;
 }

@@ -11,7 +11,10 @@ const staticDir = process.env.STATIC_DIR ?? resolve(process.cwd(), 'dist');
 
 const app = createApp({ staticDir });
 
-serve({ fetch: app.fetch, port, hostname: process.env.HOSTNAME ?? '0.0.0.0' }, (info) => {
-  console.log(`Convix escuchando en http://${info.address}:${info.port}`);
-  startScheduler(info.port);
-});
+serve(
+  { fetch: app.fetch, port, hostname: process.env.HOSTNAME ?? '0.0.0.0' },
+  (info) => {
+    console.log(`Convix escuchando en http://${info.address}:${info.port}`);
+    startScheduler(info.port);
+  }
+);

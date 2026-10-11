@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { createClient } from "@/lib/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowLeft } from "lucide-react";
-import { AuthLayout } from "@/components/auth/auth-layout";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { createClient } from '@/lib/supabase/client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ArrowLeft } from 'lucide-react';
+import { AuthLayout } from '@/components/auth/auth-layout';
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -37,22 +37,22 @@ export default function ForgotPasswordPage() {
     return (
       <AuthLayout>
         <div className="mb-8">
-          <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
+          <p className="text-primary mb-2 font-mono text-xs tracking-[0.14em] uppercase">
             Convix &middot; Restablecer contraseña
           </p>
-          <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
+          <h2 className="text-auth-form-foreground text-2xl font-semibold tracking-tight">
             Revisa tu correo
           </h2>
-          <p className="mt-1.5 text-sm text-auth-form-muted">
-            Enviamos un enlace para restablecer la contraseña a{" "}
-            <span className="text-auth-form-foreground">{email}</span>.
-            Revisa tu bandeja de entrada.
+          <p className="text-auth-form-muted mt-1.5 text-sm">
+            Enviamos un enlace para restablecer la contraseña a{' '}
+            <span className="text-auth-form-foreground">{email}</span>. Revisa
+            tu bandeja de entrada.
           </p>
         </div>
         <Link to="/login">
           <Button
             variant="outline"
-            className="h-11 w-full rounded-xl border-auth-form-border text-auth-form-muted hover:bg-auth-form-input hover:text-auth-form-foreground"
+            className="border-auth-form-border text-auth-form-muted hover:bg-auth-form-input hover:text-auth-form-foreground h-11 w-full rounded-xl"
           >
             Volver a iniciar sesión
           </Button>
@@ -64,13 +64,13 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout>
       <div className="mb-8">
-        <p className="mb-2 font-mono text-xs tracking-[0.14em] text-primary uppercase">
+        <p className="text-primary mb-2 font-mono text-xs tracking-[0.14em] uppercase">
           Convix &middot; Restablecer contraseña
         </p>
-        <h2 className="text-2xl font-semibold tracking-tight text-auth-form-foreground">
+        <h2 className="text-auth-form-foreground text-2xl font-semibold tracking-tight">
           Restablecer contraseña
         </h2>
-        <p className="mt-1.5 text-sm text-auth-form-muted">
+        <p className="text-auth-form-muted mt-1.5 text-sm">
           Ingresa tu correo y te enviaremos un enlace para restablecerla
         </p>
       </div>
@@ -93,22 +93,22 @@ export default function ForgotPasswordPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="h-11 rounded-xl border-auth-form-border bg-auth-form-input text-auth-form-foreground placeholder:text-auth-form-muted focus-visible:border-primary focus-visible:ring-primary/20"
+            className="border-auth-form-border bg-auth-form-input text-auth-form-foreground placeholder:text-auth-form-muted focus-visible:border-primary focus-visible:ring-primary/20 h-11 rounded-xl"
           />
         </div>
 
         <Button
           type="submit"
           disabled={loading}
-          className="mt-2 h-11 w-full rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+          className="bg-primary text-primary-foreground hover:bg-primary/90 mt-2 h-11 w-full rounded-xl disabled:opacity-50"
         >
-          {loading ? "Enviando..." : "Enviar enlace de restablecimiento"}
+          {loading ? 'Enviando...' : 'Enviar enlace de restablecimiento'}
         </Button>
       </form>
 
       <Link
         to="/login"
-        className="mt-6 flex items-center justify-center gap-2 text-sm text-auth-form-muted hover:text-auth-form-foreground"
+        className="text-auth-form-muted hover:text-auth-form-foreground mt-6 flex items-center justify-center gap-2 text-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Volver a iniciar sesión

@@ -55,9 +55,8 @@ export function JoinLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="bg-background flex min-h-screen items-center justify-center px-4">
       <Outlet />
     </div>
   );
 }
-

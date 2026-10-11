@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { Coins, Loader2 } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { Coins, Loader2 } from 'lucide-react';
 
-import { createClient } from "@/lib/supabase/client";
-import { useAuth } from "@/hooks/use-auth";
-import { CURRENCIES } from "@/lib/currency";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/hooks/use-auth';
+import { CURRENCIES } from '@/lib/currency';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { SettingsPanelHead } from "./settings-panel-head";
+} from '@/components/ui/card';
+import { SettingsPanelHead } from './settings-panel-head';
 
 /**
  * Deals settings — account-wide default currency.
@@ -50,11 +50,11 @@ export function DealsSettings() {
     if (!accountId || !dirty) return;
     setSaving(true);
     const { error } = await supabase
-      .from("accounts")
+      .from('accounts')
       .update({ default_currency: selected })
-      .eq("id", accountId);
+      .eq('id', accountId);
     if (error) {
-      toast.error("No se pudo guardar la moneda predeterminada");
+      toast.error('No se pudo guardar la moneda predeterminada');
       setSaving(false);
       return;
     }
@@ -62,23 +62,25 @@ export function DealsSettings() {
     // and every total pick it up without a full reload.
     await refreshProfile();
     setSaving(false);
-    toast.success("Moneda predeterminada actualizada");
+    toast.success('Moneda predeterminada actualizada');
   }
 
   return (
-    <section className="w-full animate-in fade-in-50 duration-200">
+    <section className="animate-in fade-in-50 w-full duration-200">
       <SettingsPanelHead
         title="Negocios y moneda"
         description="La moneda usada para negocios nuevos y para los totales del pipeline y del panel."
       />
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <Coins className="size-4 text-primary" />
+          <CardTitle className="text-foreground flex items-center gap-2">
+            <Coins className="text-primary size-4" />
             Moneda predeterminada
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            Los negocios nuevos usan esta moneda por defecto, y los totales del pipeline y del panel se muestran en ella. Los negocios existentes conservan la moneda con la que se guardaron.
+            Los negocios nuevos usan esta moneda por defecto, y los totales del
+            pipeline y del panel se muestran en ella. Los negocios existentes
+            conservan la moneda con la que se guardaron.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -88,7 +90,7 @@ export function DealsSettings() {
               value={selected}
               onChange={(e) => setSelected(e.target.value)}
               disabled={!canEditSettings || profileLoading}
-              className="h-9 w-full rounded-lg border border-border bg-muted px-2.5 text-sm text-foreground outline-hidden focus:border-primary focus:ring-1 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-60"
+              className="border-border bg-muted text-foreground focus:border-primary focus:ring-primary h-9 w-full rounded-lg border px-2.5 text-sm outline-hidden focus:ring-1 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {CURRENCIES.map((c) => (
                 <option key={c.code} value={c.code}>
@@ -97,8 +99,9 @@ export function DealsSettings() {
               ))}
             </select>
             {!canEditSettings && (
-              <p className="text-xs text-muted-foreground">
-                Solo los administradores de la cuenta pueden cambiar la moneda predeterminada.
+              <p className="text-muted-foreground text-xs">
+                Solo los administradores de la cuenta pueden cambiar la moneda
+                predeterminada.
               </p>
             )}
           </div>
@@ -115,7 +118,7 @@ export function DealsSettings() {
                   Guardando...
                 </>
               ) : (
-                "Guardar"
+                'Guardar'
               )}
             </Button>
           )}

@@ -39,7 +39,9 @@ describe('hashApiKey', () => {
   });
 
   it('differs for different inputs', () => {
-    expect(hashApiKey('convix_live_abc')).not.toBe(hashApiKey('convix_live_abd'));
+    expect(hashApiKey('convix_live_abc')).not.toBe(
+      hashApiKey('convix_live_abd')
+    );
   });
 });
 

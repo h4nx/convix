@@ -33,7 +33,9 @@ export async function GET(
     }
     if (!data) return fail('not_found', 'Conversación no encontrada', 404);
 
-    return ok(serializeConversation(normalizeConversation(data as Conversation)));
+    return ok(
+      serializeConversation(normalizeConversation(data as Conversation))
+    );
   } catch (err) {
     return toApiErrorResponse(err);
   }

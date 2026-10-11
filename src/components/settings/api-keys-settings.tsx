@@ -137,7 +137,8 @@ export function ApiKeysSettings() {
         description={
           <>
             Las claves autentican la API REST pública (
-            <code className="text-xs">/api/v1</code>) para que armes tus propias automatizaciones. Envíalos como{' '}
+            <code className="text-xs">/api/v1</code>) para que armes tus propias
+            automatizaciones. Envíalos como{' '}
             <code className="text-xs">Authorization: Bearer &lt;key&gt;</code>.
           </>
         }
@@ -160,7 +161,9 @@ export function ApiKeysSettings() {
             </p>
             {canEditSettings ? (
               <p className="text-muted-foreground mt-1 text-xs">
-                Haz clic <span className="text-foreground">Nueva clave de API</span> para crear una.
+                Haz clic{' '}
+                <span className="text-foreground">Nueva clave de API</span> para
+                crear una.
               </p>
             ) : (
               <p className="text-muted-foreground mt-1 text-xs">
@@ -355,7 +358,8 @@ function CreateKeyDialog({
                 Copia tu clave de API
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
-                Esta es la única vez que se muestra la clave completa. Guárdala en un lugar seguro; si la pierdes, revócala y crea una nueva.
+                Esta es la única vez que se muestra la clave completa. Guárdala
+                en un lugar seguro; si la pierdes, revócala y crea una nueva.
               </DialogDescription>
             </DialogHeader>
 
@@ -393,7 +397,8 @@ function CreateKeyDialog({
                 Nueva clave de API
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
-                Nómbrala según la integración que la usará y concede solo los permisos que necesite.
+                Nómbrala según la integración que la usará y concede solo los
+                permisos que necesite.
               </DialogDescription>
             </DialogHeader>
 
@@ -439,7 +444,8 @@ function CreateKeyDialog({
                 </div>
                 <p className="text-muted-foreground text-xs">
                   Una clave sin permisos aún puede llamar a{' '}
-                  <code className="text-[11px]">GET /api/v1/me</code> para verificar que funciona.
+                  <code className="text-[11px]">GET /api/v1/me</code> para
+                  verificar que funciona.
                 </p>
               </div>
             </div>

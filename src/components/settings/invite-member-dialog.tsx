@@ -57,7 +57,8 @@ const ROLE_DESCRIPTIONS: Record<InviteRole, string> = {
     'Puede invitar compañeros, gestionar ajustes, enviar mensajes y editar datos.',
   agent:
     'Puede usar la bandeja, contactos, difusiones, automatizaciones y flujos. Sin acceso a ajustes ni a miembros.',
-  viewer: 'Acceso de solo lectura en todas las páginas. No puede enviar ni editar nada.',
+  viewer:
+    'Acceso de solo lectura en todas las páginas. No puede enviar ni editar nada.',
 };
 
 // Server caps label at 80 chars (see src/app/api/account/invitations/route.ts).
@@ -158,7 +159,9 @@ export function InviteMemberDialog({
       // Most likely "not in a secure context" — happens on http://
       // local IPs. Surface the link in the toast so the admin can
       // hand-copy it.
-      toast.error('El portapapeles está bloqueado — copia el enlace manualmente');
+      toast.error(
+        'El portapapeles está bloqueado — copia el enlace manualmente'
+      );
     }
   }
 
@@ -187,23 +190,29 @@ export function InviteMemberDialog({
         {result ? (
           <>
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2 text-popover-foreground">
-                <Sparkles className="size-4 text-primary" />
+              <DialogTitle className="text-popover-foreground flex items-center gap-2">
+                <Sparkles className="text-primary size-4" />
                 Invitación creada
               </DialogTitle>
               <DialogDescription className="text-muted-foreground">
-                Comparte este enlace con tu nuevo compañero. Podrá registrarse (o iniciar sesión) y unirse a la cuenta como{' '}
-                <span className="font-medium text-muted-foreground">{result.role}</span>
+                Comparte este enlace con tu nuevo compañero. Podrá registrarse
+                (o iniciar sesión) y unirse a la cuenta como{' '}
+                <span className="text-muted-foreground font-medium">
+                  {result.role}
+                </span>
                 . El enlace es válido por{' '}
-                <span className="font-medium text-muted-foreground">
-                  {result.expiresInDays} {result.expiresInDays === 1 ? 'día' : 'días'}
+                <span className="text-muted-foreground font-medium">
+                  {result.expiresInDays}{' '}
+                  {result.expiresInDays === 1 ? 'día' : 'días'}
                 </span>
                 .
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-3 py-2">
-              <Label className="text-muted-foreground">Enlace de invitación</Label>
+              <Label className="text-muted-foreground">
+                Enlace de invitación
+              </Label>
               <div className="flex gap-2">
                 <Input
                   readOnly
@@ -230,7 +239,9 @@ export function InviteMemberDialog({
                 <strong className="font-semibold text-amber-100">
                   Guarda este enlace ahora.
                 </strong>{' '}
-                Nunca guardamos el texto plano: al cerrar este diálogo la URL desaparece. Para compartirla de nuevo, revoca esta invitación y crea otra.
+                Nunca guardamos el texto plano: al cerrar este diálogo la URL
+                desaparece. Para compartirla de nuevo, revoca esta invitación y
+                crea otra.
               </div>
 
               {/* Anchor styled with `buttonVariants` rather than wrapping
@@ -245,7 +256,7 @@ export function InviteMemberDialog({
                 className={buttonVariants({
                   variant: 'outline',
                   className:
-                    'w-full border-border text-muted-foreground hover:bg-muted',
+                    'border-border text-muted-foreground hover:bg-muted w-full',
                 })}
               >
                 <MessageCircle className="size-4" />
@@ -265,9 +276,13 @@ export function InviteMemberDialog({
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle className="text-popover-foreground">Invitar a un compañero</DialogTitle>
+              <DialogTitle className="text-popover-foreground">
+                Invitar a un compañero
+              </DialogTitle>
               <DialogDescription className="text-muted-foreground">
-                Genera un enlace de invitación de un solo uso. Compártelo por WhatsApp, Slack o el canal que prefieras; no requiere servicio de correo.
+                Genera un enlace de invitación de un solo uso. Compártelo por
+                WhatsApp, Slack o el canal que prefieras; no requiere servicio
+                de correo.
               </DialogDescription>
             </DialogHeader>
 
@@ -278,7 +293,7 @@ export function InviteMemberDialog({
                   value={role}
                   onValueChange={(v) => v && setRole(v as InviteRole)}
                 >
-                  <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                  <SelectTrigger className="bg-muted border-border text-foreground w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -287,18 +302,17 @@ export function InviteMemberDialog({
                     <SelectItem value="viewer">Observador</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-muted-foreground text-xs">
                   {ROLE_DESCRIPTIONS[role]}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label className="text-muted-foreground">Enlace válido por</Label>
-                <Select
-                  value={expiry}
-                  onValueChange={(v) => v && setExpiry(v)}
-                >
-                  <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                <Label className="text-muted-foreground">
+                  Enlace válido por
+                </Label>
+                <Select value={expiry} onValueChange={(v) => v && setExpiry(v)}>
+                  <SelectTrigger className="bg-muted border-border text-foreground w-full">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -314,7 +328,9 @@ export function InviteMemberDialog({
               <div className="space-y-2">
                 <Label className="text-muted-foreground">
                   Etiqueta{' '}
-                  <span className="text-xs text-muted-foreground">(opcional)</span>
+                  <span className="text-muted-foreground text-xs">
+                    (opcional)
+                  </span>
                 </Label>
                 <Input
                   placeholder="p. ej. Sara — equipo de soporte"
@@ -323,8 +339,9 @@ export function InviteMemberDialog({
                   maxLength={MAX_LABEL_LEN}
                   className="bg-muted border-border text-foreground placeholder:text-muted-foreground"
                 />
-                <p className="text-xs text-muted-foreground">
-                  Te ayuda a recordar a quién enviaste el enlace en la lista de pendientes de abajo.
+                <p className="text-muted-foreground text-xs">
+                  Te ayuda a recordar a quién enviaste el enlace en la lista de
+                  pendientes de abajo.
                 </p>
               </div>
             </div>

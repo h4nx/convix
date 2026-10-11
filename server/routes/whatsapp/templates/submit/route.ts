@@ -1,15 +1,15 @@
-import { NextResponse } from '@server/shim/next-server'
-import type { SupabaseClient } from '@/lib/db/compat'
-import { createClient } from '@/lib/supabase/server'
-import { decrypt } from '@/lib/whatsapp/encryption'
-import { submitMessageTemplate } from '@/lib/whatsapp/meta-api'
+import { NextResponse } from '@server/shim/next-server';
+import type { SupabaseClient } from '@/lib/db/compat';
+import { createClient } from '@/lib/supabase/server';
+import { decrypt } from '@/lib/whatsapp/encryption';
+import { submitMessageTemplate } from '@/lib/whatsapp/meta-api';
 import {
   validateTemplatePayload,
   type TemplatePayload,
-} from '@/lib/whatsapp/template-validators'
-import { buildMetaTemplatePayload } from '@/lib/whatsapp/template-components'
-import { ensureImageHeaderHandle } from '@/lib/whatsapp/template-header-handle'
-import { normalizeStatus } from '@/lib/whatsapp/template-status-normalize'
+} from '@/lib/whatsapp/template-validators';
+import { buildMetaTemplatePayload } from '@/lib/whatsapp/template-components';
+import { ensureImageHeaderHandle } from '@/lib/whatsapp/template-header-handle';
+import { normalizeStatus } from '@/lib/whatsapp/template-status-normalize';
 
 /**
  * Shared upsert payload builder — both the Meta-failure path and the
@@ -21,10 +21,10 @@ function buildUpsertRow(
   userId: string,
   payload: TemplatePayload,
   extras: {
-    status: 'DRAFT' | string
-    metaTemplateId: string | null
-    submissionError: string | null
-  },
+    status: 'DRAFT' | string;
+    metaTemplateId: string | null;
+    submissionError: string | null;
+  }
 ) {
   return {
     // Account tenancy — required NOT NULL on message_templates as
@@ -52,12 +52,12 @@ function buildUpsertRow(
     // webhook will set it again if Meta still rejects.
     rejection_reason: extras.submissionError ? null : null,
     last_submitted_at: new Date().toISOString(),
-  }
+  };
 }
 
 async function upsertTemplateRow(
   supabase: SupabaseClient,
-  row: ReturnType<typeof buildUpsertRow>,
+  row: ReturnType<typeof buildUpsertRow>
 ) {
   // Conflict target is per-account (migration 0004), matching how
   // Meta itself treats name+language as unique per WABA — two
@@ -67,7 +67,7 @@ async function upsertTemplateRow(
     .from('message_templates')
     .upsert(row, { onConflict: 'account_id,name,language' })
     .select()
-    .single()
+    .single();
 }
 
 /**
@@ -86,13 +86,13 @@ async function upsertTemplateRow(
  */
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient()
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
     if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
     // Resolve the caller's account_id — whatsapp_config + the
@@ -101,20 +101,23 @@ export async function POST(request: Request) {
       .from('profiles')
       .select('account_id')
       .eq('user_id', user.id)
-      .maybeSingle()
-    const accountId = profile?.account_id as string | undefined
+      .maybeSingle();
+    const accountId = profile?.account_id as string | undefined;
     if (!accountId) {
       return NextResponse.json(
         { error: 'Tu perfil no está vinculado a una cuenta.' },
-        { status: 403 },
-      )
+        { status: 403 }
+      );
     }
 
-    let payload: TemplatePayload
+    let payload: TemplatePayload;
     try {
-      payload = (await request.json()) as TemplatePayload
+      payload = (await request.json()) as TemplatePayload;
     } catch {
-      return NextResponse.json({ error: 'Cuerpo JSON no válido.' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Cuerpo JSON no válido.' },
+        { status: 400 }
+      );
     }
 
     if (payload.category === 'Authentication') {
@@ -123,43 +126,43 @@ export async function POST(request: Request) {
           error:
             'Las plantillas de AUTENTICACIÓN aún no se admiten aquí: créalas en Meta WhatsApp Manager y usa «Sincronizar desde Meta».',
         },
-        { status: 400 },
-      )
+        { status: 400 }
+      );
     }
 
     try {
-      validateTemplatePayload(payload)
+      validateTemplatePayload(payload);
     } catch (e) {
       return NextResponse.json(
         { error: e instanceof Error ? e.message : 'Falló la validación.' },
-        { status: 400 },
-      )
+        { status: 400 }
+      );
     }
 
     const dryRun =
       process.env.WHATSAPP_TEMPLATES_DRY_RUN === 'true' ||
-      process.env.WHATSAPP_TEMPLATES_DRY_RUN === '1'
+      process.env.WHATSAPP_TEMPLATES_DRY_RUN === '1';
 
-    let metaTemplateId: string
-    let metaStatus: string
+    let metaTemplateId: string;
+    let metaStatus: string;
 
     if (dryRun) {
-      metaTemplateId = `dry-run-${crypto.randomUUID()}`
-      metaStatus = 'PENDING'
+      metaTemplateId = `dry-run-${crypto.randomUUID()}`;
+      metaStatus = 'PENDING';
     } else {
       const { data: config, error: configError } = await supabase
         .from('whatsapp_config')
         .select('*')
         .eq('account_id', accountId)
-        .single()
+        .single();
       if (configError || !config) {
         return NextResponse.json(
           {
             error:
               'WhatsApp no está configurado. Primero conecta tu cuenta de WhatsApp Business en Ajustes.',
           },
-          { status: 400 },
-        )
+          { status: 400 }
+        );
       }
       if (!config.waba_id) {
         return NextResponse.json(
@@ -167,36 +170,42 @@ export async function POST(request: Request) {
             error:
               'Falta el ID de la WABA (cuenta de WhatsApp Business). Vuelve a conectar tu cuenta en Ajustes.',
           },
-          { status: 400 },
-        )
+          { status: 400 }
+        );
       }
 
-      const accessToken = decrypt(config.access_token)
+      const accessToken = decrypt(config.access_token);
 
       // Image headers need a Resumable-Upload handle (Meta rejects a
       // plain URL at creation). Derive it from header_media_url before
       // building the payload. Surfaces a 400 with an actionable message
       // (missing META_APP_ID, unreachable URL, wrong type/size).
       try {
-        await ensureImageHeaderHandle(payload, accessToken)
+        await ensureImageHeaderHandle(payload, accessToken);
       } catch (e) {
         return NextResponse.json(
-          { error: e instanceof Error ? e.message : 'Falló la subida de la imagen del encabezado.' },
-          { status: 400 },
-        )
+          {
+            error:
+              e instanceof Error
+                ? e.message
+                : 'Falló la subida de la imagen del encabezado.',
+          },
+          { status: 400 }
+        );
       }
 
-      const metaPayload = buildMetaTemplatePayload(payload)
+      const metaPayload = buildMetaTemplatePayload(payload);
       try {
         const meta = await submitMessageTemplate({
           wabaId: config.waba_id,
           accessToken,
           payload: metaPayload,
-        })
-        metaTemplateId = meta.id
-        metaStatus = meta.status
+        });
+        metaTemplateId = meta.id;
+        metaStatus = meta.status;
       } catch (e) {
-        const message = e instanceof Error ? e.message : 'Falló el envío a Meta.'
+        const message =
+          e instanceof Error ? e.message : 'Falló el envío a Meta.';
         // Persist the failure so the user can retry; row stays DRAFT
         // until they fix and re-submit.
         await upsertTemplateRow(
@@ -205,17 +214,17 @@ export async function POST(request: Request) {
             status: 'DRAFT',
             metaTemplateId: null,
             submissionError: message,
-          }),
-        )
-        const isRateLimit = /\b429\b/.test(message)
+          })
+        );
+        const isRateLimit = /\b429\b/.test(message);
         return NextResponse.json(
           {
             error: isRateLimit
               ? 'Se alcanzó el límite de Meta (100 plantillas por hora). Inténtalo más tarde.'
               : message,
           },
-          { status: isRateLimit ? 429 : 502 },
-        )
+          { status: isRateLimit ? 429 : 502 }
+        );
       }
     }
 
@@ -225,8 +234,8 @@ export async function POST(request: Request) {
         status: normalizeStatus(metaStatus),
         metaTemplateId,
         submissionError: null,
-      }),
-    )
+      })
+    );
 
     if (upsertErr) {
       // The submit succeeded on Meta's side but we failed to persist
@@ -237,23 +246,25 @@ export async function POST(request: Request) {
           error: `Enviada a Meta pero falló el guardado local: ${upsertErr.message}. Ejecuta «Sincronizar desde Meta» para recuperarlo.`,
           meta_template_id: metaTemplateId,
         },
-        { status: 500 },
-      )
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
       success: true,
       template: row,
       dry_run: dryRun,
-    })
+    });
   } catch (error) {
-    console.error('Error submitting template:', error)
+    console.error('Error submitting template:', error);
     return NextResponse.json(
       {
         error:
-          error instanceof Error ? error.message : 'No se pudo enviar la plantilla.',
+          error instanceof Error
+            ? error.message
+            : 'No se pudo enviar la plantilla.',
       },
-      { status: 500 },
-    )
+      { status: 500 }
+    );
   }
 }

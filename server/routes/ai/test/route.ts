@@ -1,9 +1,13 @@
-import { NextResponse } from '@server/shim/next-server'
-import { requireRole, toErrorResponse } from '@/lib/auth/account'
-import { checkRateLimit, rateLimitResponse, RATE_LIMITS } from '@/lib/rate-limit'
-import { decrypt } from '@/lib/whatsapp/encryption'
-import { validateAiCredentials } from '@/lib/ai/validate'
-import { AiError, type AiProvider } from '@/lib/ai/types'
+import { NextResponse } from '@server/shim/next-server';
+import { requireRole, toErrorResponse } from '@/lib/auth/account';
+import {
+  checkRateLimit,
+  rateLimitResponse,
+  RATE_LIMITS,
+} from '@/lib/rate-limit';
+import { decrypt } from '@/lib/whatsapp/encryption';
+import { validateAiCredentials } from '@/lib/ai/validate';
+import { AiError, type AiProvider } from '@/lib/ai/types';
 
 /**
  * POST /api/ai/test  (admin+)
@@ -16,49 +20,58 @@ import { AiError, type AiProvider } from '@/lib/ai/types'
  */
 export async function POST(request: Request) {
   try {
-    const { supabase, accountId, userId } = await requireRole('admin')
+    const { supabase, accountId, userId } = await requireRole('admin');
 
-    const limit = checkRateLimit(`ai-test:${userId}`, RATE_LIMITS.adminAction)
-    if (!limit.success) return rateLimitResponse(limit)
+    const limit = checkRateLimit(`ai-test:${userId}`, RATE_LIMITS.adminAction);
+    if (!limit.success) return rateLimitResponse(limit);
 
-    const body = await request.json().catch(() => null)
+    const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') {
-      return NextResponse.json({ error: 'Cuerpo de la solicitud no válido' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Cuerpo de la solicitud no válido' },
+        { status: 400 }
+      );
     }
 
-    const provider = body.provider as AiProvider
+    const provider = body.provider as AiProvider;
     if (provider !== 'openai' && provider !== 'anthropic') {
       return NextResponse.json(
         { error: 'provider debe ser "openai" o "anthropic"' },
-        { status: 400 },
-      )
+        { status: 400 }
+      );
     }
-    const model = typeof body.model === 'string' ? body.model.trim() : ''
+    const model = typeof body.model === 'string' ? body.model.trim() : '';
     if (!model) {
-      return NextResponse.json({ error: 'model es obligatorio' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'model es obligatorio' },
+        { status: 400 }
+      );
     }
 
-    const rawKey = typeof body.api_key === 'string' ? body.api_key.trim() : ''
-    let apiKeyPlain = rawKey
+    const rawKey = typeof body.api_key === 'string' ? body.api_key.trim() : '';
+    let apiKeyPlain = rawKey;
     if (!apiKeyPlain) {
       const { data: existing } = await supabase
         .from('ai_configs')
         .select('api_key')
         .eq('account_id', accountId)
-        .maybeSingle()
+        .maybeSingle();
       if (!existing?.api_key) {
         return NextResponse.json(
           { error: 'Ingresa una clave de API para probar.' },
-          { status: 400 },
-        )
+          { status: 400 }
+        );
       }
       try {
-        apiKeyPlain = decrypt(existing.api_key)
+        apiKeyPlain = decrypt(existing.api_key);
       } catch {
         return NextResponse.json(
-          { error: 'No se pudo descifrar la clave de API guardada — vuelve a ingresarla.' },
-          { status: 400 },
-        )
+          {
+            error:
+              'No se pudo descifrar la clave de API guardada — vuelve a ingresarla.',
+          },
+          { status: 400 }
+        );
       }
     }
 
@@ -72,23 +85,23 @@ export async function POST(request: Request) {
         autoReplyEnabled: false,
         autoReplyMaxPerConversation: 3,
         embeddingsApiKey: null,
-      })
+      });
     } catch (err) {
       if (err instanceof AiError) {
         return NextResponse.json(
           { error: err.message, code: err.code },
-          { status: 400 },
-        )
+          { status: 400 }
+        );
       }
-      console.error('[ai/test] validation error:', err)
+      console.error('[ai/test] validation error:', err);
       return NextResponse.json(
         { error: 'No se pudo validar la clave de API.' },
-        { status: 400 },
-      )
+        { status: 400 }
+      );
     }
 
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ ok: true });
   } catch (err) {
-    return toErrorResponse(err)
+    return toErrorResponse(err);
   }
 }

@@ -15,7 +15,9 @@ export const requestContext = new AsyncLocalStorage<RequestContext>();
 export function getRequestContext(): RequestContext {
   const ctx = requestContext.getStore();
   if (!ctx) {
-    throw new Error('cookies()/headers() solo pueden usarse dentro de un route handler');
+    throw new Error(
+      'cookies()/headers() solo pueden usarse dentro de un route handler'
+    );
   }
   return ctx;
 }

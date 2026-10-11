@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Loader2, Sparkles, CheckCircle2, Trash2, Eye, EyeOff } from 'lucide-react';
+import {
+  Loader2,
+  Sparkles,
+  CheckCircle2,
+  Trash2,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { canEditSettings } from '@/lib/auth/roles';
 import { Button } from '@/components/ui/button';
@@ -212,7 +219,7 @@ export function AiConfig() {
 
   if (loading || profileLoading) {
     return (
-      <div className="flex items-center justify-center py-16 text-muted-foreground">
+      <div className="text-muted-foreground flex items-center justify-center py-16">
         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Cargando…
       </div>
     );
@@ -228,8 +235,9 @@ export function AiConfig() {
       />
 
       {!canEdit && (
-        <p className="mb-4 rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-          Solo administradores y propietarios pueden cambiar la configuración de IA.
+        <p className="border-border bg-muted/40 text-muted-foreground mb-4 rounded-md border px-3 py-2 text-sm">
+          Solo administradores y propietarios pueden cambiar la configuración de
+          IA.
         </p>
       )}
 
@@ -237,10 +245,11 @@ export function AiConfig() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
-              <Sparkles className="h-4 w-4 text-primary" /> Proveedor y clave
+              <Sparkles className="text-primary h-4 w-4" /> Proveedor y clave
             </CardTitle>
             <CardDescription>
-              Tu clave se cifra en reposo (AES-256-GCM) y no se vuelve a mostrar tras guardarla.
+              Tu clave se cifra en reposo (AES-256-GCM) y no se vuelve a mostrar
+              tras guardarla.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -256,7 +265,9 @@ export function AiConfig() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="openai">{PROVIDER_LABEL.openai}</SelectItem>
+                    <SelectItem value="openai">
+                      {PROVIDER_LABEL.openai}
+                    </SelectItem>
                     <SelectItem value="anthropic">
                       {PROVIDER_LABEL.anthropic}
                     </SelectItem>
@@ -301,7 +312,7 @@ export function AiConfig() {
                   <button
                     type="button"
                     onClick={() => setShowKey((s) => !s)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2"
                     tabIndex={-1}
                   >
                     {showKey ? (
@@ -329,8 +340,9 @@ export function AiConfig() {
             <div className="space-y-2">
               <Label htmlFor="ai-embeddings-key">
                 Clave de embeddings{' '}
-                <span className="font-normal text-muted-foreground">
-                  (opcional — activa la búsqueda semántica en la base de conocimiento)
+                <span className="text-muted-foreground font-normal">
+                  (opcional — activa la búsqueda semántica en la base de
+                  conocimiento)
                 </span>
               </Label>
               <Input
@@ -351,11 +363,14 @@ export function AiConfig() {
                 disabled={disabled}
                 autoComplete="off"
               />
-              <p className="text-xs text-muted-foreground">
-                Una clave de OpenAI usada solo para generar embeddings de tu base de conocimiento (text-embedding-3-small)
-                {provider === 'openai' ? ' — puede ser la misma clave de arriba' : ''}.
-                Déjala en blanco para usar búsqueda por palabras clave. Bórrala
-                para desactivar la búsqueda semántica.
+              <p className="text-muted-foreground text-xs">
+                Una clave de OpenAI usada solo para generar embeddings de tu
+                base de conocimiento (text-embedding-3-small)
+                {provider === 'openai'
+                  ? ' — puede ser la misma clave de arriba'
+                  : ''}
+                . Déjala en blanco para usar búsqueda por palabras clave.
+                Bórrala para desactivar la búsqueda semántica.
               </p>
             </div>
           </CardContent>
@@ -365,12 +380,16 @@ export function AiConfig() {
           <CardHeader>
             <CardTitle className="text-base">Comportamiento</CardTitle>
             <CardDescription>
-              Cuéntale al asistente sobre tu negocio: productos, tono y qué puede y qué no puede prometer. Este contexto alimenta tanto los borradores como las respuestas automáticas.
+              Cuéntale al asistente sobre tu negocio: productos, tono y qué
+              puede y qué no puede prometer. Este contexto alimenta tanto los
+              borradores como las respuestas automáticas.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="ai-prompt">Contexto del negocio e instrucciones</Label>
+              <Label htmlFor="ai-prompt">
+                Contexto del negocio e instrucciones
+              </Label>
               <Textarea
                 id="ai-prompt"
                 value={systemPrompt}
@@ -381,13 +400,14 @@ export function AiConfig() {
               />
             </div>
 
-            <div className="flex items-center justify-between gap-4 rounded-md border border-border p-3">
+            <div className="border-border flex items-center justify-between gap-4 rounded-md border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-foreground text-sm font-medium">
                   Activar asistente de IA
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  Interruptor general. Activa el botón «Redactar con IA» en la bandeja.
+                <p className="text-muted-foreground text-xs">
+                  Interruptor general. Activa el botón «Redactar con IA» en la
+                  bandeja.
                 </p>
               </div>
               <Switch
@@ -397,13 +417,15 @@ export function AiConfig() {
               />
             </div>
 
-            <div className="flex items-center justify-between gap-4 rounded-md border border-border p-3">
+            <div className="border-border flex items-center justify-between gap-4 rounded-md border p-3">
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p className="text-foreground text-sm font-medium">
                   Responder automáticamente a los mensajes entrantes
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  El bot responde automáticamente los mensajes entrantes nuevos (solo cuando ningún flujo los atiende y no hay un agente asignado). Deriva a una persona cuando no puede ayudar.
+                <p className="text-muted-foreground text-xs">
+                  El bot responde automáticamente los mensajes entrantes nuevos
+                  (solo cuando ningún flujo los atiende y no hay un agente
+                  asignado). Deriva a una persona cuando no puede ayudar.
                 </p>
               </div>
               <Switch
@@ -415,9 +437,12 @@ export function AiConfig() {
 
             <div className="flex items-center justify-between gap-4">
               <div>
-                <Label htmlFor="ai-max">Máx. de respuestas automáticas por conversación</Label>
-                <p className="text-xs text-muted-foreground">
-                  Tras esta cantidad de respuestas del bot en un hilo, el bot se calla.
+                <Label htmlFor="ai-max">
+                  Máx. de respuestas automáticas por conversación
+                </Label>
+                <p className="text-muted-foreground text-xs">
+                  Tras esta cantidad de respuestas del bot en un hilo, el bot se
+                  calla.
                 </p>
               </div>
               <Input
@@ -428,7 +453,7 @@ export function AiConfig() {
                 value={maxPerConversation}
                 onChange={(e) =>
                   setMaxPerConversation(
-                    Math.min(20, Math.max(1, Number(e.target.value) || 1)),
+                    Math.min(20, Math.max(1, Number(e.target.value) || 1))
                   )
                 }
                 disabled={disabled || !autoReplyEnabled}

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   Workflow,
   Plus,
@@ -14,11 +14,11 @@ import {
   HelpCircle,
   UserPlus,
   FileText,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { useCan } from "@/hooks/use-can";
-import { Button } from "@/components/ui/button";
-import { GatedButton } from "@/components/ui/gated-button";
+import { useCan } from '@/hooks/use-can';
+import { Button } from '@/components/ui/button';
+import { GatedButton } from '@/components/ui/gated-button';
 import {
   Dialog,
   DialogContent,
@@ -26,10 +26,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 /**
  * Flows list page.
@@ -43,8 +43,8 @@ interface FlowRow {
   id: string;
   name: string;
   description: string | null;
-  status: "draft" | "active" | "archived";
-  trigger_type: "keyword" | "first_inbound_message" | "manual";
+  status: 'draft' | 'active' | 'archived';
+  trigger_type: 'keyword' | 'first_inbound_message' | 'manual';
   trigger_config: { keywords?: string[] } | Record<string, unknown>;
   execution_count: number;
   last_executed_at: string | null;
@@ -52,23 +52,23 @@ interface FlowRow {
   updated_at: string;
 }
 
-const STATUS_LABELS: Record<FlowRow["status"], string> = {
-  draft: "Borrador",
-  active: "Activo",
-  archived: "Archivado",
+const STATUS_LABELS: Record<FlowRow['status'], string> = {
+  draft: 'Borrador',
+  active: 'Activo',
+  archived: 'Archivado',
 };
 
-const STATUS_COLORS: Record<FlowRow["status"], string> = {
-  draft: "border-border bg-muted text-muted-foreground",
-  active: "border-emerald-600/40 bg-emerald-500/10 text-emerald-300",
-  archived: "border-border bg-muted/50 text-muted-foreground",
+const STATUS_COLORS: Record<FlowRow['status'], string> = {
+  draft: 'border-border bg-muted text-muted-foreground',
+  active: 'border-emerald-600/40 bg-emerald-500/10 text-emerald-300',
+  archived: 'border-border bg-muted/50 text-muted-foreground',
 };
 
 interface TemplateSummary {
   slug: string;
   name: string;
   description: string;
-  icon: "MessageSquare" | "HelpCircle" | "UserPlus";
+  icon: 'MessageSquare' | 'HelpCircle' | 'UserPlus';
   trigger_type: string;
   node_count: number;
 }
@@ -81,11 +81,11 @@ const TEMPLATE_ICONS = {
 
 export default function FlowsPage() {
   const navigate = useNavigate();
-  const canCreate = useCan("send-messages");
+  const canCreate = useCan('send-messages');
   const [flows, setFlows] = useState<FlowRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState('');
   const [creating, setCreating] = useState(false);
   const [templates, setTemplates] = useState<TemplateSummary[]>([]);
 
@@ -94,11 +94,13 @@ export default function FlowsPage() {
     (async () => {
       try {
         const [flowsRes, tmplRes] = await Promise.all([
-          fetch("/api/flows"),
-          fetch("/api/flows/templates"),
+          fetch('/api/flows'),
+          fetch('/api/flows/templates'),
         ]);
         if (!flowsRes.ok) {
-          throw new Error(`No se pudieron cargar los flujos: ${flowsRes.status}`);
+          throw new Error(
+            `No se pudieron cargar los flujos: ${flowsRes.status}`
+          );
         }
         const flowsJson = (await flowsRes.json()) as { flows: FlowRow[] };
         if (!cancelled) setFlows(flowsJson.flows ?? []);
@@ -113,7 +115,7 @@ export default function FlowsPage() {
       } catch (err) {
         if (!cancelled) {
           console.error(err);
-          toast.error("No se pudieron cargar los flujos.");
+          toast.error('No se pudieron cargar los flujos.');
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -128,23 +130,23 @@ export default function FlowsPage() {
     if (!newName.trim()) return;
     setCreating(true);
     try {
-      const res = await fetch("/api/flows", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/flows', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: newName.trim(),
-          trigger_type: "keyword",
+          trigger_type: 'keyword',
           trigger_config: { keywords: [] },
         }),
       });
       if (!res.ok) throw new Error(`Falló la creación: ${res.status}`);
       const json = (await res.json()) as { flow: FlowRow };
       setCreateOpen(false);
-      setNewName("");
+      setNewName('');
       navigate(`/flows/${json.flow.id}`);
     } catch (err) {
       console.error(err);
-      toast.error("No se pudo crear el flujo.");
+      toast.error('No se pudo crear el flujo.');
     } finally {
       setCreating(false);
     }
@@ -153,9 +155,9 @@ export default function FlowsPage() {
   async function handleUseTemplate(slug: string) {
     setCreating(true);
     try {
-      const res = await fetch("/api/flows", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/flows', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ template_slug: slug }),
       });
       if (!res.ok) {
@@ -166,7 +168,7 @@ export default function FlowsPage() {
       setCreateOpen(false);
       navigate(`/flows/${json.flow.id}`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : "Falló la duplicación";
+      const msg = err instanceof Error ? err.message : 'Falló la duplicación';
       toast.error(msg);
     } finally {
       setCreating(false);
@@ -175,24 +177,24 @@ export default function FlowsPage() {
 
   async function handleDelete(flow: FlowRow) {
     const yes = window.confirm(
-      `¿Eliminar "${flow.name}"? Las ejecuciones activas terminarán de inmediato.`,
+      `¿Eliminar "${flow.name}"? Las ejecuciones activas terminarán de inmediato.`
     );
     if (!yes) return;
     try {
-      const res = await fetch(`/api/flows/${flow.id}`, { method: "DELETE" });
+      const res = await fetch(`/api/flows/${flow.id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error(`Falló la eliminación: ${res.status}`);
       setFlows((prev) => prev.filter((f) => f.id !== flow.id));
-      toast.success("Flujo eliminado.");
+      toast.success('Flujo eliminado.');
     } catch (err) {
       console.error(err);
-      toast.error("No se pudo eliminar el flujo.");
+      toast.error('No se pudo eliminar el flujo.');
     }
   }
 
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
       </div>
     );
   }
@@ -201,9 +203,11 @@ export default function FlowsPage() {
     <div className="space-y-6 p-6">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold text-foreground">Flujos</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Crea conversaciones de WhatsApp ramificadas con botones. Útil para menús, preguntas frecuentes y triaje antes de que intervenga una persona.
+          <h1 className="text-foreground text-2xl font-semibold">Flujos</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Crea conversaciones de WhatsApp ramificadas con botones. Útil para
+            menús, preguntas frecuentes y triaje antes de que intervenga una
+            persona.
           </p>
         </div>
         <GatedButton
@@ -239,7 +243,7 @@ export default function FlowsPage() {
             `sm:max-w-sm` baked into its default classes. Without the
             sm: prefix our override applies at base only and the
             sm-scoped 384px wins at every real desktop breakpoint. */}
-        <DialogContent className="sm:max-w-4xl bg-popover text-popover-foreground">
+        <DialogContent className="bg-popover text-popover-foreground sm:max-w-4xl">
           <DialogHeader>
             <DialogTitle>Crear un flujo nuevo</DialogTitle>
             <DialogDescription className="text-muted-foreground">
@@ -249,7 +253,7 @@ export default function FlowsPage() {
 
           {templates.length > 0 && (
             <div className="space-y-3">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
+              <p className="text-muted-foreground text-xs tracking-wide uppercase">
                 Empezar desde una plantilla
               </p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -261,17 +265,17 @@ export default function FlowsPage() {
                       type="button"
                       onClick={() => handleUseTemplate(t.slug)}
                       disabled={creating}
-                      className="flex flex-col gap-2.5 rounded-lg border border-border bg-background p-4 text-left transition-colors hover:border-primary/40 hover:bg-muted disabled:opacity-50"
+                      className="border-border bg-background hover:border-primary/40 hover:bg-muted flex flex-col gap-2.5 rounded-lg border p-4 text-left transition-colors disabled:opacity-50"
                     >
-                      <Icon className="h-5 w-5 text-primary" />
-                      <span className="text-sm font-semibold text-popover-foreground">
+                      <Icon className="text-primary h-5 w-5" />
+                      <span className="text-popover-foreground text-sm font-semibold">
                         {t.name}
                       </span>
-                      <span className="text-xs leading-relaxed text-muted-foreground">
+                      <span className="text-muted-foreground text-xs leading-relaxed">
                         {t.description}
                       </span>
-                      <span className="mt-auto border-t border-border pt-2 text-[11px] text-muted-foreground">
-                        {t.node_count} {t.node_count === 1 ? "node" : "nodes"}
+                      <span className="border-border text-muted-foreground mt-auto border-t pt-2 text-[11px]">
+                        {t.node_count} {t.node_count === 1 ? 'node' : 'nodes'}
                       </span>
                     </button>
                   );
@@ -280,8 +284,8 @@ export default function FlowsPage() {
             </div>
           )}
 
-          <div className="space-y-2 border-t border-border pt-4">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+          <div className="border-border space-y-2 border-t pt-4">
+            <p className="text-muted-foreground text-xs tracking-wide uppercase">
               O empieza en blanco
             </p>
             <Input
@@ -290,7 +294,7 @@ export default function FlowsPage() {
               placeholder="p. ej. Menú de bienvenida"
               className="bg-muted"
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleCreate();
+                if (e.key === 'Enter') handleCreate();
               }}
             />
           </div>
@@ -303,7 +307,10 @@ export default function FlowsPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleCreate} disabled={!newName.trim() || creating}>
+            <Button
+              onClick={handleCreate}
+              disabled={!newName.trim() || creating}
+            >
               {creating && <Loader2 className="h-4 w-4 animate-spin" />}
               Crear flujo en blanco
             </Button>
@@ -322,15 +329,17 @@ function EmptyState({
   canCreate: boolean;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border bg-card/50 px-6 py-16 text-center">
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
-        <Workflow className="h-6 w-6 text-muted-foreground" />
+    <div className="border-border bg-card/50 flex flex-col items-center justify-center rounded-lg border border-dashed px-6 py-16 text-center">
+      <div className="bg-muted flex h-14 w-14 items-center justify-center rounded-full">
+        <Workflow className="text-muted-foreground h-6 w-6" />
       </div>
-      <h2 className="mt-4 text-base font-medium text-foreground">
+      <h2 className="text-foreground mt-4 text-base font-medium">
         Aún no hay flujos
       </h2>
-      <p className="mt-1 max-w-md text-sm text-muted-foreground">
-        Crea tu primera conversación: un menú de bienvenida, una consulta de pedidos o un bot de preguntas frecuentes. Los clientes tocan botones y el bot los lleva a la respuesta correcta (o al agente correcto).
+      <p className="text-muted-foreground mt-1 max-w-md text-sm">
+        Crea tu primera conversación: un menú de bienvenida, una consulta de
+        pedidos o un bot de preguntas frecuentes. Los clientes tocan botones y
+        el bot los lleva a la respuesta correcta (o al agente correcto).
       </p>
       <GatedButton
         canAct={canCreate}
@@ -356,25 +365,25 @@ function FlowCard({
 }) {
   const triggerSummary = describeTrigger(flow);
   const StatusIcon =
-    flow.status === "active"
+    flow.status === 'active'
       ? PlayCircle
-      : flow.status === "archived"
+      : flow.status === 'archived'
         ? Archive
         : PauseCircle;
   return (
-    <div className="flex flex-col rounded-lg border border-border bg-card p-4 transition-colors hover:border-border">
+    <div className="border-border bg-card hover:border-border flex flex-col rounded-lg border p-4 transition-colors">
       <div className="flex items-start justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          <Workflow className="h-4 w-4 shrink-0 text-primary" />
-          <h3 className="truncate text-sm font-semibold text-foreground">
+          <Workflow className="text-primary h-4 w-4 shrink-0" />
+          <h3 className="text-foreground truncate text-sm font-semibold">
             {flow.name}
           </h3>
         </div>
         <Badge
           variant="outline"
           className={cn(
-            "shrink-0 gap-1 text-[10px]",
-            STATUS_COLORS[flow.status],
+            'shrink-0 gap-1 text-[10px]',
+            STATUS_COLORS[flow.status]
           )}
         >
           <StatusIcon className="h-3 w-3" />
@@ -382,18 +391,19 @@ function FlowCard({
         </Badge>
       </div>
 
-      <p className="mt-2 line-clamp-2 text-xs text-muted-foreground">
+      <p className="text-muted-foreground mt-2 line-clamp-2 text-xs">
         {flow.description || triggerSummary}
       </p>
 
-      <div className="mt-4 flex items-center gap-3 text-[11px] text-muted-foreground">
+      <div className="text-muted-foreground mt-4 flex items-center gap-3 text-[11px]">
         <span className="inline-flex items-center gap-1">
           <MessageSquare className="h-3 w-3" />
-          {flow.execution_count} {flow.execution_count === 1 ? "ejecución" : "ejecuciones"}
+          {flow.execution_count}{' '}
+          {flow.execution_count === 1 ? 'ejecución' : 'ejecuciones'}
         </span>
       </div>
 
-      <div className="mt-4 flex items-center justify-end gap-2 border-t border-border pt-3">
+      <div className="border-border mt-4 flex items-center justify-end gap-2 border-t pt-3">
         <Button variant="ghost" size="sm" onClick={onEdit}>
           <Pencil className="h-3.5 w-3.5" />
           Editar
@@ -413,15 +423,16 @@ function FlowCard({
 }
 
 function describeTrigger(flow: FlowRow): string {
-  if (flow.trigger_type === "keyword") {
+  if (flow.trigger_type === 'keyword') {
     const keywords = Array.isArray(flow.trigger_config.keywords)
       ? (flow.trigger_config.keywords as string[])
       : [];
-    if (keywords.length === 0) return "Se activa por palabra clave (ninguna definida)";
-    return `Se activa con: ${keywords.join(", ")}`;
+    if (keywords.length === 0)
+      return 'Se activa por palabra clave (ninguna definida)';
+    return `Se activa con: ${keywords.join(', ')}`;
   }
-  if (flow.trigger_type === "first_inbound_message") {
-    return "Se activa con el primer mensaje entrante de un contacto";
+  if (flow.trigger_type === 'first_inbound_message') {
+    return 'Se activa con el primer mensaje entrante de un contacto';
   }
-  return "Disparo manual";
+  return 'Disparo manual';
 }

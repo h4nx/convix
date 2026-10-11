@@ -15,7 +15,14 @@
  * are list-only and have no canvas analogue.
  */
 
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   CircleAlert,
   Plus,
@@ -171,8 +178,8 @@ export function FlowBuilder() {
         {state.nodes.length === 0 ? (
           <div className="border-border bg-card/50 text-muted-foreground rounded-lg border border-dashed p-8 text-center text-sm">
             Agrega un nodo de <strong>Inicio</strong>, luego uno de{' '}
-            <strong>Enviar botones</strong> y luego uno de <strong>Derivación</strong>{' '}
-            para armar un menú de bienvenida.
+            <strong>Enviar botones</strong> y luego uno de{' '}
+            <strong>Derivación</strong> para armar un menú de bienvenida.
           </div>
         ) : (
           state.nodes.map((node) => (
@@ -536,7 +543,8 @@ function NodeConfigWithAdvanced({
           <div className="mt-3 flex flex-col gap-3">
             <div>
               <label className="text-muted-foreground mb-1 block text-xs">
-                Clave del nodo (identificador interno — mantenla estable para las analíticas)
+                Clave del nodo (identificador interno — mantenla estable para
+                las analíticas)
               </label>
               <Input
                 value={node.node_key}
@@ -548,7 +556,9 @@ function NodeConfigWithAdvanced({
             </div>
             {hasReplyIds && (
               <p className="text-muted-foreground text-[10px]">
-                Los ID de respuesta de cada opción se muestran arriba. WhatsApp los devuelve cuando un cliente toca una opción; normalmente no necesitas modificarlos.
+                Los ID de respuesta de cada opción se muestran arriba. WhatsApp
+                los devuelve cuando un cliente toca una opción; normalmente no
+                necesitas modificarlos.
               </p>
             )}
           </div>

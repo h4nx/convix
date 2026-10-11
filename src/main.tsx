@@ -13,10 +13,10 @@ document.documentElement.lang = locale;
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <IntlProvider locale={locale} messages={messages}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-        <ThemedToaster />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+      <ThemedToaster />
     </IntlProvider>
-  </StrictMode>,
+  </StrictMode>
 );

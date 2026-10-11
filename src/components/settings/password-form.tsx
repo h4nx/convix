@@ -23,10 +23,19 @@ function strength(pw: string): { score: number; label: string } {
   if (pw.length >= 12) score++;
   if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
   if (/\d/.test(pw) && /[^A-Za-z0-9]/.test(pw)) score++;
-  return { score, label: ['Muy débil', 'Débil', 'Aceptable', 'Buena', 'Fuerte'][score] };
+  return {
+    score,
+    label: ['Muy débil', 'Débil', 'Aceptable', 'Buena', 'Fuerte'][score],
+  };
 }
 
-const BAR_COLORS = ['bg-destructive', 'bg-destructive', 'bg-amber-500', 'bg-primary', 'bg-emerald-500'];
+const BAR_COLORS = [
+  'bg-destructive',
+  'bg-destructive',
+  'bg-amber-500',
+  'bg-primary',
+  'bg-emerald-500',
+];
 
 export function PasswordForm() {
   const supabase = createClient();
@@ -44,7 +53,9 @@ export function PasswordForm() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (next.length < MIN_PASSWORD) {
-      setFormError(`La contraseña debe tener al menos ${MIN_PASSWORD} caracteres`);
+      setFormError(
+        `La contraseña debe tener al menos ${MIN_PASSWORD} caracteres`
+      );
       return;
     }
     if (next !== confirm) {
@@ -85,8 +96,8 @@ export function PasswordForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-foreground">
-          <KeyRound className="size-4 text-primary" />
+        <CardTitle className="text-foreground flex items-center gap-2">
+          <KeyRound className="text-primary size-4" />
           Contraseña
         </CardTitle>
         <CardDescription className="text-muted-foreground">
@@ -157,7 +168,7 @@ export function PasswordForm() {
                   />
                 ))}
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="text-muted-foreground mt-1 text-xs">
                 Seguridad: {s.label}
               </p>
             </div>
@@ -166,7 +177,7 @@ export function PasswordForm() {
           {formError && (
             <p
               role="alert"
-              className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+              className="border-destructive/30 bg-destructive/10 text-destructive rounded-md border px-3 py-2 text-xs"
             >
               {formError}
             </p>
@@ -176,9 +187,13 @@ export function PasswordForm() {
             <button
               type="button"
               onClick={() => setShow((v) => !v)}
-              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs"
             >
-              {show ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
+              {show ? (
+                <EyeOff className="size-3.5" />
+              ) : (
+                <Eye className="size-3.5" />
+              )}
               {show ? 'Ocultar contraseñas' : 'Mostrar contraseñas'}
             </button>
             <Button

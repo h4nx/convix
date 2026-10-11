@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
-import { Loader2, Plus, Trash2, Pencil, RefreshCw, BookOpen } from 'lucide-react';
+import {
+  Loader2,
+  Plus,
+  Trash2,
+  Pencil,
+  RefreshCw,
+  BookOpen,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -46,7 +53,8 @@ export function AiKnowledgeCard({
       const res = await fetch('/api/ai/knowledge');
       const data = await res.json();
       if (res.ok) setDocs(data.documents ?? []);
-      else toast.error(data.error ?? 'No se pudo cargar la base de conocimiento');
+      else
+        toast.error(data.error ?? 'No se pudo cargar la base de conocimiento');
     } catch {
       toast.error('No se pudo cargar la base de conocimiento');
     } finally {
@@ -101,14 +109,20 @@ export function AiKnowledgeCard({
         {
           method: isNew ? 'POST' : 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title: title.trim(), content: content.trim() }),
-        },
+          body: JSON.stringify({
+            title: title.trim(),
+            content: content.trim(),
+          }),
+        }
       );
       const data = await res.json();
       if (res.ok) {
         // A 200 with `warning` means saved but indexing degraded.
         if (data.warning) toast.warning(data.warning);
-        else toast.success(isNew ? 'Documento agregado.' : 'Documento actualizado.');
+        else
+          toast.success(
+            isNew ? 'Documento agregado.' : 'Documento actualizado.'
+          );
         cancelEdit();
         await fetchDocs();
       } else {
@@ -157,10 +171,12 @@ export function AiKnowledgeCard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-base">
-          <BookOpen className="h-4 w-4 text-primary" /> Base de conocimiento
+          <BookOpen className="text-primary h-4 w-4" /> Base de conocimiento
         </CardTitle>
         <CardDescription>
-          Agrega preguntas frecuentes, políticas o detalles de producto. El asistente recupera lo relevante al redactar y responder automáticamente, para poder contestar en vez de derivar.
+          Agrega preguntas frecuentes, políticas o detalles de producto. El
+          asistente recupera lo relevante al redactar y responder
+          automáticamente, para poder contestar en vez de derivar.
           {hasEmbeddingsKey
             ? ' La búsqueda semántica está activa (clave de embeddings configurada).'
             : ' Usando búsqueda por palabras clave — agrega una clave de embeddings arriba para activar la búsqueda semántica.'}
@@ -168,25 +184,25 @@ export function AiKnowledgeCard({
       </CardHeader>
       <CardContent className="space-y-4">
         {loading ? (
-          <div className="flex items-center py-4 text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex items-center py-4 text-sm">
             <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Cargando…
           </div>
         ) : (
           <>
             {docs.length === 0 && editing === null && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Aún no hay documentos.
               </p>
             )}
 
             {docs.length > 0 && (
-              <ul className="divide-y divide-border rounded-md border border-border">
+              <ul className="divide-border border-border divide-y rounded-md border">
                 {docs.map((doc) => (
                   <li
                     key={doc.id}
                     className="flex items-center justify-between gap-2 px-3 py-2"
                   >
-                    <span className="min-w-0 truncate text-sm text-foreground">
+                    <span className="text-foreground min-w-0 truncate text-sm">
                       {doc.title}
                     </span>
                     {canEdit && (
@@ -203,7 +219,7 @@ export function AiKnowledgeCard({
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                          className="text-destructive hover:text-destructive h-8 w-8 p-0"
                           onClick={() => void remove(doc.id)}
                           title="Eliminar"
                         >
@@ -217,7 +233,7 @@ export function AiKnowledgeCard({
             )}
 
             {editing !== null ? (
-              <div className="space-y-3 rounded-md border border-border p-3">
+              <div className="border-border space-y-3 rounded-md border p-3">
                 <div className="space-y-2">
                   <Label htmlFor="kb-title">Título</Label>
                   <Input
@@ -240,11 +256,17 @@ export function AiKnowledgeCard({
                   />
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="ghost" onClick={cancelEdit} disabled={saving}>
+                  <Button
+                    variant="ghost"
+                    onClick={cancelEdit}
+                    disabled={saving}
+                  >
                     Cancelar
                   </Button>
                   <Button onClick={save} disabled={saving}>
-                    {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {saving && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
                     Guardar documento
                   </Button>
                 </div>

@@ -16,17 +16,17 @@
  * (introduced in this PR) mount the exact same form components.
  */
 
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { NODE_META, type BuilderNode } from "../shared";
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+import { NODE_META, type BuilderNode } from '../shared';
 
 export function TextRow({
   label,
@@ -41,7 +41,9 @@ export function TextRow({
 }) {
   return (
     <div>
-      <label className="mb-1 block text-xs text-muted-foreground">{label}</label>
+      <label className="text-muted-foreground mb-1 block text-xs">
+        {label}
+      </label>
       {rows > 1 ? (
         <Textarea
           value={value}
@@ -75,12 +77,14 @@ export function NextNodeRow({
 }) {
   return (
     <div>
-      <label className="mb-1 block text-xs text-muted-foreground">{label}</label>
+      <label className="text-muted-foreground mb-1 block text-xs">
+        {label}
+      </label>
       <NodeKeySelect
         value={value || null}
         nodes={allNodes}
         excludeKey={currentKey}
-        onChange={(v) => onChange(v ?? "")}
+        onChange={(v) => onChange(v ?? '')}
         placeholder="Elige un nodo siguiente…"
       />
     </div>
@@ -105,11 +109,11 @@ export function NodeKeySelect({
   const options = nodes.filter((n) => n.node_key !== excludeKey);
   return (
     <Select
-      value={value ?? "__none__"}
-      onValueChange={(v) => onChange(v === "__none__" ? null : v)}
+      value={value ?? '__none__'}
+      onValueChange={(v) => onChange(v === '__none__' ? null : v)}
     >
-      <SelectTrigger className={cn("bg-muted", className)}>
-        <SelectValue placeholder={placeholder ?? "—"} />
+      <SelectTrigger className={cn('bg-muted', className)}>
+        <SelectValue placeholder={placeholder ?? '—'} />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="__none__">— Ninguno —</SelectItem>
@@ -118,9 +122,7 @@ export function NodeKeySelect({
           return (
             <SelectItem key={n.node_key} value={n.node_key}>
               <span className="inline-flex items-center gap-1.5">
-                <Icon
-                  className={cn("h-3 w-3", NODE_META[n.node_type].color)}
-                />
+                <Icon className={cn('h-3 w-3', NODE_META[n.node_type].color)} />
                 {n.node_key}
               </span>
             </SelectItem>

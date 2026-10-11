@@ -43,12 +43,15 @@
 // can't ${gateReason}"`.
 // ============================================================
 
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from 'react';
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-interface GatedButtonProps extends Omit<ComponentProps<typeof Button>, "title"> {
+interface GatedButtonProps extends Omit<
+  ComponentProps<typeof Button>,
+  'title'
+> {
   /** False → button is disabled and the wrapper span shows the
    *  "Read-only" tooltip. Defaults to `true` so a `<GatedButton>`
    *  without the prop is just a Button. */
@@ -73,9 +76,10 @@ export function GatedButton({
   ...rest
 }: GatedButtonProps) {
   const effectivelyDisabled = disabled || !canAct;
-  const tooltip = !canAct && gateReason
-    ? `Solo lectura — tu rol no permite ${gateReason}`
-    : title;
+  const tooltip =
+    !canAct && gateReason
+      ? `Solo lectura — tu rol no permite ${gateReason}`
+      : title;
 
   return (
     <span
@@ -84,14 +88,10 @@ export function GatedButton({
       // here (not on the button) is what makes the tooltip work
       // in Safari / older Firefox — those browsers don't fire
       // mouseover on disabled buttons.
-      className={cn("inline-flex", !canAct && "cursor-not-allowed")}
+      className={cn('inline-flex', !canAct && 'cursor-not-allowed')}
       title={tooltip}
     >
-      <Button
-        disabled={effectivelyDisabled}
-        className={className}
-        {...rest}
-      >
+      <Button disabled={effectivelyDisabled} className={className} {...rest}>
         {children}
       </Button>
     </span>

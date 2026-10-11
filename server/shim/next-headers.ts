@@ -3,7 +3,10 @@ import { RequestCookies, serializeCookie, type CookieOptions } from './cookies';
 import { getRequestContext } from './request-context';
 
 class CookieStore extends RequestCookies {
-  constructor(private readonly pending: string[], header: string | null) {
+  constructor(
+    private readonly pending: string[],
+    header: string | null
+  ) {
     super(header);
   }
 

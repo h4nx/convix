@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import { Sidebar } from "@/components/layout/sidebar";
-import { Header } from "@/components/layout/header";
-import { PresenceHeartbeat } from "@/components/presence/presence-heartbeat";
+import { useCallback, useEffect, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from '@/hooks/use-auth';
+import { Sidebar } from '@/components/layout/sidebar';
+import { Header } from '@/components/layout/header';
+import { PresenceHeartbeat } from '@/components/presence/presence-heartbeat';
 
 // Auth-gated dashboard shell (ruta-layout: renderiza las páginas hijas en <Outlet />).
 
@@ -18,16 +18,16 @@ function DashboardShellInner() {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate("/login");
+      navigate('/login');
     }
   }, [user, loading, navigate]);
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
+      <div className="bg-background flex h-screen items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-          <p className="text-sm text-muted-foreground">Cargando...</p>
+          <div className="border-primary h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
+          <p className="text-muted-foreground text-sm">Cargando...</p>
         </div>
       </div>
     );
@@ -36,7 +36,7 @@ function DashboardShellInner() {
   if (!user) return null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="bg-background flex h-screen overflow-hidden">
       {/* Reports this tab's online/away presence once we know a user is
           signed in. Headless — renders nothing. */}
       <PresenceHeartbeat />
@@ -44,7 +44,9 @@ function DashboardShellInner() {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Header onOpenSidebar={() => setSidebarOpen(true)} />
         {/* Thinner horizontal padding on mobile so cards have room to breathe. */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6"><Outlet /></main>
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

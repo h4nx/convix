@@ -75,10 +75,7 @@ export async function POST(request: NextRequest) {
   if (body.email !== undefined) {
     const email = String(body.email).trim();
     if (!EMAIL_RE.test(email)) {
-      return NextResponse.json(
-        { error: 'Correo no válido' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Correo no válido' }, { status: 400 });
     }
     const existing = await findUserByEmail(email);
     if (existing && existing.id !== user.id) {

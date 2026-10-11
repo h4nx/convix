@@ -16,7 +16,10 @@ export async function POST(request: NextRequest) {
   } | null;
   const email = body?.email?.trim();
   if (!email) {
-    return NextResponse.json({ error: 'El correo es obligatorio' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'El correo es obligatorio' },
+      { status: 400 }
+    );
   }
 
   const limit = checkRateLimit(`auth-forgot:${email.toLowerCase()}`, {

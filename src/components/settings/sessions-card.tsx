@@ -53,7 +53,10 @@ function describeAgent(ua: string | null): { label: string; mobile: boolean } {
           : /Linux/.test(ua)
             ? 'Linux'
             : 'sistema desconocido';
-  return { label: `${browser} en ${os}`, mobile: /Android|iPhone|iPad|Mobile/.test(ua) };
+  return {
+    label: `${browser} en ${os}`,
+    mobile: /Android|iPhone|iPad|Mobile/.test(ua),
+  };
 }
 
 function timeAgo(iso: string): string {
@@ -132,8 +135,8 @@ export function SessionsCard() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-foreground">
-            <LogOut className="size-4 text-primary" />
+          <CardTitle className="text-foreground flex items-center gap-2">
+            <LogOut className="text-primary size-4" />
             Sesiones activas
           </CardTitle>
           <CardDescription className="text-muted-foreground">
@@ -143,37 +146,44 @@ export function SessionsCard() {
         </CardHeader>
         <CardContent className="space-y-4">
           {sessions === null && !loadError && (
-            <p className="flex items-center gap-2 text-sm text-muted-foreground">
+            <p className="text-muted-foreground flex items-center gap-2 text-sm">
               <Loader2 className="size-4 animate-spin" /> Cargando sesiones…
             </p>
           )}
           {loadError && (
-            <p className="text-sm text-destructive">
+            <p className="text-destructive text-sm">
               No se pudieron cargar las sesiones.{' '}
-              <button type="button" className="underline" onClick={() => void load()}>
+              <button
+                type="button"
+                className="underline"
+                onClick={() => void load()}
+              >
                 Reintentar
               </button>
             </p>
           )}
 
           {sessions && (
-            <ul className="divide-y divide-border rounded-lg border border-border">
+            <ul className="divide-border border-border divide-y rounded-lg border">
               {sessions.map((s) => {
                 const { label, mobile } = describeAgent(s.user_agent);
                 const Icon = mobile ? Smartphone : Laptop;
                 return (
-                  <li key={s.id} className="flex items-center gap-3 px-3 py-2.5">
-                    <Icon className="size-5 shrink-0 text-muted-foreground" />
+                  <li
+                    key={s.id}
+                    className="flex items-center gap-3 px-3 py-2.5"
+                  >
+                    <Icon className="text-muted-foreground size-5 shrink-0" />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-foreground">
+                      <p className="text-foreground truncate text-sm font-medium">
                         {label}
                         {s.current && (
-                          <span className="ml-2 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary uppercase">
+                          <span className="bg-primary/10 text-primary ml-2 rounded-full px-2 py-0.5 text-[10px] font-medium uppercase">
                             Este dispositivo
                           </span>
                         )}
                       </p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         Activa {timeAgo(s.last_used_at)} · iniciada{' '}
                         {new Date(s.created_at).toLocaleDateString('es', {
                           day: 'numeric',
@@ -213,7 +223,11 @@ export function SessionsCard() {
                 Cerrar las otras {others.length}
               </Button>
             )}
-            <Button type="button" variant="outline" onClick={() => setOpen(true)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(true)}
+            >
               <LogOut className="size-4" />
               Cerrar sesión en todos los dispositivos
             </Button>

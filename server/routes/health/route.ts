@@ -12,8 +12,11 @@ export async function GET() {
     return NextResponse.json({ status: 'ok' });
   } catch (error) {
     return NextResponse.json(
-      { status: 'error', error: error instanceof Error ? error.message : 'unknown' },
-      { status: 503 },
+      {
+        status: 'error',
+        error: error instanceof Error ? error.message : 'unknown',
+      },
+      { status: 503 }
     );
   }
 }

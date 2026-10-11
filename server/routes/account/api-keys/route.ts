@@ -93,7 +93,9 @@ export async function POST(request: Request) {
     }
     if (rawName.length > MAX_NAME_LEN) {
       return NextResponse.json(
-        { error: `El nombre debe tener como máximo ${MAX_NAME_LEN} caracteres o menos` },
+        {
+          error: `El nombre debe tener como máximo ${MAX_NAME_LEN} caracteres o menos`,
+        },
         { status: 400 }
       );
     }

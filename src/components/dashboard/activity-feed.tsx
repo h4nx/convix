@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { useState } from 'react'
-import { useTranslations } from 'use-intl'
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useTranslations } from 'use-intl';
 import {
   MessageSquare,
   UserPlus,
@@ -8,25 +8,25 @@ import {
   Radio,
   Zap,
   Inbox,
-} from 'lucide-react'
-import type { ComponentType } from 'react'
-import type { ActivityItem, ActivityKind } from '@/lib/dashboard/types'
-import { cn } from '@/lib/utils'
-import { EmptyState } from './empty-state'
-import { Skeleton } from './skeleton'
+} from 'lucide-react';
+import type { ComponentType } from 'react';
+import type { ActivityItem, ActivityKind } from '@/lib/dashboard/types';
+import { cn } from '@/lib/utils';
+import { EmptyState } from './empty-state';
+import { Skeleton } from './skeleton';
 
 interface ActivityFeedProps {
-  items: ActivityItem[] | null
-  loading: boolean
+  items: ActivityItem[] | null;
+  loading: boolean;
 }
 
-const PAGE_SIZES = [5, 10, 20, 50] as const
-type PageSize = (typeof PAGE_SIZES)[number]
+const PAGE_SIZES = [5, 10, 20, 50] as const;
+type PageSize = (typeof PAGE_SIZES)[number];
 
 interface KindTheme {
-  icon: ComponentType<{ className?: string }>
+  icon: ComponentType<{ className?: string }>;
   /** Tailwind classes for the round icon badge + label color. */
-  badge: string
+  badge: string;
 }
 
 const KIND_THEME: Record<ActivityKind, KindTheme> = {
@@ -35,31 +35,31 @@ const KIND_THEME: Record<ActivityKind, KindTheme> = {
   deal: { icon: Briefcase, badge: 'bg-primary/10 text-primary' },
   broadcast: { icon: Radio, badge: 'bg-amber-500/10 text-amber-400' },
   automation: { icon: Zap, badge: 'bg-rose-500/10 text-rose-400' },
-}
+};
 
 export function ActivityFeed({ items, loading }: ActivityFeedProps) {
-  const t = useTranslations('Dashboard.activityFeed')
+  const t = useTranslations('Dashboard.activityFeed');
   // Start at 5 — a quick scan of the most recent events without
   // dominating vertical real estate. User expands explicitly via the
   // footer control when they want deeper history.
-  const [pageSize, setPageSize] = useState<PageSize>(5)
+  const [pageSize, setPageSize] = useState<PageSize>(5);
 
-  const totalLoaded = items?.length ?? 0
-  const visible = items?.slice(0, pageSize) ?? []
+  const totalLoaded = items?.length ?? 0;
+  const visible = items?.slice(0, pageSize) ?? [];
   // A size option is "useful" if picking it would reveal rows the
   // smaller option doesn't already show. With PAGE_SIZES=[5,10,20,50]:
   // "10" is useful only once we've loaded ≥6 items, "20" once ≥11, etc.
   // The smallest option is always enabled.
   const isSizeUseful = (size: PageSize, i: number) =>
-    i === 0 || totalLoaded > PAGE_SIZES[i - 1]
+    i === 0 || totalLoaded > PAGE_SIZES[i - 1];
 
   return (
-    <section className="rounded-xl border border-border bg-card">
-      <header className="flex items-center justify-between border-b border-border px-5 py-4">
-        <h2 className="text-sm font-semibold text-foreground">{t('title')}</h2>
+    <section className="border-border bg-card rounded-xl border">
+      <header className="border-border flex items-center justify-between border-b px-5 py-4">
+        <h2 className="text-foreground text-sm font-semibold">{t('title')}</h2>
         <Link
           to="/inbox"
-          className="text-xs font-medium text-primary hover:text-primary/80"
+          className="text-primary hover:text-primary/80 text-xs font-medium"
         >
           {t('viewAll')} →
         </Link>
@@ -81,34 +81,37 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
         </div>
       ) : (
         <>
-          <ul className="divide-y divide-border">
+          <ul className="divide-border divide-y">
             {visible.map((it, i) => {
-              const theme = KIND_THEME[it.kind]
-              const Icon = theme.icon
+              const theme = KIND_THEME[it.kind];
+              const Icon = theme.icon;
               // Alternating row background for scanability. bg-muted/40
               // keeps the stripe visible in both light and dark modes
               // (bg-card/40 vanishes against a white card surface in light).
-              const stripe = i % 2 === 0 ? 'bg-transparent' : 'bg-muted/40'
+              const stripe = i % 2 === 0 ? 'bg-transparent' : 'bg-muted/40';
               const row = (
                 <div className="flex items-center gap-3 px-5 py-2.5">
                   <span
                     className={cn(
                       'flex h-7 w-7 shrink-0 items-center justify-center rounded-full',
-                      theme.badge,
+                      theme.badge
                     )}
                   >
                     <Icon className="h-3.5 w-3.5" />
                   </span>
-                  <span className="min-w-0 flex-1 truncate text-sm text-foreground">
+                  <span className="text-foreground min-w-0 flex-1 truncate text-sm">
                     {it.text}
                   </span>
-                  <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                  <span className="text-muted-foreground shrink-0 text-xs tabular-nums">
                     {relativeTime(it.at, t)}
                   </span>
                 </div>
-              )
+              );
               return (
-                <li key={it.id} className={cn(stripe, 'transition-colors hover:bg-muted/40')}>
+                <li
+                  key={it.id}
+                  className={cn(stripe, 'hover:bg-muted/40 transition-colors')}
+                >
                   {it.href ? (
                     <Link to={it.href} className="block">
                       {row}
@@ -117,18 +120,18 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
                     row
                   )}
                 </li>
-              )
+              );
             })}
           </ul>
-          <footer className="flex items-center justify-between border-t border-border px-5 py-3 text-xs">
+          <footer className="border-border flex items-center justify-between border-t px-5 py-3 text-xs">
             <span className="text-muted-foreground tabular-nums">
               {t('showing', { visible: visible.length, total: totalLoaded })}
               {totalLoaded === 50 ? '+' : ''}
             </span>
             <div className="flex items-center gap-1">
-              <span className="mr-1 text-muted-foreground">{t('show')}</span>
+              <span className="text-muted-foreground mr-1">{t('show')}</span>
               {PAGE_SIZES.map((size, i) => {
-                const disabled = !isSizeUseful(size, i)
+                const disabled = !isSizeUseful(size, i);
                 return (
                   <button
                     key={size}
@@ -140,28 +143,37 @@ export function ActivityFeed({ items, loading }: ActivityFeedProps) {
                       pageSize === size
                         ? 'bg-secondary text-secondary-foreground'
                         : 'text-muted-foreground hover:bg-muted hover:text-foreground',
-                      disabled && 'cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted-foreground',
+                      disabled &&
+                        'hover:text-muted-foreground cursor-not-allowed opacity-40 hover:bg-transparent'
                     )}
                   >
                     {size}
                   </button>
-                )
+                );
               })}
             </div>
           </footer>
         </>
       )}
     </section>
-  )
+  );
 }
 
-function relativeTime(iso: string, t: ReturnType<typeof useTranslations>): string {
-  const then = new Date(iso).getTime()
-  if (Number.isNaN(then)) return ''
-  const diffSec = Math.round((Date.now() - then) / 1000)
-  if (diffSec < 60) return t('secondsAgo', { count: Math.max(1, diffSec) })
-  if (diffSec < 3600) return t('minutesAgo', { count: Math.floor(diffSec / 60) })
-  if (diffSec < 86400) return t('hoursAgo', { count: Math.floor(diffSec / 3600) })
-  if (diffSec < 2_592_000) return t('daysAgo', { count: Math.floor(diffSec / 86400) })
-  return new Date(iso).toLocaleDateString(import.meta.env.VITE_APP_LOCALE || 'en')
+function relativeTime(
+  iso: string,
+  t: ReturnType<typeof useTranslations>
+): string {
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return '';
+  const diffSec = Math.round((Date.now() - then) / 1000);
+  if (diffSec < 60) return t('secondsAgo', { count: Math.max(1, diffSec) });
+  if (diffSec < 3600)
+    return t('minutesAgo', { count: Math.floor(diffSec / 60) });
+  if (diffSec < 86400)
+    return t('hoursAgo', { count: Math.floor(diffSec / 3600) });
+  if (diffSec < 2_592_000)
+    return t('daysAgo', { count: Math.floor(diffSec / 86400) });
+  return new Date(iso).toLocaleDateString(
+    import.meta.env.VITE_APP_LOCALE || 'en'
+  );
 }

@@ -1,11 +1,11 @@
-import { NextResponse } from '@server/shim/next-server'
-import { createClient, createServiceClient } from '@/lib/supabase/server'
+import { NextResponse } from '@server/shim/next-server';
+import { createClient, createServiceClient } from '@/lib/supabase/server';
 import {
   registerPhoneNumber,
   subscribeWabaToApp,
   verifyPhoneNumber,
-} from '@/lib/whatsapp/meta-api'
-import { encrypt, decrypt } from '@/lib/whatsapp/encryption'
+} from '@/lib/whatsapp/meta-api';
+import { encrypt, decrypt } from '@/lib/whatsapp/encryption';
 
 /**
  * Resolve the caller's account_id from their profile. Inlined here
@@ -19,22 +19,22 @@ import { encrypt, decrypt } from '@/lib/whatsapp/encryption'
  */
 async function resolveAccountId(
   supabase: Awaited<ReturnType<typeof createClient>>,
-  userId: string,
+  userId: string
 ): Promise<string | null> {
   const { data, error } = await supabase
     .from('profiles')
     .select('account_id')
     .eq('user_id', userId)
-    .maybeSingle()
-  if (error || !data?.account_id) return null
-  return data.account_id as string
+    .maybeSingle();
+  if (error || !data?.account_id) return null;
+  return data.account_id as string;
 }
 
 // Cliente con privilegios de servicio. Hace falta para detectar un
 // phone_number_id ya reclamado por *otro* usuario — bajo RLS la sesión
 // propia no ve filas ajenas, así que el conflicto sería invisible.
 function supabaseAdmin() {
-  return createServiceClient()
+  return createServiceClient();
 }
 
 /**
@@ -52,18 +52,18 @@ function supabaseAdmin() {
  */
 export async function GET() {
   try {
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    const accountId = await resolveAccountId(supabase, user.id)
+    const accountId = await resolveAccountId(supabase, user.id);
     if (!accountId) {
       return NextResponse.json(
         {
@@ -71,22 +71,26 @@ export async function GET() {
           reason: 'no_account',
           message: 'Tu perfil no está vinculado a una cuenta.',
         },
-        { status: 200 },
-      )
+        { status: 200 }
+      );
     }
 
     const { data: config, error: configError } = await supabase
       .from('whatsapp_config')
       .select('phone_number_id, access_token, status')
       .eq('account_id', accountId)
-      .maybeSingle()
+      .maybeSingle();
 
     if (configError) {
-      console.error('Error fetching whatsapp_config:', configError)
+      console.error('Error fetching whatsapp_config:', configError);
       return NextResponse.json(
-        { connected: false, reason: 'db_error', message: 'No se pudo obtener la configuración' },
+        {
+          connected: false,
+          reason: 'db_error',
+          message: 'No se pudo obtener la configuración',
+        },
         { status: 200 }
-      )
+      );
     }
 
     if (!config) {
@@ -94,19 +98,20 @@ export async function GET() {
         {
           connected: false,
           reason: 'no_config',
-          message: 'Aún no hay configuración de WhatsApp guardada. Completa el formulario y haz clic en Guardar configuración.',
+          message:
+            'Aún no hay configuración de WhatsApp guardada. Completa el formulario y haz clic en Guardar configuración.',
         },
         { status: 200 }
-      )
+      );
     }
 
     // Try to decrypt the stored token with the current ENCRYPTION_KEY.
     // If this fails, the key changed (or was never consistent across envs).
-    let accessToken: string
+    let accessToken: string;
     try {
-      accessToken = decrypt(config.access_token)
+      accessToken = decrypt(config.access_token);
     } catch (err) {
-      console.error('[whatsapp/config GET] Token decryption failed:', err)
+      console.error('[whatsapp/config GET] Token decryption failed:', err);
       return NextResponse.json(
         {
           connected: false,
@@ -116,7 +121,7 @@ export async function GET() {
             'El token de acceso guardado no se puede descifrar con la ENCRYPTION_KEY actual. Normalmente significa que la clave cambió o difiere entre entornos (local vs. producción). Haz clic en «Restablecer configuración» abajo y vuelve a guardar.',
         },
         { status: 200 }
-      )
+      );
     }
 
     // Validate credentials against Meta
@@ -124,11 +129,17 @@ export async function GET() {
       const phoneInfo = await verifyPhoneNumber({
         phoneNumberId: config.phone_number_id,
         accessToken,
-      })
-      return NextResponse.json({ connected: true, phone_info: phoneInfo })
+      });
+      return NextResponse.json({ connected: true, phone_info: phoneInfo });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error desconocido de la API de Meta'
-      console.error('[whatsapp/config GET] Meta API verification failed:', message)
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Error desconocido de la API de Meta';
+      console.error(
+        '[whatsapp/config GET] Meta API verification failed:',
+        message
+      );
       return NextResponse.json(
         {
           connected: false,
@@ -136,14 +147,18 @@ export async function GET() {
           message: `La API de Meta rechazó las credenciales: ${message}`,
         },
         { status: 200 }
-      )
+      );
     }
   } catch (error) {
-    console.error('Error in WhatsApp config GET:', error)
+    console.error('Error in WhatsApp config GET:', error);
     return NextResponse.json(
-      { connected: false, reason: 'unknown', message: 'Error interno del servidor' },
+      {
+        connected: false,
+        reason: 'unknown',
+        message: 'Error interno del servidor',
+      },
       { status: 500 }
-    )
+    );
   }
 }
 
@@ -155,33 +170,33 @@ export async function GET() {
  */
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    const accountId = await resolveAccountId(supabase, user.id)
+    const accountId = await resolveAccountId(supabase, user.id);
     if (!accountId) {
       return NextResponse.json(
         { error: 'Tu perfil no está vinculado a una cuenta.' },
-        { status: 403 },
-      )
+        { status: 403 }
+      );
     }
 
-    const body = await request.json()
-    const { phone_number_id, waba_id, access_token, verify_token, pin } = body
+    const body = await request.json();
+    const { phone_number_id, waba_id, access_token, verify_token, pin } = body;
 
     if (!access_token || !phone_number_id) {
       return NextResponse.json(
         { error: 'access_token y phone_number_id son obligatorios' },
         { status: 400 }
-      )
+      );
     }
 
     if (pin !== undefined && pin !== null && pin !== '') {
@@ -189,7 +204,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           { error: 'El PIN debe tener exactamente 6 dígitos.' },
           { status: 400 }
-        )
+        );
       }
     }
 
@@ -205,14 +220,14 @@ export async function POST(request: Request) {
       .select('account_id')
       .eq('phone_number_id', phone_number_id)
       .neq('account_id', accountId)
-      .maybeSingle()
+      .maybeSingle();
 
     if (claimedError) {
-      console.error('Error checking phone_number_id ownership:', claimedError)
+      console.error('Error checking phone_number_id ownership:', claimedError);
       return NextResponse.json(
         { error: 'No se pudo validar la configuración' },
         { status: 500 }
-      )
+      );
     }
 
     if (claimed) {
@@ -222,41 +237,48 @@ export async function POST(request: Request) {
             'Este número de teléfono de WhatsApp ya está vinculado a otra cuenta en esta instancia. Cada número solo puede conectarse a un usuario de Convix.',
         },
         { status: 409 }
-      )
+      );
     }
 
     // Verify credentials with Meta BEFORE saving
-    let phoneInfo
+    let phoneInfo;
     try {
       phoneInfo = await verifyPhoneNumber({
         phoneNumberId: phone_number_id,
         accessToken: access_token,
-      })
+      });
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error desconocido de la API de Meta'
-      console.error('Falló la verificación con la API de Meta al guardar:', message)
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'Error desconocido de la API de Meta';
+      console.error(
+        'Falló la verificación con la API de Meta al guardar:',
+        message
+      );
       return NextResponse.json(
         { error: `Error de la API de Meta: ${message}` },
         { status: 400 }
-      )
+      );
     }
 
     // Encrypt sensitive tokens before storing
-    let encryptedAccessToken: string
-    let encryptedVerifyToken: string | null
+    let encryptedAccessToken: string;
+    let encryptedVerifyToken: string | null;
     try {
-      encryptedAccessToken = encrypt(access_token)
-      encryptedVerifyToken = verify_token ? encrypt(verify_token) : null
+      encryptedAccessToken = encrypt(access_token);
+      encryptedVerifyToken = verify_token ? encrypt(verify_token) : null;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Error de cifrado desconocido'
-      console.error('Encryption failed:', message)
+      const message =
+        err instanceof Error ? err.message : 'Error de cifrado desconocido';
+      console.error('Encryption failed:', message);
       return NextResponse.json(
         {
           error:
             'No se pudo cifrar el token. Verifica que ENCRYPTION_KEY sea una cadena hexadecimal válida de 64 caracteres en tus variables de entorno.',
         },
         { status: 500 }
-      )
+      );
     }
 
     // Look up any pre-existing row for this account so we know whether
@@ -266,11 +288,11 @@ export async function POST(request: Request) {
       .from('whatsapp_config')
       .select('id, registered_at, phone_number_id')
       .eq('account_id', accountId)
-      .maybeSingle()
+      .maybeSingle();
 
     const sameNumber =
       existing?.phone_number_id === phone_number_id &&
-      existing?.registered_at != null
+      existing?.registered_at != null;
 
     // Step 1: register the phone number for inbound webhooks.
     //
@@ -279,14 +301,15 @@ export async function POST(request: Request) {
     // when the same number is already registered and no PIN was
     // supplied — re-registering an already-active number with a
     // stale PIN would actually fail and undo the active subscription.
-    let registeredAt: string | null = existing?.registered_at ?? null
-    let registrationError: string | null = null
+    let registeredAt: string | null = existing?.registered_at ?? null;
+    let registrationError: string | null = null;
     // True when registration was deliberately skipped because no PIN
     // was supplied (see below). Distinct from registrationError — this
     // is not a failure, just an incomplete-but-valid save.
-    let registrationSkipped = false
+    let registrationSkipped = false;
 
-    const needsRegistration = !sameNumber || (typeof pin === 'string' && pin.length > 0)
+    const needsRegistration =
+      !sameNumber || (typeof pin === 'string' && pin.length > 0);
     if (needsRegistration) {
       if (!pin) {
         // No PIN provided. Meta TEST numbers (Developer Console) are
@@ -298,19 +321,21 @@ export async function POST(request: Request) {
         // credentials as connected, and leave registered_at null. The
         // UI surfaces a separate "Not registered" banner with a path to
         // add a PIN later for users who do need inbound webhook routing.
-        registrationSkipped = true
+        registrationSkipped = true;
       } else {
         try {
           await registerPhoneNumber({
             phoneNumberId: phone_number_id,
             accessToken: access_token,
             pin,
-          })
-          registeredAt = new Date().toISOString()
+          });
+          registeredAt = new Date().toISOString();
         } catch (err) {
           registrationError =
-            err instanceof Error ? err.message : 'Error desconocido de la API de Meta'
-          console.error('Phone number /register failed:', registrationError)
+            err instanceof Error
+              ? err.message
+              : 'Error desconocido de la API de Meta';
+          console.error('Phone number /register failed:', registrationError);
           // We deliberately fall through and still save the row so the
           // user can retry without re-entering everything. The UI
           // surfaces `last_registration_error` so they see WHY it's
@@ -323,17 +348,17 @@ export async function POST(request: Request) {
     // side, so we call on every save and persist the timestamp.
     // Skipped only when there's no waba_id (legacy rows from before
     // we required it).
-    let subscribedAppsAt: string | null = null
+    let subscribedAppsAt: string | null = null;
     if (waba_id) {
       try {
         await subscribeWabaToApp({
           wabaId: waba_id,
           accessToken: access_token,
-        })
-        subscribedAppsAt = new Date().toISOString()
+        });
+        subscribedAppsAt = new Date().toISOString();
       } catch (err) {
-        const message = err instanceof Error ? err.message : String(err)
-        console.warn('WABA subscribed_apps failed (non-fatal):', message)
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn('WABA subscribed_apps failed (non-fatal):', message);
         // Subscription failures are rare once the App has the right
         // permissions; we don't block save on them — the diagnostic
         // endpoint surfaces this state too.
@@ -354,20 +379,20 @@ export async function POST(request: Request) {
       subscribed_apps_at: subscribedAppsAt ?? null,
       last_registration_error: registrationError,
       updated_at: new Date().toISOString(),
-    }
+    };
 
     if (existing) {
       const { error: updateError } = await supabase
         .from('whatsapp_config')
         .update(baseRow)
-        .eq('account_id', accountId)
+        .eq('account_id', accountId);
 
       if (updateError) {
-        console.error('Error updating whatsapp_config:', updateError)
+        console.error('Error updating whatsapp_config:', updateError);
         return NextResponse.json(
           { error: 'No se pudo actualizar la configuración' },
           { status: 500 }
-        )
+        );
       }
     } else {
       // Insert with both columns: `account_id` is the tenancy key
@@ -380,14 +405,14 @@ export async function POST(request: Request) {
           account_id: accountId,
           user_id: user.id,
           ...baseRow,
-        })
+        });
 
       if (insertError) {
-        console.error('Error inserting whatsapp_config:', insertError)
+        console.error('Error inserting whatsapp_config:', insertError);
         return NextResponse.json(
           { error: 'No se pudo guardar la configuración' },
           { status: 500 }
-        )
+        );
       }
     }
 
@@ -401,7 +426,7 @@ export async function POST(request: Request) {
         registered: false,
         registration_error: registrationError,
         phone_info: phoneInfo,
-      })
+      });
     }
 
     return NextResponse.json({
@@ -414,10 +439,13 @@ export async function POST(request: Request) {
       // rather than claiming the number is fully live.
       registration_skipped: registrationSkipped,
       phone_info: phoneInfo,
-    })
+    });
   } catch (error) {
-    console.error('Error in WhatsApp config POST:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
+    console.error('Error in WhatsApp config POST:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }
 
@@ -430,41 +458,44 @@ export async function POST(request: Request) {
  */
 export async function DELETE() {
   try {
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
       data: { user },
       error: authError,
-    } = await supabase.auth.getUser()
+    } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    const accountId = await resolveAccountId(supabase, user.id)
+    const accountId = await resolveAccountId(supabase, user.id);
     if (!accountId) {
       return NextResponse.json(
         { error: 'Tu perfil no está vinculado a una cuenta.' },
-        { status: 403 },
-      )
+        { status: 403 }
+      );
     }
 
     const { error: deleteError } = await supabase
       .from('whatsapp_config')
       .delete()
-      .eq('account_id', accountId)
+      .eq('account_id', accountId);
 
     if (deleteError) {
-      console.error('Error deleting whatsapp_config:', deleteError)
+      console.error('Error deleting whatsapp_config:', deleteError);
       return NextResponse.json(
         { error: 'No se pudo eliminar la configuración' },
         { status: 500 }
-      )
+      );
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error in WhatsApp config DELETE:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
+    console.error('Error in WhatsApp config DELETE:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }

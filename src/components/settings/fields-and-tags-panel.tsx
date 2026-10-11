@@ -15,7 +15,7 @@ export function FieldsAndTagsPanel() {
   const canEditSettings = useCan('edit-settings');
 
   return (
-    <section className="w-full animate-in fade-in-50 space-y-4 duration-200">
+    <section className="animate-in fade-in-50 w-full space-y-4 duration-200">
       <SettingsPanelHead
         title="Campos y etiquetas"
         description="Dos formas de organizar contactos: etiquetas de colores para agrupar rápido y campos personalizados para datos estructurados."

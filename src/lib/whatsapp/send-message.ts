@@ -107,7 +107,11 @@ export function validateSendMessageParams(params: {
   const { messageType, contentText, mediaUrl, templateName } = params;
 
   if (!messageType) {
-    throw new SendMessageError('bad_request', 'message_type es obligatorio', 400);
+    throw new SendMessageError(
+      'bad_request',
+      'message_type es obligatorio',
+      400
+    );
   }
 
   const isMediaKind = (MEDIA_KINDS as readonly string[]).includes(messageType);
@@ -185,7 +189,12 @@ export async function sendMessageToConversation(
     );
   }
 
-  validateSendMessageParams({ messageType, contentText, mediaUrl, templateName });
+  validateSendMessageParams({
+    messageType,
+    contentText,
+    mediaUrl,
+    templateName,
+  });
 
   const isMediaKind = (MEDIA_KINDS as readonly string[]).includes(messageType);
 
@@ -369,9 +378,15 @@ export async function sendMessageToConversation(
     if (lastError) throw lastError;
   } catch (err) {
     const message =
-      err instanceof Error ? err.message : 'Error desconocido de la API de Meta';
+      err instanceof Error
+        ? err.message
+        : 'Error desconocido de la API de Meta';
     console.error('[send-message] Meta send failed for all variants:', message);
-    throw new SendMessageError('meta_error', `Error de la API de Meta: ${message}`, 502);
+    throw new SendMessageError(
+      'meta_error',
+      `Error de la API de Meta: ${message}`,
+      502
+    );
   }
 
   if (workingPhone !== sanitizedPhone) {

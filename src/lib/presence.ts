@@ -26,10 +26,10 @@ export const OFFLINE_AFTER_MS = 75_000;
 export const IDLE_AFTER_MS = 5 * 60_000;
 
 /** What the active client reports (and what the DB stores). */
-export type StoredPresence = "online" | "away";
+export type StoredPresence = 'online' | 'away';
 
 /** What a viewer sees — adds the derived 'offline' state. */
-export type PresenceStatus = "online" | "away" | "offline";
+export type PresenceStatus = 'online' | 'away' | 'offline';
 
 /** Raw presence row as read from the `member_presence` table. */
 export interface PresenceRow {
@@ -45,12 +45,12 @@ export interface PresenceRow {
 export function derivePresence(
   stored: StoredPresence | undefined,
   lastSeenAt: string | null | undefined,
-  now: number,
+  now: number
 ): PresenceStatus {
-  if (!stored || !lastSeenAt) return "offline";
+  if (!stored || !lastSeenAt) return 'offline';
   const last = new Date(lastSeenAt).getTime();
-  if (Number.isNaN(last)) return "offline";
-  if (now - last > OFFLINE_AFTER_MS) return "offline";
+  if (Number.isNaN(last)) return 'offline';
+  if (now - last > OFFLINE_AFTER_MS) return 'offline';
   return stored;
 }
 
@@ -67,24 +67,24 @@ export function derivePresence(
  */
 export function formatLastSeen(
   lastSeenAt: string | null | undefined,
-  now: number,
+  now: number
 ): string {
-  if (!lastSeenAt) return "hace un tiempo";
+  if (!lastSeenAt) return 'hace un tiempo';
   const last = new Date(lastSeenAt).getTime();
-  if (Number.isNaN(last)) return "hace un tiempo";
+  if (Number.isNaN(last)) return 'hace un tiempo';
 
   const diff = Math.max(0, now - last);
   const mins = Math.floor(diff / 60_000);
-  if (mins < 1) return "ahora mismo";
-  if (mins === 1) return "hace 1 minuto";
+  if (mins < 1) return 'ahora mismo';
+  if (mins === 1) return 'hace 1 minuto';
   if (mins < 60) return `hace ${mins} minutos`;
 
   const hours = Math.floor(mins / 60);
-  if (hours === 1) return "hace 1 hora";
+  if (hours === 1) return 'hace 1 hora';
   if (hours < 24) return `hace ${hours} horas`;
 
   const days = Math.floor(hours / 24);
-  if (days === 1) return "hace 1 día";
+  if (days === 1) return 'hace 1 día';
   return `hace ${days} días`;
 }
 
@@ -97,14 +97,14 @@ export function formatLastSeen(
 export function presenceLabel(
   status: PresenceStatus,
   lastSeenAt: string | null | undefined,
-  now: number,
+  now: number
 ): string {
   switch (status) {
-    case "online":
-      return "En línea — activo ahora";
-    case "away":
-      return "Ausente — inactivo";
-    case "offline":
+    case 'online':
+      return 'En línea — activo ahora';
+    case 'away':
+      return 'Ausente — inactivo';
+    case 'offline':
       return `Desconectado — última vez ${formatLastSeen(lastSeenAt, now)}`;
   }
 }

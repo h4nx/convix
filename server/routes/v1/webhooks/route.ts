@@ -55,7 +55,11 @@ export async function POST(request: Request) {
       unknown
     > | null;
     if (!body || typeof body !== 'object') {
-      return fail('bad_request', 'El cuerpo de la solicitud debe ser un objeto JSON', 400);
+      return fail(
+        'bad_request',
+        'El cuerpo de la solicitud debe ser un objeto JSON',
+        400
+      );
     }
 
     const url = normalizeWebhookUrl(body.url);
@@ -93,7 +97,10 @@ export async function POST(request: Request) {
 
     // Secret shown exactly once.
     return ok(
-      { ...serializeWebhookEndpoint(created as Record<string, unknown>), secret },
+      {
+        ...serializeWebhookEndpoint(created as Record<string, unknown>),
+        secret,
+      },
       201
     );
   } catch (err) {

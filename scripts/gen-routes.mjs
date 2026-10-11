@@ -55,10 +55,16 @@ const routes = walk(routesDir)
 const lines = [
   '// GENERADO por scripts/gen-routes.mjs — no editar a mano.',
   "import type { RouteModule } from './route-types';",
-  ...routes.map((r, i) => `import * as r${i} from './routes/${relative(routesDir, r.file).split(sep).join('/').replace(/\.ts$/, '')}';`),
+  ...routes.map(
+    (r, i) =>
+      `import * as r${i} from './routes/${relative(routesDir, r.file).split(sep).join('/').replace(/\.ts$/, '')}';`
+  ),
   '',
   'export const routes: { pattern: string; module: RouteModule }[] = [',
-  ...routes.map((r, i) => `  { pattern: '${r.pattern}', module: r${i} as unknown as RouteModule },`),
+  ...routes.map(
+    (r, i) =>
+      `  { pattern: '${r.pattern}', module: r${i} as unknown as RouteModule },`
+  ),
   '];',
   '',
 ];

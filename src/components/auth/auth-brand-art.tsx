@@ -1,4 +1,4 @@
-import { CheckCheck, Megaphone, Zap } from "lucide-react";
+import { CheckCheck, Megaphone, Zap } from 'lucide-react';
 
 // Ilustración de fondo del panel de marca: una "constelación" de contactos
 // unidos por líneas (CRM), conversaciones de WhatsApp flotando encima
@@ -9,23 +9,39 @@ import { CheckCheck, Megaphone, Zap } from "lucide-react";
 
 // Nodos de la red de contactos, en un viewBox 600x640. `r` = tamaño del avatar.
 const NODES = [
-  { id: "hub", x: 330, y: 330, r: 34, hub: true },
-  { id: "a", x: 120, y: 150, r: 20 },
-  { id: "b", x: 300, y: 70, r: 16 },
-  { id: "c", x: 505, y: 170, r: 22 },
-  { id: "d", x: 545, y: 400, r: 17 },
-  { id: "e", x: 440, y: 565, r: 21 },
-  { id: "f", x: 210, y: 540, r: 16 },
-  { id: "g", x: 70, y: 380, r: 19 },
-  { id: "h", x: 215, y: 300, r: 12 },
-  { id: "i", x: 450, y: 320, r: 11 },
+  { id: 'hub', x: 330, y: 330, r: 34, hub: true },
+  { id: 'a', x: 120, y: 150, r: 20 },
+  { id: 'b', x: 300, y: 70, r: 16 },
+  { id: 'c', x: 505, y: 170, r: 22 },
+  { id: 'd', x: 545, y: 400, r: 17 },
+  { id: 'e', x: 440, y: 565, r: 21 },
+  { id: 'f', x: 210, y: 540, r: 16 },
+  { id: 'g', x: 70, y: 380, r: 19 },
+  { id: 'h', x: 215, y: 300, r: 12 },
+  { id: 'i', x: 450, y: 320, r: 11 },
 ] as const;
 
 const LINKS: Array<[string, string]> = [
-  ["hub", "a"], ["hub", "b"], ["hub", "c"], ["hub", "d"], ["hub", "e"],
-  ["hub", "f"], ["hub", "g"], ["hub", "h"], ["hub", "i"],
-  ["a", "b"], ["b", "c"], ["c", "d"], ["d", "e"], ["e", "f"], ["f", "g"],
-  ["g", "a"], ["h", "a"], ["h", "g"], ["i", "c"], ["i", "d"],
+  ['hub', 'a'],
+  ['hub', 'b'],
+  ['hub', 'c'],
+  ['hub', 'd'],
+  ['hub', 'e'],
+  ['hub', 'f'],
+  ['hub', 'g'],
+  ['hub', 'h'],
+  ['hub', 'i'],
+  ['a', 'b'],
+  ['b', 'c'],
+  ['c', 'd'],
+  ['d', 'e'],
+  ['e', 'f'],
+  ['f', 'g'],
+  ['g', 'a'],
+  ['h', 'a'],
+  ['h', 'g'],
+  ['i', 'c'],
+  ['i', 'd'],
 ];
 
 const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
@@ -47,24 +63,24 @@ function Bubble({
     <div
       className={`convix-float absolute w-52 rounded-2xl border px-3.5 py-2.5 shadow-xl shadow-black/30 backdrop-blur-md ${
         out
-          ? "border-primary/40 bg-primary/25 rounded-br-md"
-          : "border-auth-panel-border bg-auth-panel-foreground/[0.07] rounded-bl-md"
+          ? 'border-primary/40 bg-primary/25 rounded-br-md'
+          : 'border-auth-panel-border bg-auth-panel-foreground/[0.07] rounded-bl-md'
       } ${className}`}
       style={{ animationDelay: delay }}
     >
       <div className="space-y-1.5">
-        <div className="text-[12.5px] leading-snug text-auth-panel-foreground/90">
+        <div className="text-auth-panel-foreground/90 text-[12.5px] leading-snug">
           {lines[0]}
         </div>
         {lines[1] && (
-          <div className="text-[12.5px] leading-snug text-auth-panel-foreground/60">
+          <div className="text-auth-panel-foreground/60 text-[12.5px] leading-snug">
             {lines[1]}
           </div>
         )}
       </div>
-      <div className="mt-1.5 flex items-center justify-end gap-1 font-mono text-[10px] text-auth-panel-muted">
+      <div className="text-auth-panel-muted mt-1.5 flex items-center justify-end gap-1 font-mono text-[10px]">
         {time}
-        {out && <CheckCheck className="h-3 w-3 text-primary" />}
+        {out && <CheckCheck className="text-primary h-3 w-3" />}
       </div>
     </div>
   );
@@ -76,7 +92,7 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
   return (
     <div
       className={`pointer-events-none absolute inset-y-0 right-0 select-none ${
-        compact ? "w-full" : "w-[72%]"
+        compact ? 'w-full' : 'w-[72%]'
       }`}
     >
       <style>{`
@@ -94,7 +110,7 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
       {/* Red de contactos + ondas de difusión */}
       <svg
         viewBox="0 0 600 640"
-        preserveAspectRatio={compact ? "xMaxYMid meet" : "xMidYMid meet"}
+        preserveAspectRatio={compact ? 'xMaxYMid meet' : 'xMidYMid meet'}
         className="absolute inset-0 h-full w-full"
         fill="none"
       >
@@ -120,18 +136,32 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
             style={{ animationDelay: `${d}s` }}
           />
         ))}
-        <circle cx="330" cy="330" r="130" stroke="var(--primary)" strokeOpacity="0.18" strokeDasharray="2 7" />
-        <circle cx="330" cy="330" r="215" stroke="var(--primary)" strokeOpacity="0.12" strokeDasharray="2 9" />
+        <circle
+          cx="330"
+          cy="330"
+          r="130"
+          stroke="var(--primary)"
+          strokeOpacity="0.18"
+          strokeDasharray="2 7"
+        />
+        <circle
+          cx="330"
+          cy="330"
+          r="215"
+          stroke="var(--primary)"
+          strokeOpacity="0.12"
+          strokeDasharray="2 9"
+        />
 
         {/* Enlaces */}
         {LINKS.map(([from, to]) => {
           const a = byId[from];
           const b = byId[to];
-          const isHub = from === "hub";
+          const isHub = from === 'hub';
           return (
             <line
               key={`${from}-${to}`}
-              className={isHub ? "convix-link" : undefined}
+              className={isHub ? 'convix-link' : undefined}
               x1={a.x}
               y1={a.y}
               x2={b.x}
@@ -151,7 +181,7 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
               cy={n.y}
               r={n.r + 6}
               fill="var(--primary)"
-              fillOpacity={"hub" in n ? 0.22 : 0.08}
+              fillOpacity={'hub' in n ? 0.22 : 0.08}
             />
             <circle
               cx={n.x}
@@ -159,8 +189,8 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
               r={n.r}
               fill="var(--auth-panel-bg)"
               stroke="var(--primary)"
-              strokeOpacity={"hub" in n ? 1 : 0.6}
-              strokeWidth={"hub" in n ? 2 : 1.4}
+              strokeOpacity={'hub' in n ? 1 : 0.6}
+              strokeWidth={'hub' in n ? 2 : 1.4}
             />
             {/* Avatar: cabeza + hombros */}
             <circle
@@ -168,12 +198,12 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
               cy={n.y - n.r * 0.2}
               r={n.r * 0.3}
               fill="var(--primary)"
-              fillOpacity={"hub" in n ? 0.95 : 0.55}
+              fillOpacity={'hub' in n ? 0.95 : 0.55}
             />
             <path
               d={`M ${n.x - n.r * 0.55} ${n.y + n.r * 0.6} a ${n.r * 0.55} ${n.r * 0.5} 0 0 1 ${n.r * 1.1} 0 z`}
               fill="var(--primary)"
-              fillOpacity={"hub" in n ? 0.95 : 0.55}
+              fillOpacity={'hub' in n ? 0.95 : 0.55}
             />
           </g>
         ))}
@@ -181,82 +211,82 @@ export function AuthBrandArt({ compact = false }: { compact?: boolean }) {
 
       {!compact && (
         <>
-      {/* Conversaciones */}
-      <Bubble
-        className="top-[9%] right-[4%]"
-        lines={["¿Tienen disponible el plan Pro?"]}
-        time="10:42"
-        delay="0s"
-      />
-      <Bubble
-        className="top-[24%] right-[16%]"
-        out
-        lines={["¡Claro! Te envío la propuesta ahora 🚀"]}
-        time="10:43"
-        delay="1.2s"
-      />
-      <Bubble
-        className="top-[41%] right-[1%]"
-        lines={["Gracias, quedó perfecto 🙌"]}
-        time="10:51"
-        delay="2.4s"
-      />
+          {/* Conversaciones */}
+          <Bubble
+            className="top-[9%] right-[4%]"
+            lines={['¿Tienen disponible el plan Pro?']}
+            time="10:42"
+            delay="0s"
+          />
+          <Bubble
+            className="top-[24%] right-[16%]"
+            out
+            lines={['¡Claro! Te envío la propuesta ahora 🚀']}
+            time="10:43"
+            delay="1.2s"
+          />
+          <Bubble
+            className="top-[41%] right-[1%]"
+            lines={['Gracias, quedó perfecto 🙌']}
+            time="10:51"
+            delay="2.4s"
+          />
 
-      {/* Broadcast */}
-      <div
-        className="convix-float absolute right-[3%] bottom-[20%] flex w-56 items-center gap-3 rounded-2xl border border-auth-panel-border bg-auth-panel-foreground/[0.07] px-3.5 py-3 shadow-xl shadow-black/30 backdrop-blur-md"
-        style={{ animationDelay: "3.2s" }}
-      >
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-          <Megaphone className="h-4.5 w-4.5" />
-        </div>
-        <div className="min-w-0">
-          <div className="text-[12.5px] font-medium text-auth-panel-foreground">
-            Campaña de octubre
-          </div>
-          <div className="font-mono text-[10.5px] text-auth-panel-muted">
-            2.481 enviados · 94% leídos
-          </div>
-        </div>
-      </div>
-
-      {/* Pipeline + automatización */}
-      <div
-        className="convix-float absolute bottom-[7%] left-[22%] w-60 rounded-2xl border border-auth-panel-border bg-auth-panel-foreground/[0.07] p-3 shadow-xl shadow-black/30 backdrop-blur-md"
-        style={{ animationDelay: "4.4s" }}
-      >
-        <div className="mb-2 flex items-center justify-between font-mono text-[10px] tracking-wider text-auth-panel-muted uppercase">
-          <span>Pipeline</span>
-          <span className="flex items-center gap-1 text-primary">
-            <Zap className="h-3 w-3" /> auto
-          </span>
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          {[
-            { label: "Nuevo", fill: 3 },
-            { label: "Propuesta", fill: 2 },
-            { label: "Ganado", fill: 1 },
-          ].map((col, i) => (
-            <div key={col.label}>
-              <div className="mb-1.5 text-[10px] text-auth-panel-muted">
-                {col.label}
+          {/* Broadcast */}
+          <div
+            className="convix-float border-auth-panel-border bg-auth-panel-foreground/[0.07] absolute right-[3%] bottom-[20%] flex w-56 items-center gap-3 rounded-2xl border px-3.5 py-3 shadow-xl shadow-black/30 backdrop-blur-md"
+            style={{ animationDelay: '3.2s' }}
+          >
+            <div className="bg-primary text-primary-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-xl">
+              <Megaphone className="h-4.5 w-4.5" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-auth-panel-foreground text-[12.5px] font-medium">
+                Campaña de octubre
               </div>
-              <div className="space-y-1.5">
-                {Array.from({ length: col.fill }).map((_, j) => (
-                  <div
-                    key={j}
-                    className={`h-4 rounded-md ${
-                      i === 2
-                        ? "bg-primary/70"
-                        : "bg-auth-panel-foreground/[0.12]"
-                    }`}
-                  />
-                ))}
+              <div className="text-auth-panel-muted font-mono text-[10.5px]">
+                2.481 enviados · 94% leídos
               </div>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+
+          {/* Pipeline + automatización */}
+          <div
+            className="convix-float border-auth-panel-border bg-auth-panel-foreground/[0.07] absolute bottom-[7%] left-[22%] w-60 rounded-2xl border p-3 shadow-xl shadow-black/30 backdrop-blur-md"
+            style={{ animationDelay: '4.4s' }}
+          >
+            <div className="text-auth-panel-muted mb-2 flex items-center justify-between font-mono text-[10px] tracking-wider uppercase">
+              <span>Pipeline</span>
+              <span className="text-primary flex items-center gap-1">
+                <Zap className="h-3 w-3" /> auto
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: 'Nuevo', fill: 3 },
+                { label: 'Propuesta', fill: 2 },
+                { label: 'Ganado', fill: 1 },
+              ].map((col, i) => (
+                <div key={col.label}>
+                  <div className="text-auth-panel-muted mb-1.5 text-[10px]">
+                    {col.label}
+                  </div>
+                  <div className="space-y-1.5">
+                    {Array.from({ length: col.fill }).map((_, j) => (
+                      <div
+                        key={j}
+                        className={`h-4 rounded-md ${
+                          i === 2
+                            ? 'bg-primary/70'
+                            : 'bg-auth-panel-foreground/[0.12]'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </>
       )}
     </div>

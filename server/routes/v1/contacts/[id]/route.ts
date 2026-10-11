@@ -45,7 +45,11 @@ export async function PATCH(
       unknown
     > | null;
     if (!body || typeof body !== 'object') {
-      return fail('bad_request', 'El cuerpo de la solicitud debe ser un objeto JSON', 400);
+      return fail(
+        'bad_request',
+        'El cuerpo de la solicitud debe ser un objeto JSON',
+        400
+      );
     }
 
     // Verify the contact is in this account before mutating anything.
@@ -95,7 +99,11 @@ export async function PATCH(
     return ok(contact);
   } catch (err) {
     if (err instanceof ContactError) {
-      return fail(err.status === 400 ? 'bad_request' : 'internal', err.message, err.status);
+      return fail(
+        err.status === 400 ? 'bad_request' : 'internal',
+        err.message,
+        err.status
+      );
     }
     return toApiErrorResponse(err);
   }

@@ -44,18 +44,61 @@ export interface SectionMeta {
 }
 
 export const SECTION_META: Record<SettingsSection, SectionMeta> = {
-  overview: { id: 'overview', label: 'Resumen', icon: LayoutGrid, group: 'top' },
+  overview: {
+    id: 'overview',
+    label: 'Resumen',
+    icon: LayoutGrid,
+    group: 'top',
+  },
   profile: { id: 'profile', label: 'Tu perfil', icon: User, group: 'account' },
-  security: { id: 'security', label: 'Inicio de sesión y seguridad', icon: Shield, group: 'account' },
-  whatsapp: { id: 'whatsapp', label: 'WhatsApp', icon: PlugZap, group: 'workspace' },
-  templates: { id: 'templates', label: 'Plantillas', icon: FileText, group: 'workspace' },
-  fields: { id: 'fields', label: 'Campos y etiquetas', icon: Tags, group: 'workspace' },
-  deals: { id: 'deals', label: 'Negocios y moneda', icon: Coins, group: 'workspace' },
-  members: { id: 'members', label: 'Miembros del equipo', icon: UsersRound, group: 'workspace' },
-  api: { id: 'api', label: 'Claves de API', icon: KeyRound, group: 'workspace' },
+  security: {
+    id: 'security',
+    label: 'Inicio de sesión y seguridad',
+    icon: Shield,
+    group: 'account',
+  },
+  whatsapp: {
+    id: 'whatsapp',
+    label: 'WhatsApp',
+    icon: PlugZap,
+    group: 'workspace',
+  },
+  templates: {
+    id: 'templates',
+    label: 'Plantillas',
+    icon: FileText,
+    group: 'workspace',
+  },
+  fields: {
+    id: 'fields',
+    label: 'Campos y etiquetas',
+    icon: Tags,
+    group: 'workspace',
+  },
+  deals: {
+    id: 'deals',
+    label: 'Negocios y moneda',
+    icon: Coins,
+    group: 'workspace',
+  },
+  members: {
+    id: 'members',
+    label: 'Miembros del equipo',
+    icon: UsersRound,
+    group: 'workspace',
+  },
+  api: {
+    id: 'api',
+    label: 'Claves de API',
+    icon: KeyRound,
+    group: 'workspace',
+  },
 };
 
-export const RAIL_GROUPS: { label: string | null; group: SectionMeta['group'] }[] = [
+export const RAIL_GROUPS: {
+  label: string | null;
+  group: SectionMeta['group'];
+}[] = [
   { label: null, group: 'top' },
   { label: 'Cuenta', group: 'account' },
   { label: 'Espacio de trabajo', group: 'workspace' },

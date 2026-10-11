@@ -7,7 +7,12 @@ const backend = `http://localhost:${process.env.BACKEND_PORT ?? 3001}`;
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: { alias: { '@': resolve(__dirname, 'src'), '@server': resolve(__dirname, 'server') } },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+      '@server': resolve(__dirname, 'server'),
+    },
+  },
   server: {
     port: Number(process.env.PORT ?? 3000),
     host: true,

@@ -43,7 +43,10 @@ export async function POST(request: NextRequest) {
     account_id: accountId,
   });
   if (Buffer.byteLength(message) > 7500) {
-    return NextResponse.json({ error: 'Carga demasiado grande' }, { status: 413 });
+    return NextResponse.json(
+      { error: 'Carga demasiado grande' },
+      { status: 413 }
+    );
   }
 
   await getPool().query(`SELECT pg_notify('convix_broadcast', $1)`, [message]);

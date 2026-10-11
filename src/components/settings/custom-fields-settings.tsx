@@ -20,8 +20,8 @@ export function CustomFieldsSettings() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-foreground">
-          <SlidersHorizontal className="size-4 text-primary" />
+        <CardTitle className="text-foreground flex items-center gap-2">
+          <SlidersHorizontal className="text-primary size-4" />
           Campos personalizados
           <SettingsChip variant="admin" className="font-medium">
             <Shield />
@@ -29,7 +29,9 @@ export function CustomFieldsSettings() {
           </SettingsChip>
         </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Campos extra de contacto (p. ej. código postal, origen del lead). Aparecen en cada contacto y en la acción de automatización «Actualizar campo del contacto».
+          Campos extra de contacto (p. ej. código postal, origen del lead).
+          Aparecen en cada contacto y en la acción de automatización «Actualizar
+          campo del contacto».
         </CardDescription>
       </CardHeader>
       <CardContent>

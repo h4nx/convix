@@ -36,7 +36,7 @@ export function isMessageTemplate(row: unknown): row is MessageTemplate {
  */
 export function assertMessageTemplate(
   row: unknown,
-  context: string,
+  context: string
 ): MessageTemplate {
   if (!isMessageTemplate(row)) {
     const id =
@@ -44,7 +44,7 @@ export function assertMessageTemplate(
         ? String((row as { id: unknown }).id)
         : '(unknown id)';
     throw new Error(
-      `Fila de message_templates mal formada ${id} en ${context} — faltan campos obligatorios (id, user_id, name, body_text).`,
+      `Fila de message_templates mal formada ${id} en ${context} — faltan campos obligatorios (id, user_id, name, body_text).`
     );
   }
   return row;

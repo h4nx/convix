@@ -17,7 +17,10 @@ export async function POST(request: NextRequest) {
   } | null;
   if (!body?.token || !body.password || body.password.length < 8) {
     return NextResponse.json(
-      { error: 'Se requieren el token y una contraseña de al menos 8 caracteres' },
+      {
+        error:
+          'Se requieren el token y una contraseña de al menos 8 caracteres',
+      },
       { status: 400 }
     );
   }
@@ -27,7 +30,10 @@ export async function POST(request: NextRequest) {
   // endpoint in this family is the kind of thing an audit flags.
   const ip =
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'local';
-  const limit = checkRateLimit(`auth-reset:${ip}`, { limit: 10, windowMs: 60_000 });
+  const limit = checkRateLimit(`auth-reset:${ip}`, {
+    limit: 10,
+    windowMs: 60_000,
+  });
   if (!limit.success) return rateLimitResponse(limit);
 
   const userId = await consumePasswordResetToken(body.token);
