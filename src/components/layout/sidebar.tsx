@@ -382,6 +382,19 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+        <p className="border-t border-sidebar-border px-4 py-3 text-center text-[11px] leading-relaxed text-sidebar-foreground/50">
+          © {new Date().getFullYear()}{" "}
+          <a
+            href="https://hmbusiness.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-sidebar-foreground"
+          >
+            H&amp;M Business
+          </a>
+          <br />
+          Todos los derechos reservados
+        </p>
       </aside>
     </>
   );

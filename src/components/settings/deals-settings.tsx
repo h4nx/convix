@@ -66,7 +66,7 @@ export function DealsSettings() {
   }
 
   return (
-    <section className="max-w-2xl animate-in fade-in-50 duration-200">
+    <section className="w-full animate-in fade-in-50 duration-200">
       <SettingsPanelHead
         title="Negocios y moneda"
         description="La moneda usada para negocios nuevos y para los totales del pipeline y del panel."

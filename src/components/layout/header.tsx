@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
+import { ROLE_META } from "@/components/settings/role-meta";
 import { LogOut, Menu, Settings as SettingsIcon, User } from "lucide-react";
 import {
   Avatar,
@@ -43,7 +44,7 @@ interface HeaderProps {
 
 export function Header({ onOpenSidebar }: HeaderProps) {
   const { pathname } = useLocation();
-  const { profile, signOut } = useAuth();
+  const { profile, signOut, accountRole } = useAuth();
   const title = getPageTitle(pathname);
 
   const initial =
@@ -85,8 +86,15 @@ export function Header({ onOpenSidebar }: HeaderProps) {
               {initial}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden text-sm font-medium text-foreground sm:inline">
-            {profile?.full_name ?? "Usuario"}
+          <span className="hidden min-w-0 flex-col text-left leading-tight sm:flex">
+            <span className="truncate text-sm font-medium text-foreground">
+              {profile?.full_name ?? "Usuario"}
+            </span>
+            {accountRole ? (
+              <span className="truncate text-xs text-muted-foreground">
+                {ROLE_META[accountRole].label}
+              </span>
+            ) : null}
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent

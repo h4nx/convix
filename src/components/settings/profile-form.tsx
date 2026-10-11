@@ -204,7 +204,7 @@ export function ProfileForm() {
     : '—';
 
   return (
-    <section className="max-w-2xl animate-in fade-in-50 duration-200">
+    <section className="w-full animate-in fade-in-50 duration-200">
       <SettingsPanelHead
         title="Tu perfil"
         description="Cómo apareces en la aplicación. Tu foto y nombre se ven en el encabezado, el menú lateral y donde tus compañeros te vean."
